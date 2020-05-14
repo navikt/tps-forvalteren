@@ -16,13 +16,13 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @Entity
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,11 +32,13 @@ public class Postadresse {
     private static final String SEQ = "T_POSTADRESSE_SEQ";
 
     @Id
+    @EqualsAndHashCode.Exclude
     @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
     @Column(name = "POSTADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
+    @EqualsAndHashCode.Exclude
     @Getter(AccessLevel.NONE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PERSON_ID", nullable = false)

@@ -1,10 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static java.lang.String.format;
+import static java.util.Collections.singleton;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.fetchSivilstand;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAarsakskode43.DOEDSMELDING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.DoedsmeldingAnnulleringAarsakskode45.DOEDSMELDINGANNULLERING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.FoedselsmeldingAarsakskode01.FOEDSEL_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02.INNVANDRING_CREATE_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.InnvandringAarsakskode02Tildelingskode2Update.INNVANDRING_UPDATE_MLD_NAVN;
@@ -17,6 +19,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +35,8 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 @Service
 @RequiredArgsConstructor
 public class SkdMeldingSender {
+
+    private static final String DOEDSMELDING_ANNULERING = "45";
 
     private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
     private final CreateRelasjoner createRelasjoner;
@@ -49,11 +54,24 @@ public class SkdMeldingSender {
 
     public List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(List<Person> personer, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(personer, true);
-        doedsMeldinger.forEach(skdMelding ->
-                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(DOEDSMELDING_MLD_NAVN, skdMelding, environmentsSet))
-        );
-        return listTpsResponsene;
+        environmentsSet.forEach(environment -> {
+            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(personer, environment, true);
+            doedsMeldinger.forEach(skdMelding ->
+                    listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(
+                            DOEDSMELDING_ANNULERING.equals(skdMelding.getAarsakskode()) ?
+                            DOEDSMELDINGANNULLERING_MLD_NAVN :
+                            DOEDSMELDING_MLD_NAVN, skdMelding, singleton(environment)))
+            );
+        });
+        createDoedsmeldinger.updateDoedsmeldingRepository(personer);
+        Map<String, SendSkdMeldingTilTpsResponse> mapper = new HashMap<>();
+        listTpsResponsene.forEach(response -> {
+            mapper.putIfAbsent(response.getSkdmeldingstype(), response);
+            SendSkdMeldingTilTpsResponse melding = mapper.get(response.getSkdmeldingstype());
+            response.getStatus().forEach((miljoe, status) -> melding.getStatus().putIfAbsent(miljoe, status));
+        });
+
+        return mapper.values().stream().collect(toList());
     }
 
     public List<SendSkdMeldingTilTpsResponse> sendRelasjonsmeldinger(List<Person> personer, Set<String> environmentsSet) {

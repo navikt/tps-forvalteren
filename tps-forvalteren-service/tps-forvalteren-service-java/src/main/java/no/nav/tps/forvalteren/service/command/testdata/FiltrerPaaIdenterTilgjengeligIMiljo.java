@@ -96,7 +96,6 @@ public class FiltrerPaaIdenterTilgjengeligIMiljo {
             }
 
             if (tilgjengeligeIdenterAlleMiljoer.isEmpty()) {
-                log.info("Ledige identer ikke funnet i {}", miljoe);
                 break;
             }
         }

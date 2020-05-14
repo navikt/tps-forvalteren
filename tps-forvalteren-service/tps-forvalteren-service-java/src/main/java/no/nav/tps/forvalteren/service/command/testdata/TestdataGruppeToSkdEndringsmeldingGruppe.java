@@ -21,63 +21,63 @@ import no.nav.tps.forvalteren.service.command.exceptions.GruppeNotFoundException
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateDoedsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateFoedselsmeldinger;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateRelasjoner;
-import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 import no.nav.tps.forvalteren.service.command.testdata.skd.CreateVergemaal;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMessageCreatorTrans1;
+import no.nav.tps.forvalteren.service.command.testdata.skd.UtvandringOgInnvandring;
 
 @Service
 public class TestdataGruppeToSkdEndringsmeldingGruppe {
-    
+
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
-    
+
     @Autowired
     private MessageProvider messageProvider;
-    
+
     @Autowired
     private SkdEndringsmeldingGruppeRepository skdEndringsmeldingGruppeRepository;
-    
+
     @Autowired
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
-    
+
     @Autowired
     private CreateRelasjoner createRelasjoner;
-    
+
     @Autowired
     private CreateDoedsmeldinger createDoedsmeldinger;
-    
+
     @Autowired
     private CreateVergemaal createVergemaal;
-    
+
     @Autowired
     private UtvandringOgInnvandring utvandringOgInnvandring;
-    
+
     @Autowired
     private GruppeRepository gruppeRepository;
-    
+
     @Autowired
     private CreateFoedselsmeldinger createFoedselsmeldinger;
-    
+
     @Autowired
     private CreateMeldingWithMeldingstypeService createMeldingWithMeldingstypeService;
-    
+
     @Autowired
     private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
-    
+
     public SkdEndringsmeldingGruppe execute(Long gruppeId) {
         Gruppe testdataGruppe = gruppeRepository.findById(gruppeId);
-        
+
         if (testdataGruppe != null) {
             SkdEndringsmeldingGruppe gruppe = new SkdEndringsmeldingGruppe();
             gruppe.setNavn(setNavnWithUniqueId(testdataGruppe.getNavn()));
             gruppe.setBeskrivelse(testdataGruppe.getBeskrivelse());
-            
+
             List<SkdMelding> skdMeldinger = new ArrayList<>();
             List<SkdMeldingTrans1> foedselsMeldinger = createFoedselsmeldinger.executeFromPersons(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> innvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_CREATE_MLD_NAVN, testdataGruppe.getPersoner(), false);
             List<SkdMelding> relasjonsMeldinger = createRelasjoner.execute(testdataGruppe.getPersoner(), false);
-            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), false);
+            List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(testdataGruppe.getPersoner(), null, false);
             List<SkdMeldingTrans1> vergemaalMeldinger = createVergemaal.execute(testdataGruppe.getPersoner(), false);
             List<SkdMeldingTrans1> utvandringsMeldinger = utvandringOgInnvandring.createMeldinger(testdataGruppe.getPersoner(), false);
             skdMeldinger.addAll(foedselsMeldinger);
@@ -86,7 +86,7 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             skdMeldinger.addAll(doedsMeldinger);
             skdMeldinger.addAll(utvandringsMeldinger);
             skdMeldinger.addAll(vergemaalMeldinger);
-            
+
             gruppe = skdEndringsmeldingGruppeRepository.save(gruppe);
             List<RsMeldingstype> rsMeldinger = createMeldingWithMeldingstypeService.execute(skdMeldinger);
             saveSkdEndringsmeldingerService.save(rsMeldinger, gruppe.getId());
@@ -94,9 +94,9 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
         } else {
             throw new GruppeNotFoundException(messageProvider.get(GRUPPE_NOT_FOUND_KEY, gruppeId));
         }
-        
+
     }
-    
+
     private String setNavnWithUniqueId(String navn) {
         String identifier = " (" + SECURE_RANDOM.nextInt(9999) + ")";
         if (navn.length() + identifier.length() <= 50) {
@@ -105,5 +105,5 @@ public class TestdataGruppeToSkdEndringsmeldingGruppe {
             return navn.substring(0, 50 - identifier.length()) + identifier;
         }
     }
-    
+
 }
