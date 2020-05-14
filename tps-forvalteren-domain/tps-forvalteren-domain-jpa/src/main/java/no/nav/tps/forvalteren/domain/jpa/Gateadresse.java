@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -31,6 +32,12 @@ public class Gateadresse extends Adresse {
 
     @Column(name = "GATEKODE", length = 5)
     private String gatekode;
+
+    public String getHusnummer() {
+        return StringUtils.isNumeric(husnummer) ?
+                new Integer(husnummer).toString() : // Eliminates leading 0s
+                husnummer;
+    }
 
     @Override
     public boolean equals(Object o) {

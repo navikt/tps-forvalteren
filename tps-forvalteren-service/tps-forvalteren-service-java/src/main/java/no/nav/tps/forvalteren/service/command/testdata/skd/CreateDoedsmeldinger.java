@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -124,14 +123,16 @@ public class CreateDoedsmeldinger {
         AdresserResponse adresser = personAdresseService.hentAdresserForDato(person.getIdent(), doedsdato.atStartOfDay().minusDays(1), miljoe);
 
         if (nonNull(adresser)) {
-            if (nonNull(adresser.getBoadresse())) {
+            if (nonNull(adresser.getBoadresse()) && !person.getBoadresse().isEmpty() &&
+                    !person.getBoadresse().get(0).equals(adresser.getBoadresse())) {
                 adresser.getBoadresse().setPerson(person);
-                person.setBoadresse(asList(adresser.getBoadresse()));
+                person.getBoadresse().add(adresser.getBoadresse());
             }
 
-            if (nonNull(adresser.getPostadresse())) {
+            if (nonNull(adresser.getPostadresse()) && !person.getPostadresse().isEmpty() &&
+                    !person.getPostadresse().get(0).equals(adresser.getPostadresse())) {
                 adresser.getPostadresse().setPerson(person);
-                person.setPostadresse(asList(adresser.getPostadresse()));
+                person.getPostadresse().add(adresser.getPostadresse());
             }
         }
     }
