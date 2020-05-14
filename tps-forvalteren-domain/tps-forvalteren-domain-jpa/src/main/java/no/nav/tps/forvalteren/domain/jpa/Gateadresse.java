@@ -35,7 +35,7 @@ public class Gateadresse extends Adresse {
 
     public String getHusnummer() {
         return StringUtils.isNumeric(husnummer) ?
-                new Integer(husnummer).toString() : // Eliminates leading 0s
+                Integer.valueOf(husnummer).toString() : // Eliminates leading 0s
                 husnummer;
     }
 
