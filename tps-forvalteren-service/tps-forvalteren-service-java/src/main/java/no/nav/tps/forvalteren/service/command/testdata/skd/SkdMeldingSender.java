@@ -36,6 +36,8 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 @RequiredArgsConstructor
 public class SkdMeldingSender {
 
+    private static final String DOEDSMELDING_ANNULERING = "45";
+
     private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
     private final CreateRelasjoner createRelasjoner;
     private final CreateDoedsmeldinger createDoedsmeldinger;
@@ -56,7 +58,7 @@ public class SkdMeldingSender {
             List<SkdMeldingTrans1> doedsMeldinger = createDoedsmeldinger.execute(personer, environment, true);
             doedsMeldinger.forEach(skdMelding ->
                     listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(
-                            "45".equals(skdMelding.getAarsakskode()) ?
+                            DOEDSMELDING_ANNULERING.equals(skdMelding.getAarsakskode()) ?
                             DOEDSMELDINGANNULLERING_MLD_NAVN :
                             DOEDSMELDING_MLD_NAVN, skdMelding, singleton(environment)))
             );

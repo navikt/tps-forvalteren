@@ -12,9 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -23,19 +23,13 @@ import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrReque
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 
 @Service
+@RequiredArgsConstructor
 public class CreateDoedsmeldinger {
 
-    @Autowired
-    private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
-
-    @Autowired
-    private TpsServiceRoutineService tpsServiceRoutineService;
-
-    @Autowired
-    private DoedsmeldingRepository doedsmeldingRepository;
-
-    @Autowired
-    private TpsServiceroutineFnrRequest tpsFnrRequest;
+    private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
+    private final TpsServiceRoutineService tpsServiceRoutineService;
+    private final DoedsmeldingRepository doedsmeldingRepository;
+    private final TpsServiceroutineFnrRequest tpsFnrRequest;
 
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, String environment, boolean addHeader) {
 
