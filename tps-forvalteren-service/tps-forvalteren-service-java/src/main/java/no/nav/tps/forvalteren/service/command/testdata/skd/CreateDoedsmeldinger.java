@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -20,9 +19,7 @@ import no.nav.tps.forvalteren.domain.jpa.Doedsmelding;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
-import no.nav.tps.forvalteren.service.command.foedselsmelding.AdresserResponse;
 import no.nav.tps.forvalteren.service.command.testdata.TpsServiceroutineFnrRequest;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.PersonAdresseService;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 
 @Service
@@ -40,9 +37,6 @@ public class CreateDoedsmeldinger {
     @Autowired
     private TpsServiceroutineFnrRequest tpsFnrRequest;
 
-    @Autowired
-    private PersonAdresseService personAdresseService;
-
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, String environment, boolean addHeader) {
 
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
@@ -54,11 +48,26 @@ public class CreateDoedsmeldinger {
 
             } else if (nonNull(person.getDoedsdato()) && isNull(doedsmelding)) { // Enables backwards compatibility
                 skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
-                updateDoedsmeldingRepository(person, doedsmelding);
             }
         });
 
         return skdMeldinger;
+    }
+
+    public void updateDoedsmeldingRepository(List<Person> personer) {
+
+        personer.forEach(person -> {
+            Doedsmelding doedsmelding = doedsmeldingRepository.findByPersonId(person.getId());
+            if (nonNull(person.getDoedsdato()) && isNull(doedsmelding)) {
+                doedsmeldingRepository.save(Doedsmelding.builder()
+                        .person(person)
+                        .isMeldingSent(true)
+                        .build());
+
+            } else if (isNull(person.getDoedsdato()) && nonNull(doedsmelding)) {
+                doedsmeldingRepository.deleteByPersonIdIn(singletonList(person.getId()));
+            }
+        });
     }
 
     private List<SkdMeldingTrans1> buildDoedsmeldinger(Person person, Doedsmelding doedsmelding, String environment, boolean addHeader) {
@@ -69,32 +78,14 @@ public class CreateDoedsmeldinger {
             LocalDate tpsDoedsdato = getTpsDoedsdato(person, environment);
 
             if (isSendAnnuleringsmelding(person, tpsDoedsdato)) {
-
-                findLastAddress(person, tpsDoedsdato, environment);
                 skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDINGANNULLERING_MLD_NAVN, singletonList(person), addHeader));
 
             }
             if (isSendDoedsmelding(person, tpsDoedsdato)) {
-
                 skdMeldinger.addAll(skdMessageCreatorTrans1.execute(DOEDSMELDING_MLD_NAVN, singletonList(person), addHeader));
             }
-
-            updateDoedsmeldingRepository(person, doedsmelding);
         }
         return skdMeldinger;
-    }
-
-    private void updateDoedsmeldingRepository(Person person, Doedsmelding doedsmelding) {
-
-        if (nonNull(person.getDoedsdato()) && isNull(doedsmelding)) {
-            doedsmeldingRepository.save(Doedsmelding.builder()
-                    .person(person)
-                    .isMeldingSent(true)
-                    .build());
-
-        } else if (isNull(person.getDoedsdato()) && nonNull(doedsmelding)) {
-            doedsmeldingRepository.deleteByPersonIdIn(newArrayList(person.getId()));
-        }
     }
 
     private static boolean isSendAnnuleringsmelding(Person person, LocalDate tpsDoedsdato) {
@@ -116,24 +107,5 @@ public class CreateDoedsmeldinger {
                 (String) ((Map) ((Map) response.getResponse()).get("data1")).get("datoDo");
 
         return isNotBlank(tpsDoedsdatoString) ? LocalDate.parse(tpsDoedsdatoString) : null;
-    }
-
-    private void findLastAddress(Person person, LocalDate doedsdato, String miljoe) {
-
-        AdresserResponse adresser = personAdresseService.hentAdresserForDato(person.getIdent(), doedsdato.atStartOfDay().minusDays(1), miljoe);
-
-        if (nonNull(adresser)) {
-            if (nonNull(adresser.getBoadresse()) && !person.getBoadresse().isEmpty() &&
-                    !person.getBoadresse().get(0).equals(adresser.getBoadresse())) {
-                adresser.getBoadresse().setPerson(person);
-                person.getBoadresse().add(adresser.getBoadresse());
-            }
-
-            if (nonNull(adresser.getPostadresse()) && !person.getPostadresse().isEmpty() &&
-                    !person.getPostadresse().get(0).equals(adresser.getPostadresse())) {
-                adresser.getPostadresse().setPerson(person);
-                person.getPostadresse().add(adresser.getPostadresse());
-            }
-        }
     }
 }

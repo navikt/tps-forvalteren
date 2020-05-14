@@ -61,7 +61,7 @@ public class SkdMeldingSender {
                             DOEDSMELDING_MLD_NAVN, skdMelding, singleton(environment)))
             );
         });
-
+        createDoedsmeldinger.updateDoedsmeldingRepository(personer);
         Map<String, SendSkdMeldingTilTpsResponse> mapper = new HashMap<>();
         listTpsResponsene.forEach(response -> {
             mapper.putIfAbsent(response.getSkdmeldingstype(), response);
