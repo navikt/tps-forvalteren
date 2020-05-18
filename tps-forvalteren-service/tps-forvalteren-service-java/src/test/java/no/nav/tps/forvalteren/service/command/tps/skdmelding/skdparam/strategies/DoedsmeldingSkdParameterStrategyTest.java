@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -19,6 +21,7 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.Doedsmeld
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.InnvandringCreateSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DoedsmeldingSkdParameterStrategyTest {
@@ -37,11 +40,14 @@ public class DoedsmeldingSkdParameterStrategyTest {
 
     private Person aPerson;
 
+    @Mock
+    private SetAdresseService setAdresseService;
+
+    @InjectMocks
     private DoedsmeldingSkdParameterStrategy doedsmeldingSkdParameterStrategy;
 
     @Before
     public void setup() {
-        doedsmeldingSkdParameterStrategy = new DoedsmeldingSkdParameterStrategy();
 
         aPerson = mock(Person.class);
 

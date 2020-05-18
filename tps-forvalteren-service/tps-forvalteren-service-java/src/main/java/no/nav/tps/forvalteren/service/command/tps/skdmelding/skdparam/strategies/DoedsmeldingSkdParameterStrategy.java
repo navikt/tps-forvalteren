@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategie
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.skd.IdentType;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
@@ -10,8 +11,10 @@ import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParame
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetAdresseService;
 
 @Service
+@RequiredArgsConstructor
 public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKSKODE_FOR_DOEDSMELDING = "43";
@@ -20,7 +23,10 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
     private static final String STATUSKODE_DNR = "2";
     private static final String TILDELINGSKODE_DOEDSMELDING = "0";
 
-    @Override public String hentTildelingskode() {
+    private final SetAdresseService setAdresseService;
+
+    @Override
+    public String hentTildelingskode() {
         return TILDELINGSKODE_DOEDSMELDING;
     }
 
@@ -35,6 +41,7 @@ public class DoedsmeldingSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setTildelingskode(hentTildelingskode());
 
         addSkdParametersExtractedFromPerson(skdMeldingTrans1, person);
+        setAdresseService.execute(skdMeldingTrans1, person);
 
         return skdMeldingTrans1;
     }
