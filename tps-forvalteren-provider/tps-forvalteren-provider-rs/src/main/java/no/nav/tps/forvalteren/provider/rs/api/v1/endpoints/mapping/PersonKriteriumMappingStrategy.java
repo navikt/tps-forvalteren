@@ -79,8 +79,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsSimplePersonRequest, Person>() {
                             @Override public void mapAtoB(RsSimplePersonRequest kriteriumRequest, Person person, MappingContext context) {
 
-                                mapBasicProperties(kriteriumRequest, person);
-                                mapAdresser(kriteriumRequest, person, mapperFacade);
+                                if (!person.isDoedFoedt()) {
+                                    mapBasicProperties(kriteriumRequest, person);
+                                    mapAdresser(kriteriumRequest, person, mapperFacade);
+                                }
                             }
                         })
                 .exclude("spesreg")
@@ -90,6 +92,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("postadresse")
                 .exclude("identHistorikk")
                 .exclude("statsborgerskap")
+                .exclude("doedsdato")
                 .exclude(KJONN)
                 .byDefault()
                 .register();
@@ -117,6 +120,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setIdenttype(nullcheckSetDefaultValue(person.getIdenttype(), "FNR"));
         person.setKjonn(nullcheckSetDefaultValue(person.getKjonn(), "U"));
         person.setRegdato(nullcheckSetDefaultValue(person.getRegdato(), now()));
+        person.setDoedsdato(kriteriumRequest.getDoedsdato());
 
         mapMellomnavn(kriteriumRequest, person);
 

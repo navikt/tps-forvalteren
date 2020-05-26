@@ -13,7 +13,6 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 
 @Service
-@RequiredArgsConstructor
 public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
     @Override

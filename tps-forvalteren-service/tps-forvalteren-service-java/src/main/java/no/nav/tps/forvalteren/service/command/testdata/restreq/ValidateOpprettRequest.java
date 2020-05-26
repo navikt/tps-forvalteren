@@ -8,25 +8,23 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @Component
+@RequiredArgsConstructor
 public class ValidateOpprettRequest {
 
     private static final String UGYLDIG_IDENTTYPE = "bestilling.input.validation.ugyldig.identtype";
     private static final LocalDateTime LOWER_BOUND = of(1900, 1, 1, 0, 0, 0);
 
-    @Autowired
-    private MessageProvider messageProvider;
-
-    @Autowired
-    private ValidateSivilstandService validateSivilstandService;
+    private final MessageProvider messageProvider;
+    private final ValidateSivilstandService validateSivilstandService;
 
     public void validate(RsPersonBestillingKriteriumRequest request) {
 
@@ -34,6 +32,7 @@ public class ValidateOpprettRequest {
         validateDatoFoedtEtter(request.getFoedtEtter());
         validateDatoFoedtFoer(request.getFoedtFoer());
         validateDatoIntervall(request.getFoedtEtter(), request.getFoedtFoer());
+        validateDoedfoedt(request.getIdenttype());
         validateUtvandret(request);
 
         validatePartner(request.getRelasjoner().getPartner());
@@ -54,6 +53,7 @@ public class ValidateOpprettRequest {
             validateDatoFoedtEtter(partner.getFoedtEtter());
             validateDatoFoedtFoer(partner.getFoedtFoer());
             validateDatoIntervall(partner.getFoedtEtter(), partner.getFoedtFoer());
+            validateDoedfoedt(partner.getIdenttype());
         }
     }
 
@@ -96,6 +96,12 @@ public class ValidateOpprettRequest {
     private void validateDatoIntervall(LocalDateTime datoFoedtEtter, LocalDateTime datoFoedtFoer) {
         if (nonNull(datoFoedtEtter) && nonNull(datoFoedtFoer) && datoFoedtFoer.isBefore(datoFoedtEtter)) {
             throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.ugyldig.intervall"));
+        }
+    }
+
+    private void validateDoedfoedt(String identtype) {
+        if ("FDAT".equals(identtype)) {
+            throw new TpsfFunctionalException(messageProvider.get("bestilling.inout.validation.ugyldig.doedfoedt"));
         }
     }
 }

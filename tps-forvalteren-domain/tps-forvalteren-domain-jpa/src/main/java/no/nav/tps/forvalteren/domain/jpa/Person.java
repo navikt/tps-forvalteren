@@ -53,19 +53,19 @@ public class Person extends ChangeStamp {
     @Column(name = "IDENT", nullable = false, unique = true, length = 11)
     private String ident;
 
-    @Column(name = "IDENTTYPE", nullable = false, length = 3)
+    @Column(name = "IDENTTYPE", nullable = false)
     private String identtype;
 
     @Column(name = "KJONN", nullable = false)
     private String kjonn;
 
-    @Column(name = "FORNAVN", nullable = false, length = 50)
+    @Column(name = "FORNAVN", length = 50)
     private String fornavn;
 
     @Column(name = "MELLOMNAVN", length = 50)
     private String mellomnavn;
 
-    @Column(name = "ETTERNAVN", nullable = false, length = 50)
+    @Column(name = "ETTERNAVN", length = 50)
     private String etternavn;
 
     @Column(name = "FORKORTET_NAVN")
@@ -305,6 +305,11 @@ public class Person extends ChangeStamp {
     }
 
     public boolean isUtvandret() {
-        return !getInnvandretUtvandret().isEmpty() && UTVANDRET == getInnvandretUtvandret().get(0).getInnutvandret();
+        return !getInnvandretUtvandret().isEmpty() &&
+                UTVANDRET == getInnvandretUtvandret().get(0).getInnutvandret();
+    }
+
+    public boolean isDoedFoedt() {
+        return "FDAT".equals(getIdenttype());
     }
 }
