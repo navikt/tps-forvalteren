@@ -4,6 +4,7 @@ import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FDAT;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 
 import java.time.LocalDateTime;
@@ -100,7 +101,7 @@ public class ValidateOpprettRequest {
     }
 
     private void validateDoedfoedt(String identtype) {
-        if ("FDAT".equals(identtype)) {
+        if (FDAT.name().equals(identtype)) {
             throw new TpsfFunctionalException(messageProvider.get("bestilling.inout.validation.ugyldig.doedfoedt"));
         }
     }

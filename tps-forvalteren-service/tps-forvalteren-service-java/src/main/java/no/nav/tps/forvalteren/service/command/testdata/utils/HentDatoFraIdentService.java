@@ -27,7 +27,7 @@ public class HentDatoFraIdentService {
         // Find century
         int century;
         if (parseInt(ident.substring(6, 10)) == 0) {
-            century = year <= LocalDate.now().getYear() ? 2000 : 1900;
+            century = year <= LocalDate.now().getYear() % 100 ? 2000 : 1900;
         } else if (individ < 500 || (individ >= 900 && year > 39)) {
             century = 1900;
         } else if (individ >= 500 && year < 40) {
