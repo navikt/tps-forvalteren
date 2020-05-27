@@ -17,7 +17,7 @@ public class HentDatoFraIdentServiceTest {
     private HentDatoFraIdentService hentDatoFraIdentService;
 
     @Test
-    public void extractDateFromFnr1900Century() throws Exception {
+    public void extractDateFromFnr1900Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("13035830234");
 
@@ -27,7 +27,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromFnr2000Century() throws Exception {
+    public void extractDateFromFnr2000Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("21050556234");
 
@@ -37,7 +37,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromDnr1900Century() throws Exception {
+    public void extractDateFromDnr1900Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("61039596234");
 
@@ -47,7 +47,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromDnr2000Century() throws Exception {
+    public void extractDateFromDnr2000Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("51050586534");
 
@@ -57,7 +57,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromBost1900Century() throws Exception {
+    public void extractDateFromBost1900Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("21250546234");
 
@@ -67,7 +67,7 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromBost2000Century() throws Exception {
+    public void extractDateFromBost2000Century() {
 
         LocalDateTime target = hentDatoFraIdentService.extract("21250556234");
 
@@ -77,10 +77,28 @@ public class HentDatoFraIdentServiceTest {
     }
 
     @Test
-    public void extractDateFromFnr1800Century() throws Exception {
+    public void extractDateFromFnr1800Century() {
         LocalDateTime target = hentDatoFraIdentService.extract("21256556234");
 
         assertThat(target.getYear(), is(equalTo(1865)));
+        assertThat(target.getMonthValue(), is(equalTo(5)));
+        assertThat(target.getDayOfMonth(), is(equalTo(21)));
+    }
+
+    @Test
+    public void extractDateFromFdat1900() {
+        LocalDateTime target = hentDatoFraIdentService.extract("21256500001");
+
+        assertThat(target.getYear(), is(equalTo(1965)));
+        assertThat(target.getMonthValue(), is(equalTo(5)));
+        assertThat(target.getDayOfMonth(), is(equalTo(21)));
+    }
+
+    @Test
+    public void extractDateFromFdat2000() {
+        LocalDateTime target = hentDatoFraIdentService.extract("21252000001");
+
+        assertThat(target.getYear(), is(equalTo(2020)));
         assertThat(target.getMonthValue(), is(equalTo(5)));
         assertThat(target.getDayOfMonth(), is(equalTo(21)));
     }

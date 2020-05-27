@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 
 @Service
-@RequiredArgsConstructor
 public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
     @Override
@@ -22,7 +20,7 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
             List<Person> partnere, List<Person> barn) {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
-                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
+                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
 
         mapPartner(req, hovedPersoner, partnere, adresser);
         mapBarn(req, hovedPersoner, partnere, barn);

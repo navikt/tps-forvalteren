@@ -66,6 +66,7 @@ public class FoedselsmeldingSkdParameterStrategyTest {
         barn.setFornavn("Anne");
         barn.setEtternavn("Knutsdottir");
         barn.setIdent("01011846678");
+        barn.setKjonn("K");
         barn.setRegdato(LocalDateTime.now());
 
         Person mor = new Person();

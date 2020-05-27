@@ -51,6 +51,7 @@ public class SkdMeldingSender {
     private final StatsborgerskapOgBibehold statsborgerskapOgBibehold;
     private final SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
     private final SkdMeldingResolver innvandring;
+    private final InnvandringOppdateringService innvandringOppdateringService;
 
     public List<SendSkdMeldingTilTpsResponse> sendDoedsmeldinger(List<Person> personer, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
@@ -105,7 +106,7 @@ public class SkdMeldingSender {
 
     public List<SendSkdMeldingTilTpsResponse> sendUpdateInnvandringsMeldinger(List<Person> personerSomAlleredeEksitererITpsMiljoe, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
-        List<SkdMeldingTrans1> updateInnvandringsMeldinger = skdMessageCreatorTrans1.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
+        List<SkdMeldingTrans1> updateInnvandringsMeldinger = innvandringOppdateringService.execute(INNVANDRING_UPDATE_MLD_NAVN, personerSomAlleredeEksitererITpsMiljoe, true);
         updateInnvandringsMeldinger.forEach(skdMelding ->
                 listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(INNVANDRING_UPDATE_MLD_NAVN, skdMelding, environmentsSet))
         );

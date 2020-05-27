@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 import static java.time.LocalDateTime.of;
 import static java.util.Objects.isNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HentDatoFraIdentService {
 
-    private static final LocalDateTime TPS_MIN_REG_DATE = of(1900,1,1,0,0);
+    private static final LocalDateTime TPS_MIN_REG_DATE = of(1900, 1, 1, 0, 0);
 
     public LocalDateTime extract(String ident) {
 
@@ -25,7 +26,9 @@ public class HentDatoFraIdentService {
 
         // Find century
         int century;
-        if (individ < 500 || (individ >= 900 && year > 39)) {
+        if (parseInt(ident.substring(6, 10)) == 0) {
+            century = year <= LocalDate.now().getYear() % 100 ? 2000 : 1900;
+        } else if (individ < 500 || (individ >= 900 && year > 39)) {
             century = 1900;
         } else if (individ >= 500 && year < 40) {
             century = 2000;
@@ -39,6 +42,7 @@ public class HentDatoFraIdentService {
     }
 
     public static LocalDateTime enforceValidTpsDate(LocalDateTime date) {
+
         if (isNull(date)) {
             return null;
         } else {

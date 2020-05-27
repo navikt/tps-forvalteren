@@ -20,8 +20,9 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.SetA
 @Service
 public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrategy {
 
-    private static final String AARSAKS_KO_DE_FOR_FOEDSELSMELDING = "01";
-    private static final String TILDELINGS_KO_DE_FOEDSELSMELDING = "0";
+    private static final String AARSAKSKODE_FOR_FOEDSELSMELDING = "01";
+    private static final String TILDELINGSKODE_FOEDSELSMELDING = "0";
+    private static final String TILDELINGSKODE_FOR_DOEDFOEDSEL = "9";
 
     @Autowired
     private SetAdresseService setAdresseService;
@@ -36,7 +37,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
     public SkdMeldingTrans1 execute(Person barn) {
 
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
+        skdMeldingTrans1.setTildelingskode(!barn.isDoedFoedt() ? hentTildelingskode() : TILDELINGSKODE_FOR_DOEDFOEDSEL);
 
         addSkdParametersExtractedFromPerson(skdMeldingTrans1, barn);
         addSkdParametersExtractedFromForeldre(skdMeldingTrans1, barn);
@@ -47,7 +48,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
     @Override
     public String hentTildelingskode() {
-        return TILDELINGS_KO_DE_FOEDSELSMELDING;
+        return TILDELINGSKODE_FOEDSELSMELDING;
     }
 
     @Override
@@ -69,11 +70,12 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
 
         skdMeldingTrans1.setFornavn(barn.getFornavn());
         skdMeldingTrans1.setSlektsnavn(barn.getEtternavn());
-        skdMeldingTrans1.setKjoenn(hentKjoennFraIdentService.execute(barn.getIdent()).name());
+        skdMeldingTrans1.setKjoenn(barn.getKjonn());
 
         skdMeldingTrans1.setRegdatoAdr(ConvertDateToString.yyyyMMdd(barn.getRegdato()));
         skdMeldingTrans1.setPersonkode("3");
-        skdMeldingTrans1.setLevendeDoed("1");
+        skdMeldingTrans1.setLevendeDoed(barn.isDoedFoedt() ? "2" : "1");
+        skdMeldingTrans1.setStatuskode(barn.isDoedFoedt() ? " " : "1");
 
         skdMeldingTrans1.setSpesRegType(barn.getSpesreg() != null ? DiskresjonskoderType.valueOf(barn.getSpesreg()).getKodeverdi() : null);
         skdMeldingTrans1.setDatoSpesRegType(ConvertDateToString.yyyyMMdd(barn.getSpesregDato()));
@@ -111,8 +113,7 @@ public class FoedselsmeldingSkdParameterStrategy implements SkdParametersStrateg
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
         skdMeldingTrans1.setSivilstand("1");
         skdMeldingTrans1.setTranstype("1");
-        skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_FOEDSELSMELDING);
-        skdMeldingTrans1.setStatuskode("1");
+        skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_FOEDSELSMELDING);
     }
 
     private String getPersonnr(Person person) {

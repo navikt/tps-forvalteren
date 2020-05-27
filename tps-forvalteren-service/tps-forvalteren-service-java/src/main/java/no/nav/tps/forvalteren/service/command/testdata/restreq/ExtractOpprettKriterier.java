@@ -81,7 +81,7 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getPartnere().size());
+        List<RsPersonKriterier> kriterier = new ArrayList<>(request.getRelasjoner().getPartnere().size());
         request.getRelasjoner().getPartnere().forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
@@ -97,7 +97,7 @@ public class ExtractOpprettKriterier {
 
     public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList(request.getRelasjoner().getBarn().size());
+        List<RsPersonKriterier> kriterier = new ArrayList<>(request.getRelasjoner().getBarn().size());
         request.getRelasjoner().getBarn().forEach(barnReq -> {
             RsPersonKriterier kriterium = prepareKriterium(barnReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
@@ -124,7 +124,7 @@ public class ExtractOpprettKriterier {
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
-                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList();
+                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -247,26 +247,29 @@ public class ExtractOpprettKriterier {
 
     private void alignStatsborgerskapAndInnvandretFraLand(Person person, Person hovedperson) {
 
-        person.getInnvandretUtvandret().add(
-                InnvandretUtvandret.builder()
-                        .innutvandret(INNVANDRET)
-                        .landkode(nullcheckSetDefaultValue(person.getLandkodeOfFirstInnvandret(), hovedperson.getLandkodeOfFirstInnvandret()))
-                        .flyttedato(nullcheckSetDefaultValue(person.getFlyttedatoOfFirstInnvandret(), hovedperson.getFlyttedatoOfFirstInnvandret()))
-                        .person(person)
-                        .build()
-        );
+        if (!person.isDoedFoedt()) {
 
-        if (!FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
-            person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
-                    .statsborgerskap(hovedperson.getStatsborgerskap().get(0).getStatsborgerskap())
-                    .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
-                    .person(person)
-                    .build()));
+            person.getInnvandretUtvandret().add(
+                    InnvandretUtvandret.builder()
+                            .innutvandret(INNVANDRET)
+                            .landkode(nullcheckSetDefaultValue(person.getLandkodeOfFirstInnvandret(), hovedperson.getLandkodeOfFirstInnvandret()))
+                            .flyttedato(nullcheckSetDefaultValue(person.getFlyttedatoOfFirstInnvandret(), hovedperson.getFlyttedatoOfFirstInnvandret()))
+                            .person(person)
+                            .build()
+            );
+
+            if (!FNR.name().equals(person.getIdenttype()) && person.getStatsborgerskap().isEmpty()) {
+                person.setStatsborgerskap(newArrayList(Statsborgerskap.builder()
+                        .statsborgerskap(hovedperson.getStatsborgerskap().get(0).getStatsborgerskap())
+                        .statsborgerskapRegdato(hentDatoFraIdentService.extract(person.getIdent()))
+                        .person(person)
+                        .build()));
+            }
         }
     }
 
     private static boolean hasAdresse(Person person) {
-        return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet();
+        return !person.isKode6() && !person.isUtenFastBopel() && !person.isForsvunnet() && !person.isDoedFoedt();
     }
 
     private static boolean hasBoadresse(Person person) {
