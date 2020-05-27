@@ -37,11 +37,9 @@ public class SkdMessageCreatorTrans1 {
     public List<SkdMeldingTrans1> execute(String skdMeldingNavn, List<Person> persons, boolean addHeader) {
 
         List<SkdMeldingTrans1> skdMeldinger = new ArrayList(persons.size());
-        persons.forEach(person -> {
-            if (!person.isDoedFoedt()) {
-                skdMeldinger.add(execute(skdMeldingNavn, person, addHeader));
-            }
-        });
+        for (Person person : persons) {
+            skdMeldinger.add(execute(skdMeldingNavn, person, addHeader));
+        }
         return skdMeldinger;
     }
 
