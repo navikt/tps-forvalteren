@@ -5,15 +5,22 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
@@ -52,7 +59,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
     public List<Person> createNyeIdenter(RsPersonKriteriumRequest personKriterierListe) {
 
-        List<String> nyeIdenter = new ArrayList();
+        List<IdentKjonnTuple> nyeIdenter = new ArrayList<>();
 
         personKriterierListe.getPersonKriterierListe().forEach(kriterium -> {
             Set<String> identpoolIdents;
@@ -63,7 +70,12 @@ public class OpprettPersonerOgSjekkMiljoeService {
                     identpoolIdents = identpoolService.getAvailableIdents(mapperFacade.map(kriterium, IdentpoolNewIdentsRequest.class));
                     filteredDbIdents = findIdenterNotUsedInDB.filtrer(identpoolIdents);
                 } while (identpoolIdents.size() - filteredDbIdents.size() > 0 && --count > 0);
-                nyeIdenter.addAll(identpoolIdents);
+                nyeIdenter.addAll(identpoolIdents.stream()
+                        .map(ident -> IdentKjonnTuple.builder()
+                                .ident(ident)
+                                .kjonn(kriterium.getKjonn())
+                                .build())
+                        .collect(Collectors.toList()));
                 if (identpoolIdents.size() < kriterium.getAntall()) {
                     throw new TpsfTechnicalException("Ingen ledige identer funnet i miljø.");
                 }
@@ -72,7 +84,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
             }
         });
 
-        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.execute(nyeIdenter);
+        List<Person> personerSomSkalPersisteres = opprettPersonerFraIdenter.opprettMedEksplisittKjoenn(nyeIdenter);
 
         for (int i = 0; i < personerSomSkalPersisteres.size(); i++) {
 
@@ -89,5 +101,16 @@ public class OpprettPersonerOgSjekkMiljoeService {
         }
 
         return personerSomSkalPersisteres;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IdentKjonnTuple {
+
+        private String ident;
+        private KjoennType kjonn;
     }
 }

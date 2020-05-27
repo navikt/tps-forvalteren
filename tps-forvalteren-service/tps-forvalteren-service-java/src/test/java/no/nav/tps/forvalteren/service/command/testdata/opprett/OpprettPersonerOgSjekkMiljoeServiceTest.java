@@ -1,10 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.anySet;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,9 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
@@ -43,6 +48,9 @@ public class OpprettPersonerOgSjekkMiljoeServiceTest {
     @Mock
     private IdentpoolService identpoolService;
 
+    @Mock
+    private MapperFacade mapperFacade;
+
     @InjectMocks
     private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
 
@@ -64,11 +72,19 @@ public class OpprettPersonerOgSjekkMiljoeServiceTest {
     @Test
     public void createNyeIdenter() {
 
-        when(opprettPersonerFraIdenter.execute(anyList())).thenReturn(singletonList(new Person()));
+        when(opprettPersonerFraIdenter.opprettMedEksplisittKjoenn(anyList())).thenReturn(singletonList(Person.builder()
+                .identtype(FNR.name())
+                .build()));
+        when(identpoolService.getAvailableIdents(any())).thenReturn(singleton(IDENT_1));
+        when(findIdenterNotUsedInDB.filtrer(singleton(any()))).thenReturn(singleton(IDENT_1));
 
-        opprettPersonerOgSjekkMiljoeService.createNyeIdenter(RsPersonKriteriumRequest.builder().build());
+        opprettPersonerOgSjekkMiljoeService.createNyeIdenter(RsPersonKriteriumRequest.builder()
+                .personKriterierListe(singletonList(RsPersonKriterier.builder()
+                        .antall(1)
+                        .kjonn(KjoennType.U)
+                        .build())).build());
 
-        verify(opprettPersonerFraIdenter).execute(anyList());
+        verify(opprettPersonerFraIdenter).opprettMedEksplisittKjoenn(anyList());
         verify(setNameOnPersonsService).execute(any(Person.class), eq(null));
     }
 }
