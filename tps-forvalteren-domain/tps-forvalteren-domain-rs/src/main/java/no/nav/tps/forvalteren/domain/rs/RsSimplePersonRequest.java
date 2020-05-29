@@ -53,7 +53,7 @@ public class RsSimplePersonRequest {
 
     protected boolean utenFastBopel;
 
-    protected RsAdresse boadresse;
+    protected RsRequestAdresse boadresse;
 
     protected List<RsPostadresse> postadresse;
 

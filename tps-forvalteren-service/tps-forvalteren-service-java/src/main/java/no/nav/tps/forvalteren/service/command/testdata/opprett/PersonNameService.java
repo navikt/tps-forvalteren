@@ -44,7 +44,7 @@ public class PersonNameService {
         return personer;
     }
 
-    private static String getRandomFornavn() {
+    public static String getRandomFornavn() {
         return fornavn[randGenerator.nextInt(fornavn.length)];
     }
 
@@ -52,7 +52,7 @@ public class PersonNameService {
         return mellomnavn[randGenerator.nextInt(mellomnavn.length)];
     }
 
-    private static String getRandomEtternavn() {
+    public static String getRandomEtternavn() {
         return etternavn[randGenerator.nextInt(etternavn.length)];
     }
 }
