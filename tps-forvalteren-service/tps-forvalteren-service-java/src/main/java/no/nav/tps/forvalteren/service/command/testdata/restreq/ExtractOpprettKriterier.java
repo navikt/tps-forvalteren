@@ -141,7 +141,7 @@ public class ExtractOpprettKriterier {
         if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
                 mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()),
-                        req.getBoadresse().getTilleggsadresse());
+                        extractTilleggsadresse(req.getBoadresse()));
             }
         }
 
@@ -176,7 +176,7 @@ public class ExtractOpprettKriterier {
                                 hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
                     mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()),
-                            partnerRequest.getBoadresse().getTilleggsadresse());
+                            extractTilleggsadresse(partnerRequest.getBoadresse()));
                     alignStatsborgerskapAndInnvandretFraLand(partnere.get(partnerStartIndex + j), hovedPersoner.get(i));
                 }
             }
@@ -205,7 +205,7 @@ public class ExtractOpprettKriterier {
                                         hovedPersoner.get(i).getBoadresse().get(0) :
                                         getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
                                 extractFlyttedato(barnRequest.getBoadresse()),
-                                barnRequest.getBoadresse().getTilleggsadresse());
+                                extractTilleggsadresse(barnRequest.getBoadresse()));
                     }
                     alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
@@ -251,6 +251,10 @@ public class ExtractOpprettKriterier {
 
     private static LocalDateTime extractFlyttedato(RsRequestAdresse adresse) {
         return nonNull(adresse) ? adresse.getFlyttedato() : null;
+    }
+
+    private static TilleggAdressetype extractTilleggsadresse(RsRequestAdresse adresse) {
+        return nonNull((adresse)) ? adresse.getTilleggsadresse() : null;
     }
 
     private void alignStatsborgerskapAndInnvandretFraLand(Person person, Person hovedperson) {
