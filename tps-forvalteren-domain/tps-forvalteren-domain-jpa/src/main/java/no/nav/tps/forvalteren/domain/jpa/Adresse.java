@@ -47,6 +47,9 @@ public abstract class Adresse {
     @Column(name = "POSTNR", length = 4)
     private String postnr;
 
+    @Column(name ="TILLEGGSADRESSE")
+    private String tilleggsadresse;
+
     @Transient
     private String bolignr;
 

@@ -2,15 +2,19 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.TRUE;
+import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.MEG;
 import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
+import static no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggType.CO_NAVN;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomEtternavn;
+import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomFornavn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
@@ -32,12 +36,13 @@ import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
-import no.nav.tps.forvalteren.domain.rs.RsAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
+import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse;
+import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggAdressetype;
 import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
@@ -135,7 +140,8 @@ public class ExtractOpprettKriterier {
 
         if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
             for (int i = 0; i < hovedPersoner.size(); i++) {
-                mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()));
+                mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()),
+                        extractTilleggsadresse(req.getBoadresse()));
             }
         }
 
@@ -169,7 +175,8 @@ public class ExtractOpprettKriterier {
                         adresse = hasAdresseMedHovedperson(partnerRequest, j) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
                                 hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
                     }
-                    mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()));
+                    mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()),
+                            extractTilleggsadresse(partnerRequest.getBoadresse()));
                     alignStatsborgerskapAndInnvandretFraLand(partnere.get(partnerStartIndex + j), hovedPersoner.get(i));
                 }
             }
@@ -197,7 +204,8 @@ public class ExtractOpprettKriterier {
                                 (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
                                         hovedPersoner.get(i).getBoadresse().get(0) :
                                         getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
-                                extractFlyttedato(barnRequest.getBoadresse()));
+                                extractFlyttedato(barnRequest.getBoadresse()),
+                                extractTilleggsadresse(barnRequest.getBoadresse()));
                     }
                     alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
@@ -241,8 +249,12 @@ public class ExtractOpprettKriterier {
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
     }
 
-    private static LocalDateTime extractFlyttedato(RsAdresse adresse) {
+    private static LocalDateTime extractFlyttedato(RsRequestAdresse adresse) {
         return nonNull(adresse) ? adresse.getFlyttedato() : null;
+    }
+
+    private static TilleggAdressetype extractTilleggsadresse(RsRequestAdresse adresse) {
+        return nonNull((adresse)) ? adresse.getTilleggsadresse() : null;
     }
 
     private void alignStatsborgerskapAndInnvandretFraLand(Person person, Person hovedperson) {
@@ -283,7 +295,7 @@ public class ExtractOpprettKriterier {
                 isNull(request.getUtvandretTilLand());
     }
 
-    private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato) {
+    private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato, TilleggAdressetype tilleggsadresse) {
 
         if (!hasAdresse(person)) {
             return;
@@ -310,6 +322,8 @@ public class ExtractOpprettKriterier {
             adresse1.setBolignr(adresse.getBolignr());
             adresse1.setFlyttedato(nullcheckSetDefaultValue(flyttedato,
                     hentDatoFraIdentService.extract(person.getIdent())));
+
+            adresse1.setTilleggsadresse(getTilleggAdresse(adresse.getTilleggsadresse(), tilleggsadresse));
             adresse1.setPerson(person);
 
             person.getBoadresse().add(adresse1);
@@ -318,5 +332,16 @@ public class ExtractOpprettKriterier {
 
             dummyAdresseService.createDummyBoAdresse(person);
         }
+    }
+
+    private String getTilleggAdresse(String eksisterendeTAdresse, TilleggAdressetype tilleggAdressetype) {
+
+        if (isNull(tilleggAdressetype)) {
+            return eksisterendeTAdresse;
+        }
+        return CO_NAVN == tilleggAdressetype.getTilleggType() ?
+                format("C/O %s %s", getRandomFornavn(), getRandomEtternavn()).toUpperCase() :
+                format("%s: %s", tilleggAdressetype.getTilleggType(), tilleggAdressetype.getNummer())
+                        .replace('_', '-');
     }
 }

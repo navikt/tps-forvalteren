@@ -58,6 +58,7 @@ public class SetAdresseService {
             skdMeldingTrans1.setBolignr(boadresse.getBolignr());
             skdMeldingTrans1.setKommunenummer(boadresse.getKommunenr());
             skdMeldingTrans1.setPostnummer(boadresse.getPostnr());
+            skdMeldingTrans1.setTilleggsadresse(boadresse.getTilleggsadresse());
 
             skdMeldingTrans1.setFlyttedatoAdr(ConvertDateToString.yyyyMMdd(
                     enforceValidTpsDate(nullcheckSetDefaultValue(boadresse.getFlyttedato(), hentDatoFraIdentService.extract(person.getIdent())))));

@@ -12,14 +12,16 @@ import lombok.Setter;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "adressetype")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RsGateadresse.class, name = "GATE"),
-        @JsonSubTypes.Type(value = RsMatrikkeladresse.class, name = "MATR")
+        @JsonSubTypes.Type(value = RsRequestGateadresse.class, name = "GATE"),
+        @JsonSubTypes.Type(value = RsRequestMatrikkeladresse.class, name = "MATR")
 })
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class RsAdresse {
+public abstract class RsRequestAdresse {
+
+    public enum TilleggType {CO_NAVN, LEILIGHET_NR, SEKSJON_NR, BOLIG_NR }
 
     private Long adresseId;
 
@@ -33,7 +35,17 @@ public abstract class RsAdresse {
 
     private LocalDateTime flyttedato;
 
-    private String tilleggsadresse;
+    private TilleggAdressetype tilleggsadresse;
 
     public abstract boolean isValidAdresse();
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TilleggAdressetype {
+
+        private TilleggType tilleggType;
+        private Integer nummer;
+    }
 }
