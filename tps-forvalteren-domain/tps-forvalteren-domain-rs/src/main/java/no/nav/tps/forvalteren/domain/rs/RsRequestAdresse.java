@@ -35,9 +35,9 @@ public abstract class RsRequestAdresse {
 
     private LocalDateTime flyttedato;
 
-    public abstract boolean isValidAdresse();
-
     private TilleggAdressetype tilleggsadresse;
+
+    public abstract boolean isValidAdresse();
 
     @Getter
     @Setter

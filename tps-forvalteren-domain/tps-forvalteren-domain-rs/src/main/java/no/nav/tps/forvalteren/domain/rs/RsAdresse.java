@@ -33,7 +33,7 @@ public abstract class RsAdresse {
 
     private LocalDateTime flyttedato;
 
-    public abstract boolean isValidAdresse();
-
     private String tilleggsadresse;
+
+    public abstract boolean isValidAdresse();
 }

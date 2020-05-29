@@ -342,6 +342,6 @@ public class ExtractOpprettKriterier {
         return CO_NAVN == tilleggAdressetype.getTilleggType() ?
                 format("C/O %s %s", getRandomFornavn(), getRandomEtternavn()).toUpperCase() :
                 format("%s: %s", tilleggAdressetype.getTilleggType(), tilleggAdressetype.getNummer())
-                        .replace("_", "-");
+                        .replace('_', '-');
     }
 }
