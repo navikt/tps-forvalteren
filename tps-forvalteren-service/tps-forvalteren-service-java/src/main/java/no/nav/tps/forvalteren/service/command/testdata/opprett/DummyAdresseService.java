@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.service.command.testdata.opprett;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
@@ -16,6 +15,7 @@ import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
 @Service
@@ -106,11 +106,20 @@ public class DummyAdresseService {
 
     public Adresse createAdresseUfb(Person person, Adresse adresse) {
 
+        return createAdresseUfb(person, nonNull(adresse) ? adresse.getKommunenr() : KOMMUNENR);
+    }
+
+    public Adresse createAdresseUfb(Person person, RsRequestAdresse adresse) {
+
+        return createAdresseUfb(person, nonNull(adresse) ? adresse.getKommunenr() : KOMMUNENR);
+    }
+
+    private Adresse createAdresseUfb(Person person, String kommunenr) {
+
         Gateadresse gateadresse = Gateadresse.builder()
                 .adresse(UTEN_FAST_BOSTED)
                 .build();
-        gateadresse.setKommunenr(nonNull(adresse) ?
-                nullcheckSetDefaultValue(adresse.getKommunenr(), KOMMUNENR) : KOMMUNENR);
+        gateadresse.setKommunenr(isNotBlank(kommunenr) ? kommunenr : KOMMUNENR);
         gateadresse.setPerson(person);
         gateadresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
 
