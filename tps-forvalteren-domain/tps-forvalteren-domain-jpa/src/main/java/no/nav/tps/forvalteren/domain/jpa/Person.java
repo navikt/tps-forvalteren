@@ -139,6 +139,10 @@ public class Person extends ChangeStamp {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
     private List<IdentHistorikk> identHistorikk;
 
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<MidlertidigAdresse> midlertidigAdresses;
+
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;
 

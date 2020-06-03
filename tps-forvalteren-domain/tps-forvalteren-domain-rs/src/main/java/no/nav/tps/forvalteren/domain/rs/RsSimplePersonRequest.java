@@ -57,6 +57,8 @@ public class RsSimplePersonRequest {
 
     protected List<RsPostadresse> postadresse;
 
+    protected RsMidlertidigAdresse midlertidigAdresse;
+
     private String utvandretTilLand;
 
     private LocalDateTime utvandretTilLandFlyttedato;
