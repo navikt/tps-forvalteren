@@ -19,9 +19,12 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Land
 @Service
 public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
+    private TillegsadresseMappingService tillegsadresseMappingService;
+
     public RelasjonExtractOpprettKriterier(MapperFacade mapperFacade, RandomAdresseService randomAdresseService, HentDatoFraIdentService hentDatoFraIdentService,
             LandkodeEncoder landkodeEncoder, DummyAdresseService dummyAdresseService, TillegsadresseMappingService tillegsadresseMappingService) {
         super(mapperFacade, randomAdresseService, hentDatoFraIdentService, landkodeEncoder, dummyAdresseService, tillegsadresseMappingService);
+        this.tillegsadresseMappingService = tillegsadresseMappingService;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
         mapPartner(req, hovedPersoner, partnere, adresser);
         mapBarn(req, hovedPersoner, partnere, barn);
+        this.tillegsadresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
 
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);

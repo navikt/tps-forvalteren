@@ -104,7 +104,7 @@ public class TillegsadresseMappingService {
         return adresse;
     }
 
-    public MidlertidigAdresse mapGateadresse(RsMidlertidigAdresse midlertidigAdresse) {
+    private MidlertidigAdresse mapGateadresse(RsMidlertidigAdresse midlertidigAdresse) {
 
         MidlertidigGateAdresse adresse;
         if (nonNull(midlertidigAdresse.getNorskAdresse())) {
