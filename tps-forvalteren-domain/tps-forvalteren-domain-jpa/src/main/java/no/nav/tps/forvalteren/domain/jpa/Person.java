@@ -141,7 +141,7 @@ public class Person extends ChangeStamp {
 
     @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
-    private List<MidlertidigAdresse> midlertidigAdresses;
+    private List<MidlertidigAdresse> midlertidigAdresse;
 
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;
@@ -253,11 +253,11 @@ public class Person extends ChangeStamp {
         return innvandretUtvandret;
     }
 
-    public List<MidlertidigAdresse> getMidlertidigAdresses() {
-        if (isNull(midlertidigAdresses)) {
-            midlertidigAdresses = new ArrayList<>();
+    public List<MidlertidigAdresse> getMidlertidigAdresse() {
+        if (isNull(midlertidigAdresse)) {
+            midlertidigAdresse = new ArrayList<>();
         }
-        return midlertidigAdresses;
+        return midlertidigAdresse;
     }
 
     public String getLandkodeOfFirstInnvandret() {

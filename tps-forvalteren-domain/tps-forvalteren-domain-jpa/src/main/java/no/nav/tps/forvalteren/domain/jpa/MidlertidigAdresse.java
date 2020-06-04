@@ -23,7 +23,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Getter
@@ -33,7 +32,7 @@ import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "ADRESSETYPE", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "T_MIDLERTIDIG_ADRESSE")
-public class MidlertidigAdresse extends ChangeStamp {
+public class MidlertidigAdresse {
 
     private static final String SEQ = "T_MIDLERTIDIG_ADRESSE_SEQ";
 
@@ -57,8 +56,15 @@ public class MidlertidigAdresse extends ChangeStamp {
     @Column(name = "POSTNR")
     private String postnr;
 
+    @Column(name = "ADRESSETYPE", insertable = false, updatable = false)
+    private String adressetype;
+
+    @Getter
+    @Setter
     @Entity
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @DiscriminatorValue("GATE")
     public static class MidlertidigGateAdresse extends MidlertidigAdresse {
 
@@ -72,8 +78,12 @@ public class MidlertidigAdresse extends ChangeStamp {
         private String husnr;
     }
 
+    @Getter
+    @Setter
     @Entity
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @DiscriminatorValue("STED")
     public static class MidlertidigStedAdresse extends MidlertidigAdresse {
 
@@ -81,8 +91,12 @@ public class MidlertidigAdresse extends ChangeStamp {
         private String eiendomsnavn;
     }
 
+    @Getter
+    @Setter
     @Entity
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @DiscriminatorValue("PBOX")
     public static class MidlertidigPboxAdresse extends MidlertidigAdresse {
 
@@ -93,8 +107,12 @@ public class MidlertidigAdresse extends ChangeStamp {
         private String postboksAnlegg;
     }
 
+    @Getter
+    @Setter
     @Entity
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @DiscriminatorValue("UTAD")
     public static class MidlertidigUtadAdresse extends MidlertidigAdresse {
 

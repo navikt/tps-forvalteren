@@ -70,6 +70,8 @@ public class RsPerson {
 
     private List<RsPostadresse> postadresse;
 
+    private List<RsMidlertidigAdresse> midlertidigAdresse;
+
     @NotNull
     private LocalDateTime regdato;
 

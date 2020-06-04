@@ -3,9 +3,9 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.rs.RsMidlertidigAdresse.Adressetype.PBOX;
-import static no.nav.tps.forvalteren.domain.rs.RsMidlertidigAdresse.Adressetype.STED;
-import static no.nav.tps.forvalteren.domain.rs.RsMidlertidigAdresse.Adressetype.UTAD;
+import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.PBOX;
+import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.STED;
+import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.UTAD;
 import static no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggType.CO_NAVN;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomEtternavn;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomFornavn;
@@ -23,14 +23,14 @@ import no.nav.tps.forvalteren.domain.jpa.MidlertidigAdresse.MidlertidigPboxAdres
 import no.nav.tps.forvalteren.domain.jpa.MidlertidigAdresse.MidlertidigStedAdresse;
 import no.nav.tps.forvalteren.domain.jpa.MidlertidigAdresse.MidlertidigUtadAdresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.rs.RsMidlertidigAdresse;
+import no.nav.tps.forvalteren.domain.rs.RsMidlertidigAdresseRequest;
 import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggAdressetype;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
 @Service
 @RequiredArgsConstructor
-public class TillegsadresseMappingService {
+public class TilleggsadresseMappingService {
 
     private final RandomAdresseService randomAdresseService;
 
@@ -49,7 +49,7 @@ public class TillegsadresseMappingService {
         }
     }
 
-    private void mapPersonMidlertidigAdresse(Person person, RsMidlertidigAdresse midlertidigAdresse) {
+    private void mapPersonMidlertidigAdresse(Person person, RsMidlertidigAdresseRequest midlertidigAdresse) {
 
         if (nonNull(midlertidigAdresse)) {
             MidlertidigAdresse adresse;
@@ -67,11 +67,11 @@ public class TillegsadresseMappingService {
                 adresse = mapGateadresse(midlertidigAdresse);
             }
             adresse.setPerson(person);
-            person.getMidlertidigAdresses().add(adresse);
+            person.getMidlertidigAdresse().add(adresse);
         }
     }
 
-    private static MidlertidigAdresse mapUtadAdresse(RsMidlertidigAdresse midlertidigAdresse) {
+    private static MidlertidigAdresse mapUtadAdresse(RsMidlertidigAdresseRequest midlertidigAdresse) {
         MidlertidigUtadAdresse adresse = MidlertidigUtadAdresse.builder()
                 .postLinje1(midlertidigAdresse.getUtenlandskAdresse().getPostLinje1())
                 .postLinje2(midlertidigAdresse.getUtenlandskAdresse().getPostLinje2())
@@ -82,7 +82,7 @@ public class TillegsadresseMappingService {
         return adresse;
     }
 
-    private static MidlertidigAdresse mapPboxAadresse(RsMidlertidigAdresse midlertidigAdresse) {
+    private static MidlertidigAdresse mapPboxAadresse(RsMidlertidigAdresseRequest midlertidigAdresse) {
 
         MidlertidigPboxAdresse adresse = MidlertidigPboxAdresse.builder()
                 .postboksnr(midlertidigAdresse.getNorskAdresse().getPostboksnr())
@@ -93,7 +93,7 @@ public class TillegsadresseMappingService {
         return adresse;
     }
 
-    private static MidlertidigAdresse mapStedsadresse(RsMidlertidigAdresse midlertidigAdresse) {
+    private static MidlertidigAdresse mapStedsadresse(RsMidlertidigAdresseRequest midlertidigAdresse) {
 
         MidlertidigStedAdresse adresse = MidlertidigStedAdresse.builder()
                 .eiendomsnavn(midlertidigAdresse.getNorskAdresse().getEiendomsnavn())
@@ -104,7 +104,7 @@ public class TillegsadresseMappingService {
         return adresse;
     }
 
-    private MidlertidigAdresse mapGateadresse(RsMidlertidigAdresse midlertidigAdresse) {
+    private MidlertidigAdresse mapGateadresse(RsMidlertidigAdresseRequest midlertidigAdresse) {
 
         MidlertidigGateAdresse adresse;
         if (nonNull(midlertidigAdresse.getNorskAdresse())) {
@@ -127,7 +127,8 @@ public class TillegsadresseMappingService {
         }
 
         adresse.setGyldigTom(getGyldigTom(midlertidigAdresse.getGyldigTom()));
-        adresse.setTilleggsadresse(getTilleggAdresse(midlertidigAdresse.getNorskAdresse().getTilleggsadresse()));
+        adresse.setTilleggsadresse(getTilleggAdresse(nonNull(midlertidigAdresse.getNorskAdresse()) ?
+                midlertidigAdresse.getNorskAdresse().getTilleggsadresse() : null));
         return adresse;
     }
 

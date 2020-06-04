@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "adressetype")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "midlertidigAdressetype")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RsGateadresse.class, name = "GATE"),
         @JsonSubTypes.Type(value = RsMatrikkeladresse.class, name = "MATR")

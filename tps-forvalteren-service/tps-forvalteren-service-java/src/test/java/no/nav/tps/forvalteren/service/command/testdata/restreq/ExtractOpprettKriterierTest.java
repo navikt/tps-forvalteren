@@ -51,7 +51,7 @@ public class ExtractOpprettKriterierTest {
     private LandkodeEncoder landkodeEncoder;
 
     @Mock
-    private TillegsadresseMappingService tillegsadresseMappingService;
+    private TilleggsadresseMappingService tilleggsadresseMappingService;
 
     @InjectMocks
     private ExtractOpprettKriterier extractOpprettKriterier;

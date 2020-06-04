@@ -61,7 +61,7 @@ public class ExtractOpprettKriterier {
     private final HentDatoFraIdentService hentDatoFraIdentService;
     private final LandkodeEncoder landkodeEncoder;
     private final DummyAdresseService dummyAdresseService;
-    private final TillegsadresseMappingService tillegsadresseMappingService;
+    private final TilleggsadresseMappingService tilleggsadresseMappingService;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
 
@@ -140,7 +140,7 @@ public class ExtractOpprettKriterier {
 
         mapPartner(req, hovedPersoner, partnere, adresser);
         mapBarn(req, hovedPersoner, partnere, barn);
-        tillegsadresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
+        tilleggsadresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
 
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
