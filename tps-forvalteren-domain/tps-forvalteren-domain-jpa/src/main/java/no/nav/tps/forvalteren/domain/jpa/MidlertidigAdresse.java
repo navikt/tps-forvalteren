@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -57,8 +58,9 @@ public class MidlertidigAdresse extends ChangeStamp {
     private String postnr;
 
     @Entity
+    @Builder
     @DiscriminatorValue("GATE")
-    public class MidlertidigGateAdresse extends MidlertidigAdresse {
+    public static class MidlertidigGateAdresse extends MidlertidigAdresse {
 
         @Column(name = "GATENAVN", length = 30)
         private String gatenavn;
@@ -71,16 +73,18 @@ public class MidlertidigAdresse extends ChangeStamp {
     }
 
     @Entity
+    @Builder
     @DiscriminatorValue("STED")
-    public class MidlertidigStedAdresse extends MidlertidigAdresse {
+    public static class MidlertidigStedAdresse extends MidlertidigAdresse {
 
         @Column(name = "EIENDOMSNAVN", length = 30)
         private String eiendomsnavn;
     }
 
     @Entity
+    @Builder
     @DiscriminatorValue("PBOX")
-    public class MidlertidigPboxAdresse extends MidlertidigAdresse {
+    public static class MidlertidigPboxAdresse extends MidlertidigAdresse {
 
         @Column(name = "POSTBOKSNR", length = 30)
         private String postboksnr;
@@ -90,8 +94,9 @@ public class MidlertidigAdresse extends ChangeStamp {
     }
 
     @Entity
+    @Builder
     @DiscriminatorValue("UTAD")
-    public class MidlertidigUtadAdresse extends MidlertidigAdresse {
+    public static class MidlertidigUtadAdresse extends MidlertidigAdresse {
 
         @Column(name = "POST_LINJE_1", length = 30)
         private String postLinje1;

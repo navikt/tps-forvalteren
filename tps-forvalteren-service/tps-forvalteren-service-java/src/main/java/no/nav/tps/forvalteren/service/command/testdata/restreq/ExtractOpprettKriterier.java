@@ -24,9 +24,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
@@ -53,22 +53,15 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.Land
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ExtractOpprettKriterier {
 
-    @Autowired
-    private MapperFacade mapperFacade;
-
-    @Autowired
-    private RandomAdresseService randomAdresseService;
-
-    @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
-
-    @Autowired
-    private LandkodeEncoder landkodeEncoder;
-
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
+    private final MapperFacade mapperFacade;
+    private final RandomAdresseService randomAdresseService;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final LandkodeEncoder landkodeEncoder;
+    private final DummyAdresseService dummyAdresseService;
+    private final TillegsadresseMappingService tillegsadresseMappingService;
 
     public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
 
@@ -147,6 +140,7 @@ public class ExtractOpprettKriterier {
 
         mapPartner(req, hovedPersoner, partnere, adresser);
         mapBarn(req, hovedPersoner, partnere, barn);
+        tillegsadresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
 
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
@@ -334,7 +328,7 @@ public class ExtractOpprettKriterier {
         }
     }
 
-    private String getTilleggAdresse(String eksisterendeTAdresse, TilleggAdressetype tilleggAdressetype) {
+    private static String getTilleggAdresse(String eksisterendeTAdresse, TilleggAdressetype tilleggAdressetype) {
 
         if (isNull(tilleggAdressetype)) {
             return eksisterendeTAdresse;

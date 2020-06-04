@@ -206,51 +206,58 @@ public class Person extends ChangeStamp {
 
     public List<Postadresse> getPostadresse() {
         if (isNull(postadresse)) {
-            postadresse = new ArrayList();
+            postadresse = new ArrayList<>();
         }
         return postadresse;
     }
 
     public List<Relasjon> getRelasjoner() {
         if (isNull(relasjoner)) {
-            relasjoner = new ArrayList();
+            relasjoner = new ArrayList<>();
         }
         return relasjoner;
     }
 
     public List<IdentHistorikk> getIdentHistorikk() {
         if (isNull(identHistorikk)) {
-            identHistorikk = new ArrayList();
+            identHistorikk = new ArrayList<>();
         }
         return identHistorikk;
     }
 
     public List<Sivilstand> getSivilstander() {
         if (isNull(sivilstander)) {
-            sivilstander = new ArrayList();
+            sivilstander = new ArrayList<>();
         }
         return sivilstander;
     }
 
     public List<Adresse> getBoadresse() {
         if (isNull(boadresse)) {
-            boadresse = new ArrayList();
+            boadresse = new ArrayList<>();
         }
         return boadresse;
     }
 
     public List<Statsborgerskap> getStatsborgerskap() {
         if (isNull(statsborgerskap)) {
-            statsborgerskap = new ArrayList();
+            statsborgerskap = new ArrayList<>();
         }
         return statsborgerskap;
     }
 
     public List<InnvandretUtvandret> getInnvandretUtvandret() {
         if (isNull(innvandretUtvandret)) {
-            innvandretUtvandret = new ArrayList();
+            innvandretUtvandret = new ArrayList<>();
         }
         return innvandretUtvandret;
+    }
+
+    public List<MidlertidigAdresse> getMidlertidigAdresses() {
+        if (isNull(midlertidigAdresses)) {
+            midlertidigAdresses = new ArrayList<>();
+        }
+        return midlertidigAdresses;
     }
 
     public String getLandkodeOfFirstInnvandret() {
