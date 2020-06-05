@@ -1,10 +1,10 @@
-package no.nav.tps.forvalteren.domain.ws.kodeverk;
-
-import lombok.Getter;
-import lombok.Setter;
+package no.nav.tps.forvalteren.domain.rs.kodeverk;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

@@ -17,9 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
+import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kodeverk;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KodeverkUpdaterTest {

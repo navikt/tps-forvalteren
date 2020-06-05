@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kode;
 
 public class KodeverkCacheTest {
     
