@@ -22,7 +22,7 @@ public class HentKodeverkMappingStrategy implements MappingStrategy {
                                     Kodeverk to, MappingContext context) {
 
                                 to.setKoder(from.getBetydninger().entrySet().stream()
-                                        .filter(entry -> entry.getValue().size() > 0)
+                                        .filter(entry -> !entry.getValue().isEmpty())
                                         .map(entry ->
                                                 no.nav.tps.forvalteren.domain.rs.kodeverk.Kode.builder()
                                                         .navn(entry.getKey())
