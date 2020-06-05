@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
+import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
@@ -127,5 +128,10 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     public IdentpoolConsumer identpoolConsumer() {
         return mock(IdentpoolConsumer.class);
+    }
+
+    @Bean
+    public KodeverkConsumer kodeverkConsumer() {
+        return mock(KodeverkConsumer.class);
     }
 }
