@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.kodeverk.Kodeverk;
 @RequiredArgsConstructor
 public class KodeverkConsumer {
 
-    @Value("${provider.kodeverk.v1.url}")
+    @Value("${provider.kodeverk.url}")
     private String kodeverkUrl;
 
     private final MapperFacade mapperFacade;
