@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kode;
 
 @Getter
 @Component

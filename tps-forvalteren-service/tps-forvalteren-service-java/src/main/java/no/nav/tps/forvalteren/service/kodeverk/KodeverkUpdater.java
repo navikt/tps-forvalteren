@@ -1,10 +1,11 @@
 package no.nav.tps.forvalteren.service.kodeverk;
 
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kode;
-import no.nav.tps.forvalteren.domain.ws.kodeverk.Kodeverk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kode;
+import no.nav.tps.forvalteren.domain.rs.kodeverk.Kodeverk;
 
 @Component
 public class KodeverkUpdater {

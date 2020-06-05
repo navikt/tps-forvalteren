@@ -76,7 +76,6 @@
         <jmqi.version>7.1.0.0</jmqi.version>
         <jms.version>1.1</jms.version>
         <guava.version>21.0</guava.version>
-        <kodeverk.tjenestespesifikasjon.version>2.0.0-alpha004</kodeverk.tjenestespesifikasjon.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <orika.version>1.5.1</orika.version>
         <mqjms.version>7.1</mqjms.version>
@@ -436,13 +435,6 @@
                 <groupId>no.nav.freg</groupId>
                 <artifactId>metrics-annotations</artifactId>
                 <version>${freg-metrics.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.tjenester.fim</groupId>
-                <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
-                <version>${kodeverk.tjenestespesifikasjon.version}</version>
-                <classifier>jaxws</classifier>
             </dependency>
 
             <dependency>

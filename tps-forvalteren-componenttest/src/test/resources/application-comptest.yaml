@@ -43,7 +43,6 @@ mqgateway:
   name: nada
 
 virksomhet:
-  kodeverk.v2.endpointurl: nada
   diskresjonskode.v1.endpointurl: nada
   egenansatt.v1.endpointurl: nada
 
@@ -55,3 +54,5 @@ srvtps:
 securitytokenservice.url: nada
 
 identpool.host.url: nada
+
+provider.kodeverk.v1.url: nada
