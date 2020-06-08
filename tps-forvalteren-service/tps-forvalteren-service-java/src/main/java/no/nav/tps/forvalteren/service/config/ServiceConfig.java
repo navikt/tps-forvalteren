@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConfig;
 import no.nav.tps.forvalteren.consumer.rs.config.RestConsumerConfig;
 import no.nav.tps.forvalteren.consumer.ws.config.WebServiceConsumerConfig;
-import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.KodeverkConsumerConfig;
 import no.nav.tps.forvalteren.domain.service.config.DomainServiceConfig;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 
@@ -20,7 +19,6 @@ import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;
 @EnableAutoConfiguration
 @EnableScheduling
 @Import({
-        KodeverkConsumerConfig.class,
         RestConsumerConfig.class,
         WebServiceConsumerConfig.class,
         MessageQueueConsumerConfig.class,

@@ -57,14 +57,6 @@
             <classifier>jaxws</classifier>
         </dependency>
 
-        <!-- NAV Kodeverk -->
-        <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
-            <version>${kodeverk.tjenestespesifikasjon.version}</version>
-            <classifier>jaxws</classifier>
-        </dependency>
-
         <!-- MODIG -->
         <dependency>
             <groupId>no.nav.modig</groupId>
