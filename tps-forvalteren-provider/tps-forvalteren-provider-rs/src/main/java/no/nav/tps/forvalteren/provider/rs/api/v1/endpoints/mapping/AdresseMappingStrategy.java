@@ -19,6 +19,7 @@ public class AdresseMappingStrategy implements MappingStrategy {
                 .customize(new CustomMapper<RsRequestGateadresse, Gateadresse>() {
                     @Override public void mapAtoB(RsRequestGateadresse fraAdresse,
                             Gateadresse tilAdresse, MappingContext context) {
+                        tilAdresse.setAdresse(fraAdresse.getGateadresse());
                     }
                 })
                 .exclude("tilleggsadresse")
