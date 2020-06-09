@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.domain.service.user.User;
 import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
 import no.nav.tps.forvalteren.service.command.testdata.EndreTelefonnummerService;
+import no.nav.tps.forvalteren.service.command.testdata.KontaktopplysningerService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.utils.TpsPacemaker;
@@ -75,6 +76,9 @@ public class SendNavEndringsmeldingerTest {
 
     @Mock
     private TpsPacemaker tpsPacemaker;
+
+    @Mock
+    private KontaktopplysningerService kontaktopplysningerService;
 
     @InjectMocks
     private SendNavEndringsmeldinger sendNavEndringsmeldinger;

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreKontaktopplysninger;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreNorskGironummer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetstiltak;
@@ -270,4 +271,9 @@ public class CommandConfig {
     SkdMeldingResolver vergemaal() {
         return new VergemaalAarsakskode37();
     }
+
+    @Bean EndreKontaktopplysninger kontaktopplysninger() {
+        return new EndreKontaktopplysninger();
+    }
+
 }

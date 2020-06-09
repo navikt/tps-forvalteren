@@ -6,6 +6,7 @@ import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.GATE;
 import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.PBOX;
 import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.STED;
 import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.UTAD;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreKontaktopplysninger.ENDRE_KONTAKTOPPLYSNINGER;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -51,7 +52,15 @@ public class KontaktopplysningerService {
                         .build())
                 .miljo(environment)
                 .build())
+                .map(request -> appendHeader(request, person.getIdent()))
                 .collect(Collectors.toList());
+    }
+
+    private static TpsNavEndringsMelding appendHeader(TpsNavEndringsMelding request, String ident) {
+
+        request.getMelding().setServiceRutinenavn(ENDRE_KONTAKTOPPLYSNINGER);
+        ((TpsEndreKontaktopplysningerRequest) request.getMelding()).setOffentligIdent(ident);
+        return request;
     }
 
     private Kontonummer getKontonumre(Person person) {
@@ -69,7 +78,9 @@ public class KontaktopplysningerService {
         return Spraak.builder()
                 .endreSprak(NyttSprak.builder()
                         .sprakKode(person.getSprakKode())
-                        .datoSprak(nonNull(person.getDatoSprak()) ? person.getDatoSprak().toLocalDate() : LocalDate.now())
+                        .datoSprak((nonNull(person.getDatoSprak()) ?
+                                person.getDatoSprak().toLocalDate() :
+                                LocalDate.now()).toString())
                         .build())
                 .build();
     }
@@ -105,7 +116,7 @@ public class KontaktopplysningerService {
                 .adresse2(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLinje2())
                 .adresse3(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLinje3())
                 .kodeLand(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLand())
-                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate())
+                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                 .build();
     }
 
@@ -120,7 +131,7 @@ public class KontaktopplysningerService {
                     .postboksnr(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksnr())
                     .postboksAnlegg(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksAnlegg())
                     .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate())
+                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                     .typeAdresseNavNorge(PBOX.name())
                     .build();
         case STED:
@@ -129,7 +140,7 @@ public class KontaktopplysningerService {
                     .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .eiendomsnavn(((MidlertidigStedAdresse) person.getMidlertidigAdresse().get(0)).getEiendomsnavn())
                     .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate())
+                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                     .typeAdresseNavNorge(STED.name())
                     .build();
         case GATE:
@@ -137,21 +148,21 @@ public class KontaktopplysningerService {
             return TiadAdresse.builder()
                     .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .eiendomsnavn(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatenavn())
+                    .gatenavn(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatenavn())
                     .gatekode(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatekode())
                     .husnr(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getHusnr())
                     .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate())
+                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                     .typeAdresseNavNorge(GATE.name())
                     .build();
         }
     }
 
     private static String getTypeTilleggslinje(String tilleggsadresse) {
-        return isNotBlank(tilleggsadresse) ? tilleggsadresse.split(" ")[0] : null;
+        return isNotBlank(tilleggsadresse) ? tilleggsadresse.split(" ")[0].replace(":", "") : null;
     }
 
     private static String getTilleggslinje(String tillegssadresse) {
-        return isNotBlank(tillegssadresse) ? tillegssadresse.substring(tillegssadresse.indexOf(" ")) : null;
+        return isNotBlank(tillegssadresse) ? tillegssadresse.substring(tillegssadresse.indexOf(" ") + 1) : null;
     }
 }

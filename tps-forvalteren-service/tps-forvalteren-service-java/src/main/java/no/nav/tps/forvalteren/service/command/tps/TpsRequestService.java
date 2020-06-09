@@ -51,7 +51,7 @@ public class TpsRequestService {
         }
 
         tpsRequest.setServiceRutinenavn(removeTestdataFromServicerutinenavn(tpsRequest.getServiceRutinenavn()));
-        String xml = xmlMapper.writeValueAsString(tpsRequest);
+        String xml = xmlMapper.writeValueAsString(tpsRequest).replaceAll("<\\w+?\\/>", "");
 
         Request request = new Request(xml, tpsRequest, context);
         transformationService.transform(request, serviceRoutine);

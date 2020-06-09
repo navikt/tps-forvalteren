@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring;
 
-import java.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JacksonXmlRootElement(localName = "endreKontaktopplysninger")
 public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndringRequest {
 
@@ -31,6 +31,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class NavAdresse {
 
         private TiadAdresse nyAdresseNavNorge;
@@ -42,9 +43,10 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class TiadAdresse {
 
-			private LocalDate datoTom;
+			private String datoTom; //yyyy-mm-dd
 			private String typeAdresseNavNorge;
 			private String typeTilleggsLinje;
 			private String tilleggsLinje;
@@ -65,9 +67,10 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class UtadAdresse {
 
-			private LocalDate datoTom;
+			private String datoTom; //yyyy-mm-dd
 			private String adresse1;
 			private String adresse2;
 			private String adresse3;
@@ -79,6 +82,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Telefon {
 
         private List<NyTelefon> nyTelefon;
@@ -89,6 +93,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class NyTelefon {
 
         private String typeTelefon;
@@ -101,6 +106,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Kontonummer {
 
         private NorskKontonummer endreKontonrNorsk;
@@ -111,6 +117,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class NorskKontonummer {
 
         private String giroNrNorsk;
@@ -121,6 +128,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Spraak {
 
         private NyttSprak endreSprak;
@@ -131,8 +139,9 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class NyttSprak {
         private String sprakKode;
-        private LocalDate datoSprak;
+        private String datoSprak; //yyyy-mm-dd
     }
 }
