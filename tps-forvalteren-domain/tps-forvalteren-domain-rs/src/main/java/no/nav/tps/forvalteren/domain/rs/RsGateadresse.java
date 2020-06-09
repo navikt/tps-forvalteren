@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -28,6 +28,6 @@ public class RsGateadresse extends RsAdresse{
 
     @Override
     public boolean isValidAdresse() {
-        return nonNull(getGatekode());
+        return isNotBlank(getGatekode());
     }
 }
