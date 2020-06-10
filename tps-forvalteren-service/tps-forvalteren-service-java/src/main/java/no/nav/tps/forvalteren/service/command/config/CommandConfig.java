@@ -11,10 +11,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreKontaktopplysninger;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreNorskGironummer;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSikkerhetstiltak;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreSpraakkode;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphoerEgenAnsatt;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.OpphoerSikkerhetstiltak;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.M201HentFnrNavnDiskresjonPaFlerePersoner;
@@ -180,16 +178,6 @@ public class CommandConfig {
     @Bean
     ServiceRoutineResolver endreSikkerhetsTiltak() {
         return new EndreSikkerhetstiltak();
-    }
-
-    @Bean
-    ServiceRoutineResolver endreSprakkode() {
-        return new EndreSpraakkode();
-    }
-
-    @Bean
-    ServiceRoutineResolver endreNorskGironummer() {
-        return new EndreNorskGironummer();
     }
 
     @Bean

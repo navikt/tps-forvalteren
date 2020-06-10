@@ -19,9 +19,6 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
-import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
-import no.nav.tps.forvalteren.service.command.testdata.EndreTelefonnummerService;
 import no.nav.tps.forvalteren.service.command.testdata.KontaktopplysningerService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
@@ -36,9 +33,6 @@ public class SendNavEndringsmeldinger {
 
     private final OpprettEgenAnsattMelding opprettEgenAnsattMelding;
     private final OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
-    private final EndreSprakkodeService endreSprakkodeService;
-    private final EndreNorskGironummerService endreNorskGironummerService;
-    private final EndreTelefonnummerService endreTelefonnummerService;
     private final TpsRequestSender tpsRequestSender;
     private final UserContextHolder userContextHolder;
     private final TpsPacemaker tpsPacemaker;
