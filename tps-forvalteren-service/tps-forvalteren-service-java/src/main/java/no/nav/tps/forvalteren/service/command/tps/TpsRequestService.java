@@ -5,7 +5,7 @@ import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
@@ -51,7 +51,7 @@ public class TpsRequestService {
         }
 
         tpsRequest.setServiceRutinenavn(removeTestdataFromServicerutinenavn(tpsRequest.getServiceRutinenavn()));
-        String xml = xmlMapper.writeValueAsString(tpsRequest).replaceAll("<\\w+?\\/>", "");
+        String xml = xmlMapper.writeValueAsString(tpsRequest);
 
         Request request = new Request(xml, tpsRequest, context);
         transformationService.transform(request, serviceRoutine);

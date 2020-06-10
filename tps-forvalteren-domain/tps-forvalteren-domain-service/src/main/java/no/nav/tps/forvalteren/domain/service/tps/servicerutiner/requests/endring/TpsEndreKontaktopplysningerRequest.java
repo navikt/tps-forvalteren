@@ -2,8 +2,8 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endrin
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JacksonXmlRootElement(localName = "endreKontaktopplysninger")
 public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndringRequest {
 
@@ -35,7 +35,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     public static class NavAdresse {
 
         private TiadAdresse nyAdresseNavNorge;
-		private UtadAdresse nyAdresseNavUtland;
+        private UtadAdresse nyAdresseNavUtland;
     }
 
     @Getter
@@ -46,20 +46,20 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class TiadAdresse {
 
-			private String datoTom; //yyyy-mm-dd
-			private String typeAdresseNavNorge;
-			private String typeTilleggsLinje;
-			private String tilleggsLinje;
-			private String kommunenr;
-			private String gatekode;
-			private String gatenavn;
-			private String husnr;
-			private String husbokstav;
-			private String eiendomsnavn;
-			private String bolignr;
-			private String postboksnr;
-			private String postboksAnlegg;
-			private String postnr;
+        private String datoTom; //yyyy-mm-dd
+        private String typeAdresseNavNorge;
+        private String typeTilleggsLinje;
+        private String tilleggsLinje;
+        private String kommunenr;
+        private String gatekode;
+        private String gatenavn;
+        private String husnr;
+        private String husbokstav;
+        private String eiendomsnavn;
+        private String bolignr;
+        private String postboksnr;
+        private String postboksAnlegg;
+        private String postnr;
     }
 
     @Getter
@@ -70,11 +70,11 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class UtadAdresse {
 
-			private String datoTom; //yyyy-mm-dd
-			private String adresse1;
-			private String adresse2;
-			private String adresse3;
-			private String kodeLand;
+        private String datoTom; //yyyy-mm-dd
+        private String adresse1;
+        private String adresse2;
+        private String adresse3;
+        private String kodeLand;
     }
 
     @Getter
@@ -85,6 +85,7 @@ public class TpsEndreKontaktopplysningerRequest extends TpsServiceRoutineEndring
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public static class Telefon {
 
+        @JacksonXmlElementWrapper(useWrapping = false)
         private List<NyTelefon> nyTelefon;
     }
 

@@ -38,6 +38,11 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.TpsNavEndringsMelding
 @Service
 public class KontaktopplysningerService {
 
+    private static final String CO_NAVN = "C/O";
+    private static final String BOLIG_NR = "BOLIG-NR";
+    private static final String HJEMMETELEFON = "HJET";
+    private static final String MOBILTELEFON = "MOBI";
+
     public List<TpsNavEndringsMelding> execute(Person person, Set<String> environmentSet) {
 
         return environmentSet.stream().map(environment -> TpsNavEndringsMelding.builder()
@@ -92,14 +97,14 @@ public class KontaktopplysningerService {
         List<NyTelefon> telefonnumre = Lists.newArrayList(NyTelefon.builder()
                 .telefonLandkode(person.getTelefonLandskode_1())
                 .telefonNr(person.getTelefonnummer_1())
-                .typeTelefon("MOBI")
+                .typeTelefon(MOBILTELEFON)
                 .build());
 
         if (isNotBlank(person.getTelefonnummer_2())) {
             telefonnumre.add(NyTelefon.builder()
                     .telefonLandkode(person.getTelefonLandskode_2())
                     .telefonNr(person.getTelefonnummer_2())
-                    .typeTelefon("HJET")
+                    .typeTelefon(HJEMMETELEFON)
                     .build());
         }
         return Telefon.builder()
@@ -139,6 +144,7 @@ public class KontaktopplysningerService {
                     .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .eiendomsnavn(((MidlertidigStedAdresse) person.getMidlertidigAdresse().get(0)).getEiendomsnavn())
+                    .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
                     .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                     .typeAdresseNavNorge(STED.name())
@@ -151,6 +157,7 @@ public class KontaktopplysningerService {
                     .gatenavn(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatenavn())
                     .gatekode(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatekode())
                     .husnr(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getHusnr())
+                    .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
                     .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
                     .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
                     .typeAdresseNavNorge(GATE.name())
@@ -158,11 +165,17 @@ public class KontaktopplysningerService {
         }
     }
 
-    private static String getTypeTilleggslinje(String tilleggsadresse) {
-        return isNotBlank(tilleggsadresse) ? tilleggsadresse.split(" ")[0].replace(":", "") : null;
+    private static String getBolignr(String tilleggsadresse) {
+        return isNotBlank(tilleggsadresse) && tilleggsadresse.contains(BOLIG_NR) ?
+                tilleggsadresse.substring(tilleggsadresse.indexOf(' ') + 1) : null;
     }
 
-    private static String getTilleggslinje(String tillegssadresse) {
-        return isNotBlank(tillegssadresse) ? tillegssadresse.substring(tillegssadresse.indexOf(" ") + 1) : null;
+    private static String getTypeTilleggslinje(String tilleggsadresse) {
+        return isNotBlank(tilleggsadresse) && tilleggsadresse.contains(CO_NAVN) ? CO_NAVN : null;
+    }
+
+    private static String getTilleggslinje(String tilleggsadresse) {
+        return isNotBlank(tilleggsadresse) && tilleggsadresse.contains(CO_NAVN) ?
+                tilleggsadresse : null;
     }
 }
