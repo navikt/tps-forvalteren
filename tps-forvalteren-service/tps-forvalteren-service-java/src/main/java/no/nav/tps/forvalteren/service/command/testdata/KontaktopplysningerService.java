@@ -142,37 +142,51 @@ public class KontaktopplysningerService {
         }
         switch (MidlertidigAdressetype.valueOf(person.getMidlertidigAdresse().get(0).getAdressetype())) {
         case PBOX:
-            return TiadAdresse.builder()
-                    .postboksnr(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksnr())
-                    .postboksAnlegg(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksAnlegg())
-                    .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
-                    .typeAdresseNavNorge(PBOX.name())
-                    .build();
+            return getPboxadresse(person);
         case STED:
-            return TiadAdresse.builder()
-                    .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .eiendomsnavn(((MidlertidigStedAdresse) person.getMidlertidigAdresse().get(0)).getEiendomsnavn())
-                    .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
-                    .typeAdresseNavNorge(STED.name())
-                    .build();
+            return getStedadresse(person);
         case GATE:
         default:
-            return TiadAdresse.builder()
-                    .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .gatenavn(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatenavn())
-                    .gatekode(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatekode())
-                    .husnr(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getHusnr())
-                    .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
-                    .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
-                    .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
-                    .typeAdresseNavNorge(GATE.name())
-                    .build();
+            return getGateadresse(person);
         }
+    }
+
+    private static TiadAdresse getPboxadresse(Person person) {
+        return TiadAdresse.builder()
+                .postboksnr(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksnr())
+                .postboksAnlegg(((MidlertidigPboxAdresse) person.getMidlertidigAdresse().get(0)).getPostboksAnlegg())
+                .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
+                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
+                .typeAdresseNavNorge(PBOX.name())
+                .build();
+    }
+
+    private static TiadAdresse getStedadresse(Person person) {
+
+        return TiadAdresse.builder()
+                .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .eiendomsnavn(((MidlertidigStedAdresse) person.getMidlertidigAdresse().get(0)).getEiendomsnavn())
+                .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
+                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
+                .typeAdresseNavNorge(STED.name())
+                .build();
+    }
+
+    private static TiadAdresse getGateadresse(Person person) {
+
+        return TiadAdresse.builder()
+                .typeTilleggsLinje(getTypeTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .tilleggsLinje(getTilleggslinje(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .gatenavn(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatenavn())
+                .gatekode(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getGatekode())
+                .husnr(((MidlertidigGateAdresse) person.getMidlertidigAdresse().get(0)).getHusnr())
+                .bolignr(getBolignr(person.getMidlertidigAdresse().get(0).getTilleggsadresse()))
+                .postnr(person.getMidlertidigAdresse().get(0).getPostnr())
+                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
+                .typeAdresseNavNorge(GATE.name())
+                .build();
     }
 
     private static String getBolignr(String tilleggsadresse) {
