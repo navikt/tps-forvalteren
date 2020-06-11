@@ -45,20 +45,30 @@ public class KontaktopplysningerService {
 
     public List<TpsNavEndringsMelding> execute(Person person, Set<String> environmentSet) {
 
-        return environmentSet.stream().map(environment -> TpsNavEndringsMelding.builder()
-                .melding(TpsEndreKontaktopplysningerRequest.builder()
-                        .endringAvNAVadresse(NavAdresse.builder()
-                                .nyAdresseNavNorge(getTiadadresse(person))
-                                .nyAdresseNavUtland(getUtadadresse(person))
+        return environmentSet.stream()
+                .filter(env -> isNotBlank(person.getSprakKode()) ||
+                        !person.getMidlertidigAdresse().isEmpty() ||
+                        isNotBlank(person.getTelefonnummer_1()) ||
+                        isNotBlank(person.getBankkontonr()))
+                .map(env -> TpsNavEndringsMelding.builder()
+                        .melding(TpsEndreKontaktopplysningerRequest.builder()
+                                .endringAvNAVadresse(getNavAdresse(person))
+                                .endringAvTelefon(getTelefonnumre(person))
+                                .endringAvSprak(getSpraak(person))
+                                .endringAvKontonr(getKontonumre(person))
                                 .build())
-                        .endringAvTelefon(getTelefonnumre(person))
-                        .endringAvSprak(getSpraak(person))
-                        .endringAvKontonr(getKontonumre(person))
+                        .miljo(env)
                         .build())
-                .miljo(environment)
-                .build())
                 .map(request -> appendHeader(request, person.getIdent()))
                 .collect(Collectors.toList());
+    }
+
+    private static NavAdresse getNavAdresse(Person person) {
+        return !person.getMidlertidigAdresse().isEmpty() ?
+                NavAdresse.builder()
+                        .nyAdresseNavNorge(getTiadadresse(person))
+                        .nyAdresseNavUtland(getUtadadresse(person))
+                        .build() : null;
     }
 
     private static TpsNavEndringsMelding appendHeader(TpsNavEndringsMelding request, String ident) {
