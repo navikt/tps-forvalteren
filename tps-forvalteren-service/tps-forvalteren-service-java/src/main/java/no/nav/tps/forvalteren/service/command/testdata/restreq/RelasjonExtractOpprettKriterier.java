@@ -7,12 +7,25 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Service
 public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
+
+    private TilleggsadresseMappingService tilleggsadresseMappingService;
+
+    public RelasjonExtractOpprettKriterier(MapperFacade mapperFacade, RandomAdresseService randomAdresseService, HentDatoFraIdentService hentDatoFraIdentService,
+            LandkodeEncoder landkodeEncoder, DummyAdresseService dummyAdresseService, TilleggsadresseMappingService tilleggsadresseMappingService) {
+        super(mapperFacade, randomAdresseService, hentDatoFraIdentService, landkodeEncoder, dummyAdresseService, tilleggsadresseMappingService);
+        this.tilleggsadresseMappingService = tilleggsadresseMappingService;
+    }
 
     @Override
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req,
@@ -24,6 +37,7 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
         mapPartner(req, hovedPersoner, partnere, adresser);
         mapBarn(req, hovedPersoner, partnere, barn);
+        this.tilleggsadresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
 
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);

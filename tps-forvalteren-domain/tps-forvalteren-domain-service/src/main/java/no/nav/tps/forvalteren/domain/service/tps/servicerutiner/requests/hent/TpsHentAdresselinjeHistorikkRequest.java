@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent;
 
-import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServ
 @Setter
 @NoArgsConstructor
 @JacksonXmlRootElement(localName = "tpsServiceRutine")
-public class TpsHentAdresselinjeHistorikkRequest extends TpsServiceRoutineHentByFnrRequest{
+public class TpsHentAdresselinjeHistorikkRequest extends TpsServiceRoutineHentByFnrRequest {
 
     private String adresseType;
 }

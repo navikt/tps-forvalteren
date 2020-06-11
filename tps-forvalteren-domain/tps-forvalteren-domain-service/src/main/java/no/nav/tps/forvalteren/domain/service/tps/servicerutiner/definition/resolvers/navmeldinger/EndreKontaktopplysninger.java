@@ -9,19 +9,19 @@ import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadSe
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.ServiceRoutineResolver;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreTelefonnummerRequest;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.endring.TpsEndreKontaktopplysningerRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.request.EndringsmeldingRequestTransform;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.ResponseStatusTransformer;
 
-public class EndreTelefonnr implements ServiceRoutineResolver {
-    public static final String ENDRE_TELEFONNUMMER = "TelefonnummerEndringsmelding";
+public class EndreKontaktopplysninger implements ServiceRoutineResolver {
+    public static final String ENDRE_KONTAKTOPPLYSNINGER = "KontaktopplysningEndringer";
 
     @Override
     public TpsServiceRoutineDefinitionRequest resolve() {
         return TpsServiceRoutineDefinitionBuilder.aTpsServiceRoutine()
-                .name(ENDRE_TELEFONNUMMER)
-                .internalName("Endre telefonnummer")
-                .javaClass(TpsEndreTelefonnummerRequest.class)
+                .name(ENDRE_KONTAKTOPPLYSNINGER)
+                .internalName("Endre kontaktopplysninger")
+                .javaClass(TpsEndreKontaktopplysningerRequest.class)
                 .config()
                 .requestQueue(REQUEST_QUEUE_ENDRINGSMELDING_ALIAS)
                 .and()
@@ -29,24 +29,6 @@ public class EndreTelefonnr implements ServiceRoutineResolver {
                 .parameter()
                 .name("offentligIdent")
                 .required()
-                .type(TpsParameterType.STRING)
-                .and()
-
-                .parameter()
-                .name("typeTelefon")
-                .required()
-                .type(TpsParameterType.STRING)
-                .and()
-
-                .parameter()
-                .name("telefonLandkode")
-                .optional()
-                .type(TpsParameterType.STRING)
-                .and()
-
-                .parameter()
-                .name("telefonNr")
-                .optional()
                 .type(TpsParameterType.STRING)
                 .and()
 

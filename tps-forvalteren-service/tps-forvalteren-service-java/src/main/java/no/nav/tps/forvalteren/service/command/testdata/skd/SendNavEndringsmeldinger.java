@@ -19,9 +19,7 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsRequestContext;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.TpsServiceRoutineEndringRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.testdata.EndreNorskGironummerService;
-import no.nav.tps.forvalteren.service.command.testdata.EndreSprakkodeService;
-import no.nav.tps.forvalteren.service.command.testdata.EndreTelefonnummerService;
+import no.nav.tps.forvalteren.service.command.testdata.KontaktopplysningerService;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettEgenAnsattMelding;
 import no.nav.tps.forvalteren.service.command.testdata.OpprettSikkerhetstiltakMelding;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
@@ -35,12 +33,10 @@ public class SendNavEndringsmeldinger {
 
     private final OpprettEgenAnsattMelding opprettEgenAnsattMelding;
     private final OpprettSikkerhetstiltakMelding opprettSikkerhetstiltakMelding;
-    private final EndreSprakkodeService endreSprakkodeService;
-    private final EndreNorskGironummerService endreNorskGironummerService;
-    private final EndreTelefonnummerService endreTelefonnummerService;
     private final TpsRequestSender tpsRequestSender;
     private final UserContextHolder userContextHolder;
     private final TpsPacemaker tpsPacemaker;
+    private final KontaktopplysningerService kontaktopplysningerService;
 
     public List<ServiceRoutineResponseStatus> execute(List<Person> listeMedPersoner, Set<String> environmentsSet) {
 
@@ -51,9 +47,7 @@ public class SendNavEndringsmeldinger {
         listeMedPersoner.forEach(person -> {
             navEndringsMeldinger.addAll(opprettEgenAnsattMelding.execute(person, environmentsSet));
             navEndringsMeldinger.addAll(opprettSikkerhetstiltakMelding.execute(person, environmentsSet));
-            navEndringsMeldinger.addAll(endreSprakkodeService.execute(person, environmentsSet));
-            navEndringsMeldinger.addAll(endreNorskGironummerService.execute(person, environmentsSet));
-            navEndringsMeldinger.addAll(endreTelefonnummerService.execute(person, environmentsSet));
+            navEndringsMeldinger.addAll(kontaktopplysningerService.execute(person, environmentsSet));
         });
 
         Map<String, ServiceRoutineResponseStatus> responseStatuses = new HashMap<>();

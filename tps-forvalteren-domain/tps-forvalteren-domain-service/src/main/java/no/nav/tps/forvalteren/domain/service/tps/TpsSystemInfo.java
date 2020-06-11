@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.domain.service.tps;
 
-import com.fasterxml.jackson.xml.annotate.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
