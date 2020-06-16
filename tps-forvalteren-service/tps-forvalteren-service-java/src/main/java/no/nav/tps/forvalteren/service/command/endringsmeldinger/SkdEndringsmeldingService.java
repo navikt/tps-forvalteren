@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,11 @@ public class SkdEndringsmeldingService {
         } else {
             skdEndringsmeldingRepository.deleteByIdIn(ids);
         }
+    }
+
+    public RsMeldingstype findEndringsmeldingById(Long id) throws JsonProcessingException {
+        SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
+        return skdEndringsmelding != null ? objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class) : null;
     }
 
     public List<Long> findAllMeldingIdsInGruppe(Long gruppeId) {
