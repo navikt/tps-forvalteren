@@ -77,7 +77,12 @@ public class SkdEndringsmeldingService {
     }
 
     public RsMeldingstype findEndringsmeldingById(Long id) throws JsonProcessingException {
-        return objectMapper.readValue(skdEndringsmeldingRepository.findById(id).getEndringsmelding(), RsMeldingstype.class);
+        SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
+        if (skdEndringsmelding != null) {
+            return objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class);
+        } else {
+            return null;
+        }
     }
 
     public List<Long> findAllMeldingIdsInGruppe(Long gruppeId) {
