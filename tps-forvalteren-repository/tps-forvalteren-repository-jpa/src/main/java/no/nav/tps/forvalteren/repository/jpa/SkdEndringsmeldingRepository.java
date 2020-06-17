@@ -15,6 +15,8 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
 
     SkdEndringsmelding findById(Long id);
 
+    List<SkdEndringsmelding> findByIdIn(List<Long> ids);
+
     SkdEndringsmelding save(SkdEndringsmelding skdEndringsmelding);
 
     void deleteByIdIn(List<Long> ids);

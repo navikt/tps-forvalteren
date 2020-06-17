@@ -81,6 +81,15 @@ public class SkdEndringsmeldingService {
         return skdEndringsmelding != null ? objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class) : null;
     }
 
+    public List<RsMeldingstype> findAllEndringsmeldingerByIds(List<Long> ids) throws JsonProcessingException {
+        List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingRepository.findByIdIn(ids);
+        List<RsMeldingstype> rsMeldingstyper = new ArrayList<>();
+        for (SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
+            rsMeldingstyper.add(objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class));
+        }
+        return rsMeldingstyper;
+    }
+
     public List<Long> findAllMeldingIdsInGruppe(Long gruppeId) {
         SkdEndringsmeldingGruppe skdEndringsmeldingGruppe = gruppeRepository.findById(gruppeId);
         return skdEndringsmeldingRepository.findAllIdsBy(skdEndringsmeldingGruppe);
