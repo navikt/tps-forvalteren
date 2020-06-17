@@ -85,7 +85,11 @@ public class SkdEndringsmeldingService {
         List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingRepository.findByIdIn(ids);
         List<RsMeldingstype> rsMeldingstyper = new ArrayList<>();
         for (SkdEndringsmelding skdEndringsmelding : skdEndringsmeldinger) {
-            rsMeldingstyper.add(objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class));
+            RsMeldingstype rsMeldingstype = objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class);
+            if (rsMeldingstype.getId() == null) {
+                rsMeldingstype.setId(skdEndringsmelding.getId());
+            }
+            rsMeldingstyper.add(rsMeldingstype);
         }
         return rsMeldingstyper;
     }
