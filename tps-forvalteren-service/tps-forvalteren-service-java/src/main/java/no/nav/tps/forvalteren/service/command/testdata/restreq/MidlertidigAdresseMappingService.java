@@ -9,6 +9,7 @@ import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.UTAD;
 import static no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggType.CO_NAVN;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomEtternavn;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomFornavn;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +31,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseServ
 
 @Service
 @RequiredArgsConstructor
-public class TilleggsadresseMappingService {
+public class MidlertidigAdresseMappingService {
 
     private final RandomAdresseService randomAdresseService;
 
@@ -107,7 +108,8 @@ public class TilleggsadresseMappingService {
     private MidlertidigAdresse mapGateadresse(RsMidlertidigAdresseRequest midlertidigAdresse) {
 
         MidlertidigGateAdresse adresse;
-        if (nonNull(midlertidigAdresse.getNorskAdresse())) {
+        if (nonNull(midlertidigAdresse.getNorskAdresse()) &&
+                isNotBlank(midlertidigAdresse.getNorskAdresse().getGatekode())) {
             adresse = MidlertidigGateAdresse.builder()
                     .gatenavn(midlertidigAdresse.getNorskAdresse().getGatenavn())
                     .gatekode(midlertidigAdresse.getNorskAdresse().getGatekode())
