@@ -30,6 +30,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
@@ -41,6 +42,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.EndrePersonBestillingService;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.ImporterPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
@@ -67,6 +69,7 @@ public class TestdataBestillingsController {
     private final PersonIdenthistorikkService personIdenthistorikkService;
     private final EndrePersonBestillingService endrePersonBestillingService;
     private final RelasjonEksisterendePersonerBestillingService relasjonEksisterendePersonerBestillingService;
+    private final ImporterPersonService importerPersonService;
 
     @Transactional
     @LogExceptions
@@ -163,5 +166,14 @@ public class TestdataBestillingsController {
     public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
 
         return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public String importerPerson(@RequestBody ImporterPersonRequest request) {
+
+        return importerPersonService.execute(request);
     }
 }

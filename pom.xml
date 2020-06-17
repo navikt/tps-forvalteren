@@ -55,7 +55,7 @@
         <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
         <diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
         <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
-        <tps.interface.library.version>1.61.0</tps.interface.library.version>
+        <tps.interface.library.version>1.62.0</tps.interface.library.version>
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
@@ -457,6 +457,12 @@
             <dependency>
                 <groupId>no.nav.repository.fellesreg.tpsws</groupId>
                 <artifactId>nav-repository-fellesregister-jaxb-tps-s302-domain</artifactId>
+                <version>${tps.interface.library.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.repository.fellesreg.tpsws</groupId>
+                <artifactId>nav-repository-fellesregister-jaxb-tps-s610-domain</artifactId>
                 <version>${tps.interface.library.version}</version>
             </dependency>
 
