@@ -245,6 +245,13 @@ public class SkdEndringsmeldingController {
     }
 
     @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingerMedIder") })
+    @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
+    public List<RsMeldingstype> getMeldingerMedId(@RequestParam(value = "ids") List<Long> ids) throws JsonProcessingException {
+        return skdEndringsmeldingService.findAllEndringsmeldingerByIds(ids);
+    }
+
+    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingIder") })
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
     public List<Long> getMeldingIder(@PathVariable("gruppeId") Long gruppeId) {
