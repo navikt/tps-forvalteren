@@ -172,8 +172,17 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
+    public Person hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
+
+        return importerPersonService.importFraTps(request);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
+    @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
     public String importerPerson(@RequestBody ImporterPersonRequest request) {
 
-        return importerPersonService.execute(request);
+        return importerPersonService.importFraTpsOgLagre(request);
     }
 }
