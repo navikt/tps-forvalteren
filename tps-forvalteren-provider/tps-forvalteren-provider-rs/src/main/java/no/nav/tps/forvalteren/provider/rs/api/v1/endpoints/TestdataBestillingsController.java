@@ -60,7 +60,7 @@ public class TestdataBestillingsController {
     private static final String EXCEL_FEILMELDING = "Feil ved pakking av Excel-fil";
 
     private final PersonerBestillingService personerBestillingService;
-    private final MapperFacade mapper;
+    private final MapperFacade mapperFacade;
     private final LagreTilTpsService lagreTilTps;
     private final ListExtractorKommaSeperated listExtractorKommaSeperated;
     private final SjekkIdenterService sjekkIdenterService;
@@ -95,7 +95,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
     public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
         List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
-        return mapper.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
+        return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
     @Transactional
@@ -104,7 +104,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
 
-        return mapper.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
+        return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
     @LogExceptions
@@ -172,9 +172,9 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Person hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
+    public RsPerson hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
 
-        return importerPersonService.importFraTps(request);
+        return mapperFacade.map(importerPersonService.importFraTps(request), RsPerson.class);
     }
 
     @LogExceptions

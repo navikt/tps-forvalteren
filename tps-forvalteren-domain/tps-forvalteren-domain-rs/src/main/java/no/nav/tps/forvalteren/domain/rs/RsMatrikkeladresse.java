@@ -3,6 +3,8 @@ package no.nav.tps.forvalteren.domain.rs;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeName("Matrikkeladresse")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RsMatrikkeladresse extends RsAdresse {
 
     @Size(min = 1, max = 25)
@@ -33,6 +36,7 @@ public class RsMatrikkeladresse extends RsAdresse {
     private String undernr;
 
     @Override
+    @JsonIgnore
     public boolean isValidAdresse() {
         return isNotBlank(getBruksnr());
     }
