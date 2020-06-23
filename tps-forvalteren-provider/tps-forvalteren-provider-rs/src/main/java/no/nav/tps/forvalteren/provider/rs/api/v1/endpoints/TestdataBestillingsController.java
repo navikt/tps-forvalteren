@@ -177,6 +177,7 @@ public class TestdataBestillingsController {
         return mapperFacade.map(importerPersonService.importFraTps(request), RsPerson.class);
     }
 
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)

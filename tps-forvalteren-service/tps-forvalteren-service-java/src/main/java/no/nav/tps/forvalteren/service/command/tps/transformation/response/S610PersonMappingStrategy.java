@@ -65,6 +65,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                         person.getStatsborgerskap().add(Statsborgerskap.builder()
                                 .statsborgerskap(tpsPerson.getStatsborgerskapDetalj().getKodeStatsborgerskap())
                                 .statsborgerskapRegdato(getTimestamp(tpsPerson.getStatsborgerskapDetalj().getDatoStatsborgerskap()))
+                                .person(person)
                                 .build());
                         person.setDoedsdato(getTimestamp(tpsPerson.getDatoDo()));
                         person.setTknr(getTknr(tpsPerson.getBruker().getNAVenhetDetalj()));
@@ -95,7 +96,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                         person.setEgenAnsattDatoFom(TRUE.equals(tpsPerson.getBruker().getPersEgenAnsatt()) ?
                                 LocalDateTime.now() : null);
                         person.setSivilstandRegdato(getTimestamp(tpsPerson.getSivilstandDetalj().getSivilstTidspunkt()));
-                        mapSivilstand(tpsPerson, person);
+                        //                        mapSivilstand(tpsPerson, person);
                     }
 
                 })
@@ -138,11 +139,13 @@ public class S610PersonMappingStrategy implements MappingStrategy {
             }
             midlertidigAdresse.setGyldigTom(getTimestamp(tiadAdresse.getDatoTom()));
             midlertidigAdresse.setPostnr(tiadAdresse.getPostnr());
-            if (isNotBlank(tiadAdresse.getTilleggsLinje())){
+            if (isNotBlank(tiadAdresse.getTilleggsLinje())) {
                 midlertidigAdresse.setTilleggsadresse(tiadAdresse.getTilleggsLinje());
             } else if (isNotBlank(tiadAdresse.getBolignr())) {
                 midlertidigAdresse.setTilleggsadresse(BOLIGNR + tiadAdresse.getBolignr());
             }
+            midlertidigAdresse.setPerson(person);
+            person.getMidlertidigAdresse().add(midlertidigAdresse);
         }
     }
 
@@ -150,13 +153,15 @@ public class S610PersonMappingStrategy implements MappingStrategy {
 
         UtlandsAdresseType utenlandsadresse = tpsPerson.getBruker().getPostadresseUtlandNAV();
 
-        if (nonNull(utenlandsadresse)) {
-            person.getMidlertidigAdresse().add(MidlertidigUtadAdresse.builder()
+        if (nonNull(utenlandsadresse) && isNotBlank(utenlandsadresse.getAdresseType())) {
+            MidlertidigAdresse midlertidigAdresse = MidlertidigUtadAdresse.builder()
                     .postLinje1(utenlandsadresse.getAdresse1())
                     .postLinje2(utenlandsadresse.getAdresse2())
                     .postLinje3(utenlandsadresse.getAdresse3())
                     .postLand(utenlandsadresse.getLandKode())
-                    .build());
+                    .build();
+            midlertidigAdresse.setPerson(person);
+            person.getMidlertidigAdresse().add(midlertidigAdresse);
         }
     }
 
@@ -170,6 +175,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                     .postLinje1(tpsPostadresse.getAdresse1())
                     .postLinje2(tpsPostadresse.getAdresse2())
                     .postLinje3(tpsPostadresse.getAdresse3())
+                    .person(person)
                     .build();
 
             if (POST_NORGE.equals(tpsPostadresse.getAdresseType())) {
@@ -224,6 +230,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
             }
             adresse.setPostnr(tpsBoadresse.getPostnr());
             adresse.setKommunenr(tpsBoadresse.getKommunenr());
+            adresse.setPerson(person);
             person.getBoadresse().add(adresse);
         }
     }

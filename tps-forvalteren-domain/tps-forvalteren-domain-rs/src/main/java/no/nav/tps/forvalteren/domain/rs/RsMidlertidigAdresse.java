@@ -1,8 +1,9 @@
 package no.nav.tps.forvalteren.domain.rs;
 
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "adressetype")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RsMidlertidigAdresse.MidlertidigGateAdresse.class, name = "GATE"),
+        @JsonSubTypes.Type(value = RsMidlertidigAdresse.MidlertidigStedAdresse.class, name = "STED"),
+        @JsonSubTypes.Type(value = RsMidlertidigAdresse.MidlertidigPboxAdresse.class, name = "PBOX"),
+        @JsonSubTypes.Type(value = RsMidlertidigAdresse.MidlertidigUtadAdresse.class, name = "UTAD")
+})
 public abstract class RsMidlertidigAdresse {
 
     private Long id;
