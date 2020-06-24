@@ -19,6 +19,7 @@ import no.nav.tps.ctg.s610.domain.BankkontoNorgeType;
 import no.nav.tps.ctg.s610.domain.BoAdresseType;
 import no.nav.tps.ctg.s610.domain.NavTIADType;
 import no.nav.tps.ctg.s610.domain.PostAdresseType;
+import no.nav.tps.ctg.s610.domain.RelasjonType;
 import no.nav.tps.ctg.s610.domain.S610BrukerType;
 import no.nav.tps.ctg.s610.domain.S610PersonType;
 import no.nav.tps.ctg.s610.domain.TelefonType;
@@ -95,8 +96,9 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                         person.setSpesregDato(getTimestamp(tpsPerson.getBruker().getDiskresjonDetalj().getDiskresjonTidspunkt()));
                         person.setEgenAnsattDatoFom(TRUE.equals(tpsPerson.getBruker().getPersEgenAnsatt()) ?
                                 LocalDateTime.now() : null);
+                        person.setSivilstand(getSivilstand(tpsPerson));
                         person.setSivilstandRegdato(getTimestamp(tpsPerson.getSivilstandDetalj().getSivilstTidspunkt()));
-                        //                        mapSivilstand(tpsPerson, person);
+                        mapSivilstand(tpsPerson, person);
                     }
 
                 })
@@ -106,12 +108,22 @@ public class S610PersonMappingStrategy implements MappingStrategy {
     }
 
     private static void mapSivilstand(S610PersonType tpsPerson, Person person) {
-        if (nonNull(tpsPerson.getSivilstandDetalj().getKodeSivilstand())) {
+
+        if (nonNull(tpsPerson.getBruker().getRelasjoner()) &&
+                tpsPerson.getBruker().getRelasjoner().getRelasjon().stream()
+                        .anyMatch(relasjon -> RelasjonType.EKTE == relasjon.getTypeRelasjon())) {
+
             person.getSivilstander().add(Sivilstand.builder()
-                    .sivilstand(tpsPerson.getSivilstandDetalj().getKodeSivilstand().name())
+                    .sivilstand(getSivilstand(tpsPerson))
                     .sivilstandRegdato(getTimestamp(tpsPerson.getSivilstandDetalj().getSivilstTidspunkt()))
                     .build());
         }
+    }
+
+    private static String getSivilstand(S610PersonType tpsPerson){
+
+        return nonNull(tpsPerson.getSivilstandDetalj().getKodeSivilstand()) ?
+                tpsPerson.getSivilstandDetalj().getKodeSivilstand().name() : null;
     }
 
     private static void mapTiadAdresse(S610PersonType tpsPerson, Person person) {

@@ -1,20 +1,19 @@
 package no.nav.tps.forvalteren.domain.rs.dolly;
 
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.RsPerson;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImporterPersonRequest {
+public class RsPersonMiljoe {
 
-    private String ident;
-    private Set<String> miljoe;
+    private String environment;
+    private RsPerson person;
 }

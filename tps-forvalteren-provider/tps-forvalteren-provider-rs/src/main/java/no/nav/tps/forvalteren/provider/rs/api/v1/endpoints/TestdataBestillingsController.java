@@ -2,13 +2,13 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
@@ -23,12 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -37,11 +32,13 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonLagreRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonMiljoe;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
 import no.nav.tps.forvalteren.service.command.excel.ExcelService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -179,15 +176,15 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, RsPerson> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
+    public List<RsPersonMiljoe> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
 
         Map<String, Person> miljoePerson = importerPersonService.importFraTps(request);
         return miljoePerson.entrySet().parallelStream()
-                .map(entry -> PersonMiljoe.builder()
-                        .moiljoe(entry.getKey())
+                .map(entry -> RsPersonMiljoe.builder()
+                        .environment(entry.getKey())
                         .person(mapperFacade.map(entry.getValue(), RsPerson.class))
                         .build())
-                .collect(toMap(PersonMiljoe::getMoiljoe, PersonMiljoe::getPerson));
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -195,19 +192,8 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public String importerPerson(@RequestBody ImporterPersonRequest request) {
+    public String importerPerson(@RequestBody ImporterPersonLagreRequest request) {
 
         return importerPersonService.importFraTpsOgLagre(request);
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    private static class PersonMiljoe {
-
-        private String moiljoe;
-        private RsPerson person;
     }
 }

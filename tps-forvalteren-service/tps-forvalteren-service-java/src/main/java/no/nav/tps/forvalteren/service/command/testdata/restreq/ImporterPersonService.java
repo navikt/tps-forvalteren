@@ -24,10 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.ctg.s610.domain.RelasjonType;
 import no.nav.tps.ctg.s610.domain.S610EnkeltRelasjonType;
 import no.nav.tps.ctg.s610.domain.S610PersonType;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonLagreRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
 import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -53,14 +55,14 @@ public class ImporterPersonService {
 
     public Map<String, Person> importFraTps(ImporterPersonRequest request) {
 
-        Map<String, S610PersonType> miljoePerson = importFromTps(request.getIdent(), request.getMiljoe());
+        Map<String, S610PersonType> miljoePerson = importFromTps(request);
 
         Map<String, PersonRelasjon> relasjoner = getRelasjoner(miljoePerson);
 
         return !miljoePerson.isEmpty() ? buildPersonWithRelasjon(relasjoner) : null;
     }
 
-    public String importFraTpsOgLagre(ImporterPersonRequest request) {
+    public String importFraTpsOgLagre(ImporterPersonLagreRequest request) {
 
         if (nonNull(personRepository.findByIdent(request.getIdent()))) {
             throw new TpsfFunctionalException(format("Ident %s finnes allerede", request.getIdent()));
@@ -70,7 +72,10 @@ public class ImporterPersonService {
             throw new TpsfTechnicalException("Miljoe må angis ved lagring");
         }
 
-        Map<String, Person> person = importFraTps(request);
+        Map<String, Person> person = importFraTps(ImporterPersonRequest.builder()
+                .ident(request.getIdent())
+                .miljoe(Collections.singleton(request.getMiljoe()))
+                .build());
 
         List<Relasjon> relasjoner = person.get(0).getRelasjoner();
         person.get(0).setRelasjoner(null);
@@ -96,7 +101,7 @@ public class ImporterPersonService {
         personRelasjon.entrySet().forEach(entry -> {
             if (nonNull(entry.getValue().hovedperson.getBruker().getRelasjoner())) {
 
-                Map<String, Person> familie = personRelasjon.get(entry.getKey()).getRelasjoner().entrySet().parallelStream()
+                Map<String, Person> familie = entry.getValue().getRelasjoner().entrySet().parallelStream()
                         .map(entry2 -> mapperFacade.map(entry2.getValue(), Person.class))
                         .collect(Collectors.toMap(Person::getIdent, pers -> pers));
 
@@ -108,7 +113,7 @@ public class ImporterPersonService {
                             .build());
                     familie.get(relasjon.getFnrRelasjon()).getRelasjoner().add(
                             Relasjon.builder()
-                                    .relasjonTypeNavn(personRelasjon.get(entry.getKey()).getRelasjoner().get(relasjon.getFnrRelasjon())
+                                    .relasjonTypeNavn(entry.getValue().getRelasjoner().get(relasjon.getFnrRelasjon())
                                             .getBruker().getRelasjoner().getRelasjon().stream()
                                             .filter(relasjon2 -> personMiljoe.get(entry.getKey()).getIdent().equals(relasjon2.getFnrRelasjon()))
                                             .map(S610EnkeltRelasjonType::getTypeRelasjon)
@@ -116,6 +121,20 @@ public class ImporterPersonService {
                                     .personRelasjonMed(personMiljoe.get(entry.getKey()))
                                     .person(familie.get(relasjon.getFnrRelasjon()))
                                     .build());
+                });
+                if (!personMiljoe.get(entry.getKey()).getSivilstander().isEmpty()) {
+                    personMiljoe.get(entry.getKey()).getSivilstander().get(0).setPersonRelasjonMed(
+                            familie.get(
+                                    entry.getValue().getHovedperson().getBruker().getRelasjoner().getRelasjon().stream()
+                                            .filter(relasjon -> RelasjonType.EKTE == relasjon.getTypeRelasjon())
+                                            .map(S610EnkeltRelasjonType::getFnrRelasjon)
+                                            .findFirst().get()
+                            ));
+                }
+                familie.values().forEach(person -> {
+                    if (!person.getSivilstander().isEmpty()) {
+                        person.getSivilstander().get(0).setPersonRelasjonMed(personMiljoe.get(entry.getKey()));
+                    }
                 });
             }
         });
@@ -130,16 +149,16 @@ public class ImporterPersonService {
         return personRepository.save(person);
     }
 
-    private Map<String, S610PersonType> importFromTps(String ident, String environment) {
+    private Map<String, S610PersonType> importFromTps(ImporterPersonRequest request) {
 
-        Set<String> environments = isBlank(environment) ?
-                getEnvironments.getEnvironmentsFromFasit(TPSWS) :
-                Collections.singleton(environment);
+        Set<String> environments = nonNull(request.getMiljoe()) && !request.getMiljoe().isEmpty() ?
+                request.getMiljoe() :
+                getEnvironments.getEnvironmentsFromFasit(TPSWS);
 
         return environments.parallelStream()
                 .map(env -> TpsPersonMiljoe.builder()
                         .miljoe(env)
-                        .person(readFromTps(ident, env))
+                        .person(readFromTps(request.getIdent(), env))
                         .build())
                 .filter(tpsPerson -> isNotBlank(tpsPerson.getPerson().getFodselsnummer()))
                 .collect(Collectors.toMap(TpsPersonMiljoe::getMiljoe, TpsPersonMiljoe::getPerson));
