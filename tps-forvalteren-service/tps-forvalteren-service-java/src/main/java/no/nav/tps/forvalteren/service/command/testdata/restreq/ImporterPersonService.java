@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,27 +33,31 @@ import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
+import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @Service
 @RequiredArgsConstructor
 public class ImporterPersonService {
 
-    private final static String STATUS = "status";
-    private final static String STATUS_OK = "00";
+    private static final String STATUS = "status";
+    private static final String STATUS_OK = "00";
+    private static final String TPSWS = "tpsws";
 
     private final PersonRepository personRepository;
     private final TpsServiceRoutineService tpsServiceRoutineService;
+    private final GetEnvironments getEnvironments;
     private final ObjectMapper objectMapper;
     private final MapperFacade mapperFacade;
 
-    public Person importFraTps(ImporterPersonRequest request) {
+    public Map<String, Person> importFraTps(ImporterPersonRequest request) {
 
-        S610PersonType tpsPerson = importFromTps(request.getIdent(), request.getMiljoe());
+        Map<String, S610PersonType> miljoePerson = importFromTps(request.getIdent(), request.getMiljoe());
 
-        PersonRelasjon relasjoner = getRelasjoner(tpsPerson, request.getMiljoe());
+        Map<String, PersonRelasjon> relasjoner = getRelasjoner(miljoePerson);
 
-        return isNotBlank(tpsPerson.getIdentType()) ? buildPersonWithRelasjon(relasjoner) : null;
+        return !miljoePerson.isEmpty() ? buildPersonWithRelasjon(relasjoner) : null;
     }
 
     public String importFraTpsOgLagre(ImporterPersonRequest request) {
@@ -60,49 +66,60 @@ public class ImporterPersonService {
             throw new TpsfFunctionalException(format("Ident %s finnes allerede", request.getIdent()));
         }
 
-        Person person = importFraTps(request);
+        if (isBlank(request.getMiljoe())) {
+            throw new TpsfTechnicalException("Miljoe må angis ved lagring");
+        }
 
-        List<Relasjon> relasjoner = person.getRelasjoner();
-        person.setRelasjoner(null);
-        savePerson(person);
+        Map<String, Person> person = importFraTps(request);
 
-        person.setRelasjoner(relasjoner);
-        person.getRelasjoner().forEach(relasjon ->
+        List<Relasjon> relasjoner = person.get(0).getRelasjoner();
+        person.get(0).setRelasjoner(null);
+        savePerson(person.get(0));
+
+        person.get(0).setRelasjoner(relasjoner);
+        person.get(0).getRelasjoner().forEach(relasjon ->
                 savePerson(relasjon.getPersonRelasjonMed()));
-        savePerson(person);
+        savePerson(person.get(0));
 
-        return person.getIdent();
+        return person.get(0).getIdent();
     }
 
-    private Person buildPersonWithRelasjon(PersonRelasjon personRelasjon) {
+    private Map<String, Person> buildPersonWithRelasjon(Map<String, PersonRelasjon> personRelasjon) {
 
-        Person person = mapperFacade.map(personRelasjon.getHovedperson(), Person.class);
+        Map<String, Person> personMiljoe = personRelasjon.entrySet().parallelStream()
+                .map(entry -> PersonMiljoe.builder()
+                        .miljoe(entry.getKey())
+                        .person(mapperFacade.map(entry.getValue().getHovedperson(), Person.class))
+                        .build())
+                .collect(Collectors.toMap(PersonMiljoe::getMiljoe, PersonMiljoe::getPerson));
 
-        if (nonNull(personRelasjon.getHovedperson().getBruker().getRelasjoner())) {
+        personRelasjon.entrySet().forEach(entry -> {
+            if (nonNull(entry.getValue().hovedperson.getBruker().getRelasjoner())) {
 
-            Map<String, Person> familie = personRelasjon.getRelasjoner().values().parallelStream()
-                    .map(tpsPerson -> mapperFacade.map(tpsPerson, Person.class))
-                    .collect(Collectors.toMap(Person::getIdent, pers -> pers));
+                Map<String, Person> familie = personRelasjon.get(entry.getKey()).getRelasjoner().entrySet().parallelStream()
+                        .map(entry2 -> mapperFacade.map(entry2.getValue(), Person.class))
+                        .collect(Collectors.toMap(Person::getIdent, pers -> pers));
 
-            personRelasjon.getHovedperson().getBruker().getRelasjoner().getRelasjon().forEach(relasjon -> {
-                        person.getRelasjoner().add(Relasjon.builder()
-                                .relasjonTypeNavn(relasjon.getTypeRelasjon().name())
-                                .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
-                                .person(person)
-                                .build());
-                        familie.get(relasjon.getFnrRelasjon()).getRelasjoner().add(
-                                Relasjon.builder()
-                                        .relasjonTypeNavn(personRelasjon.getRelasjoner().get(relasjon.getFnrRelasjon())
-                                                .getBruker().getRelasjoner().getRelasjon().stream()
-                                                .filter(relasjon2 -> person.getIdent().equals(relasjon2.getFnrRelasjon()))
-                                                .map(S610EnkeltRelasjonType::getTypeRelasjon)
-                                                .findFirst().get().name())
-                                        .personRelasjonMed(person)
-                                        .person(familie.get(relasjon.getFnrRelasjon()))
-                                        .build());
-                    });
-        }
-        return person;
+                entry.getValue().getHovedperson().getBruker().getRelasjoner().getRelasjon().forEach(relasjon -> {
+                    personMiljoe.get(entry.getKey()).getRelasjoner().add(Relasjon.builder()
+                            .relasjonTypeNavn(relasjon.getTypeRelasjon().name())
+                            .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
+                            .person(personMiljoe.get(entry.getKey()))
+                            .build());
+                    familie.get(relasjon.getFnrRelasjon()).getRelasjoner().add(
+                            Relasjon.builder()
+                                    .relasjonTypeNavn(personRelasjon.get(entry.getKey()).getRelasjoner().get(relasjon.getFnrRelasjon())
+                                            .getBruker().getRelasjoner().getRelasjon().stream()
+                                            .filter(relasjon2 -> personMiljoe.get(entry.getKey()).getIdent().equals(relasjon2.getFnrRelasjon()))
+                                            .map(S610EnkeltRelasjonType::getTypeRelasjon)
+                                            .findFirst().get().name())
+                                    .personRelasjonMed(personMiljoe.get(entry.getKey()))
+                                    .person(familie.get(relasjon.getFnrRelasjon()))
+                                    .build());
+                });
+            }
+        });
+        return personMiljoe;
     }
 
     private Person savePerson(Person person) {
@@ -113,7 +130,22 @@ public class ImporterPersonService {
         return personRepository.save(person);
     }
 
-    private S610PersonType importFromTps(String ident, String environment) {
+    private Map<String, S610PersonType> importFromTps(String ident, String environment) {
+
+        Set<String> environments = isBlank(environment) ?
+                getEnvironments.getEnvironmentsFromFasit(TPSWS) :
+                Collections.singleton(environment);
+
+        return environments.parallelStream()
+                .map(env -> TpsPersonMiljoe.builder()
+                        .miljoe(env)
+                        .person(readFromTps(ident, env))
+                        .build())
+                .filter(tpsPerson -> isNotBlank(tpsPerson.getPerson().getFodselsnummer()))
+                .collect(Collectors.toMap(TpsPersonMiljoe::getMiljoe, TpsPersonMiljoe::getPerson));
+    }
+
+    private S610PersonType readFromTps(String ident, String environment) {
 
         TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
                 buildRequest(ident, environment), true);
@@ -122,9 +154,18 @@ public class ImporterPersonService {
             return objectMapper.convertValue(((Map) response.getResponse()).get("data1"), S610PersonType.class);
 
         } else {
-            throw new TpsfFunctionalException(
-                    format("Ident %s finnes ikke i miljoe %s", ident, environment));
+            return new S610PersonType();
         }
+    }
+
+    private Map<String, PersonRelasjon> getRelasjoner(Map<String, S610PersonType> tpsPerson) {
+
+        return tpsPerson.entrySet().parallelStream()
+                .map(entry -> PersonRelasjonMiljoe.builder()
+                        .miljoe(entry.getKey())
+                        .personRelasjon(getRelasjoner(entry.getValue(), entry.getKey()))
+                        .build())
+                .collect(Collectors.toMap(PersonRelasjonMiljoe::getMiljoe, PersonRelasjonMiljoe::getPersonRelasjon));
     }
 
     private PersonRelasjon getRelasjoner(S610PersonType tpsPerson, String miljoe) {
@@ -132,7 +173,7 @@ public class ImporterPersonService {
         return PersonRelasjon.builder()
                 .relasjoner(nonNull(tpsPerson.getBruker().getRelasjoner()) ?
                         tpsPerson.getBruker().getRelasjoner().getRelasjon().parallelStream()
-                                .map(relasjon -> importFromTps(relasjon.getFnrRelasjon(), miljoe))
+                                .map(relasjon -> readFromTps(relasjon.getFnrRelasjon(), miljoe))
                                 .collect(Collectors.toMap(S610PersonType::getFodselsnummer, person -> person)) :
                         Collections.emptyMap())
                 .hovedperson(tpsPerson)
@@ -156,5 +197,38 @@ public class ImporterPersonService {
 
         private S610PersonType hovedperson;
         private Map<String, S610PersonType> relasjoner;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class PersonRelasjonMiljoe {
+
+        private String miljoe;
+        private PersonRelasjon personRelasjon;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class PersonMiljoe {
+
+        private String miljoe;
+        private Person person;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class TpsPersonMiljoe {
+
+        private String miljoe;
+        private S610PersonType person;
     }
 }

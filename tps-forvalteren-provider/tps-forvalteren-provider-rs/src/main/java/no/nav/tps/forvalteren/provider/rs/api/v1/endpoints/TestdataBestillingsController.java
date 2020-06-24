@@ -2,11 +2,13 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
 import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.transaction.Transactional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
@@ -21,7 +23,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
@@ -172,9 +179,15 @@ public class TestdataBestillingsController {
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public RsPerson hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
+    public Map<String, RsPerson> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
 
-        return mapperFacade.map(importerPersonService.importFraTps(request), RsPerson.class);
+        Map<String, Person> miljoePerson = importerPersonService.importFraTps(request);
+        return miljoePerson.entrySet().parallelStream()
+                .map(entry -> PersonMiljoe.builder()
+                        .moiljoe(entry.getKey())
+                        .person(mapperFacade.map(entry.getValue(), RsPerson.class))
+                        .build())
+                .collect(toMap(PersonMiljoe::getMoiljoe, PersonMiljoe::getPerson));
     }
 
     @Transactional
@@ -185,5 +198,16 @@ public class TestdataBestillingsController {
     public String importerPerson(@RequestBody ImporterPersonRequest request) {
 
         return importerPersonService.importFraTpsOgLagre(request);
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class PersonMiljoe {
+
+        private String moiljoe;
+        private RsPerson person;
     }
 }
