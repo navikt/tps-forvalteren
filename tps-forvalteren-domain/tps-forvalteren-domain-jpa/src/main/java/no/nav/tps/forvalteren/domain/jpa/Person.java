@@ -198,6 +198,9 @@ public class Person extends ChangeStamp {
     @Column(name = "TELEFONNUMMER_2")
     private String telefonnummer_2;
 
+    @Column(name = "IMPORT_FRA")
+    private String importFra;
+
     @Transient
     private String replacedByIdent;
 

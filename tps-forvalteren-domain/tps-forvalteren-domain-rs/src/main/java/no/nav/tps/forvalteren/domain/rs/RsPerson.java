@@ -137,6 +137,8 @@ public class RsPerson {
 
     private List<RsSivilstand> sivilstander;
 
+    private String importFra;
+
     public List<RsRelasjon> getRelasjoner() {
         if (isNull(relasjoner)) {
             relasjoner = new ArrayList();

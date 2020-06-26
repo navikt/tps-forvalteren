@@ -129,8 +129,8 @@ public class ImporterPersonService {
         List<PersonRelasjonDiv> personRelasjoner = personer.stream().map(person1 ->
                 PersonRelasjonDiv.builder()
                         .person(person1)
-                        .relasjoner(person.getRelasjoner())
-                        .sivilstander(person.getSivilstander())
+                        .relasjoner(person1.getRelasjoner())
+                        .sivilstander(person1.getSivilstander())
                         .build())
                 .collect(Collectors.toList());
 
@@ -195,7 +195,7 @@ public class ImporterPersonService {
                                 emptyList()));
     }
 
-    private static boolean isGift(RelasjonType relasjonType) {
+    private static boolean isGift(RelasjonType relasjonType) { //NOSONAR
         return EKTE == relasjonType ||
                 ENKE == relasjonType ||
                 SKIL == relasjonType ||

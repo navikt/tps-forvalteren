@@ -48,6 +48,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
     private static final String POST_NORGE = "POST";
     private static final String NORGE = "NOR";
     private static final String TRUE = "J";
+    private static final String TPS = "TPS";
 
     @Override public void register(MapperFactory factory) {
         factory.classMap(S610PersonType.class, Person.class)
@@ -96,6 +97,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                                 LocalDateTime.now() : null);
                         person.setSivilstand(getSivilstand(tpsPerson));
                         person.setSivilstandRegdato(getTimestamp(tpsPerson.getSivilstandDetalj().getSivilstTidspunkt()));
+                        person.setImportFra(TPS);
                     }
 
                 })
