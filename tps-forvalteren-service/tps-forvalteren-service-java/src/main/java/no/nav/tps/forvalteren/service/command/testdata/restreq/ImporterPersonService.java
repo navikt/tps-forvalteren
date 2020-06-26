@@ -195,7 +195,8 @@ public class ImporterPersonService {
                                 emptyList()));
     }
 
-    private static boolean isGift(RelasjonType relasjonType) { //NOSONAR
+    private static boolean isGift(RelasjonType relasjonType) {
+
         return EKTE == relasjonType ||
                 ENKE == relasjonType ||
                 SKIL == relasjonType ||
