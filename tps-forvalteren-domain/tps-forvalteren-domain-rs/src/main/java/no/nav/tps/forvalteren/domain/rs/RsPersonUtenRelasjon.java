@@ -19,7 +19,7 @@ import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RsPersonUtenRelasjon {
 
     private Long personId;
