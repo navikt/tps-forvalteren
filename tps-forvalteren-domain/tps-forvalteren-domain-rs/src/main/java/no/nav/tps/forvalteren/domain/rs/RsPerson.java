@@ -21,7 +21,7 @@ import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RsPerson {
 
     private Long personId;
