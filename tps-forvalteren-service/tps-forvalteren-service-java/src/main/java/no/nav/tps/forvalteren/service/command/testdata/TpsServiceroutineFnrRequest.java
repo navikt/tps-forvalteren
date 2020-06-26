@@ -8,7 +8,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 
 @Component
 public class TpsServiceroutineFnrRequest {
-    
+
     public Map buildRequest(Person person, String environment) {
         Map<String, Object> params = new HashMap<>();
         params.put("fnr", person.getIdent());

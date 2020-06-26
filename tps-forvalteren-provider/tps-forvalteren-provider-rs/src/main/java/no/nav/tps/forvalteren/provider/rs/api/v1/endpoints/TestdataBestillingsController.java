@@ -7,6 +7,8 @@ import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSE
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
@@ -30,10 +32,13 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonLagreRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsOppdaterPersonResponse;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonMiljoe;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.dolly.ListExtractorKommaSeperated;
 import no.nav.tps.forvalteren.service.command.excel.ExcelService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
@@ -41,6 +46,7 @@ import no.nav.tps.forvalteren.service.command.testdata.SjekkIdenterService;
 import no.nav.tps.forvalteren.service.command.testdata.response.CheckIdentResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.EndrePersonBestillingService;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.ImporterPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonIdenthistorikkService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
@@ -58,7 +64,7 @@ public class TestdataBestillingsController {
     private static final String EXCEL_FEILMELDING = "Feil ved pakking av Excel-fil";
 
     private final PersonerBestillingService personerBestillingService;
-    private final MapperFacade mapper;
+    private final MapperFacade mapperFacade;
     private final LagreTilTpsService lagreTilTps;
     private final ListExtractorKommaSeperated listExtractorKommaSeperated;
     private final SjekkIdenterService sjekkIdenterService;
@@ -67,6 +73,7 @@ public class TestdataBestillingsController {
     private final PersonIdenthistorikkService personIdenthistorikkService;
     private final EndrePersonBestillingService endrePersonBestillingService;
     private final RelasjonEksisterendePersonerBestillingService relasjonEksisterendePersonerBestillingService;
+    private final ImporterPersonService importerPersonService;
 
     @Transactional
     @LogExceptions
@@ -92,7 +99,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
     public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
         List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
-        return mapper.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
+        return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
     @Transactional
@@ -101,7 +108,7 @@ public class TestdataBestillingsController {
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
 
-        return mapper.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
+        return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
     @LogExceptions
@@ -163,5 +170,30 @@ public class TestdataBestillingsController {
     public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
 
         return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
+    }
+
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public List<RsPersonMiljoe> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
+
+        Map<String, Person> miljoePerson = importerPersonService.importFraTps(request);
+        return miljoePerson.entrySet().parallelStream()
+                .map(entry -> RsPersonMiljoe.builder()
+                        .environment(entry.getKey())
+                        .person(mapperFacade.map(entry.getValue(), RsPerson.class))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @LogExceptions
+    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
+    @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public String importerPerson(@RequestBody ImporterPersonLagreRequest request) {
+
+        return importerPersonService.importFraTpsOgLagre(request);
     }
 }
