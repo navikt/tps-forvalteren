@@ -163,6 +163,7 @@ public class ImporterPersonService {
 
         tpsFamilie.forEach(person ->
                 familie.get(person.getFodselsnummer()).getRelasjoner().addAll(
+                        nonNull(person.getBruker().getRelasjoner()) ?
                         person.getBruker().getRelasjoner().getRelasjon().parallelStream()
                                 .map(relasjon -> Relasjon.builder()
                                         .relasjonTypeNavn(isGift(relasjon.getTypeRelasjon()) ? PARTNER.name() :
@@ -170,7 +171,7 @@ public class ImporterPersonService {
                                         .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
                                         .person(familie.get(person.getFodselsnummer()))
                                         .build())
-                                .collect(Collectors.toList())));
+                                .collect(Collectors.toList()) : emptyList()));
 
         mapSivilstand(tpsFamilie, familie);
 

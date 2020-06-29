@@ -108,7 +108,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
 
     public static LocalDateTime getTimestamp(String dato) {
 
-        return isNotBlank(dato) ? LocalDate.parse(dato).atStartOfDay() : null;
+        return isNotBlank(dato) ? LocalDate.parse(dato).atStartOfDay() : LocalDateTime.now();
     }
 
     public static String getSivilstand(S610PersonType tpsPerson) {
