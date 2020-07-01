@@ -79,7 +79,7 @@ public class ImporterPersonService {
         return !miljoePerson.isEmpty() ? buildMiljoePersonWithRelasjon(relasjoner) : emptyMap();
     }
 
-    public String importFraTpsOgLagre(ImporterPersonLagreRequest request) {
+    public Person importFraTpsOgLagre(ImporterPersonLagreRequest request) {
 
         if (nonNull(personRepository.findByIdent(request.getIdent()))) {
             throw new TpsfFunctionalException(format("Ident %s finnes allerede", request.getIdent()));
@@ -103,7 +103,7 @@ public class ImporterPersonService {
             attachReleasjoner(personRelasjoner);
             personRelasjoner.forEach(person1 -> savePerson(person1.getPerson()));
 
-            return person.getIdent();
+            return person;
 
         } else {
             throw new TpsfFunctionalException(
