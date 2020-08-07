@@ -1,7 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -47,8 +48,8 @@ public class PersonNameServiceTest {
         verify(personMock1).setFornavn(stringCaptor.capture());
         verify(personMock2).setFornavn(stringCaptor.capture());
 
-        assertThat(stringCaptor.getAllValues().get(0), not(isEmptyOrNullString()));
-        assertThat(stringCaptor.getAllValues().get(1), not(isEmptyOrNullString()));
+        assertThat(stringCaptor.getAllValues().get(0), not(is(emptyOrNullString())));
+        assertThat(stringCaptor.getAllValues().get(1), not(is(emptyOrNullString())));
     }
 
     @Test
@@ -59,8 +60,8 @@ public class PersonNameServiceTest {
         verify(personMock1).setMellomnavn(stringCaptor.capture());
         verify(personMock2).setMellomnavn(stringCaptor.capture());
 
-        assertThat(stringCaptor.getAllValues().get(0), not(isEmptyOrNullString()));
-        assertThat(stringCaptor.getAllValues().get(1), not(isEmptyOrNullString()));
+        assertThat(stringCaptor.getAllValues().get(0), not(is(emptyOrNullString())));
+        assertThat(stringCaptor.getAllValues().get(1), not(is(emptyOrNullString())));
     }
 
     @Test
@@ -70,8 +71,8 @@ public class PersonNameServiceTest {
         verify(personMock1).setEtternavn(stringCaptor.capture());
         verify(personMock2).setEtternavn(stringCaptor.capture());
 
-        assertThat(stringCaptor.getAllValues().get(0), not(isEmptyOrNullString()));
-        assertThat(stringCaptor.getAllValues().get(1), not(isEmptyOrNullString()));
+        assertThat(stringCaptor.getAllValues().get(0), not(is(emptyOrNullString())));
+        assertThat(stringCaptor.getAllValues().get(1), not(is(emptyOrNullString())));
     }
 
 }

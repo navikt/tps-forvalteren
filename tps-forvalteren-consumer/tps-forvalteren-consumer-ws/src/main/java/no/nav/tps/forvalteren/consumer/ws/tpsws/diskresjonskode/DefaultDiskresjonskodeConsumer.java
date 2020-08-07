@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
 import java.util.List;
-import javax.xml.ws.soap.SOAPFaultException;
+import javax.xml.rpc.soap.SOAPFaultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDiskresjonskodeConsumer.class);
 
     static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
-    static final String INVALID_FNR_TPSWS_ERROR      = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     // Test user
     private static final String FNR_TEST_PERSON_IPROD = "10108000398";
@@ -49,7 +49,7 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
             LOGGER.warn("TPSWS: hentDiskresjonskode failed with exception: {}", exception.toString());
 
             boolean noMatchesFound = exception.getMessage().contains(NO_MATCHES_FOUND_TPSWS_ERROR);
-            boolean invalidFnr     = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
+            boolean invalidFnr = exception.getMessage().contains(INVALID_FNR_TPSWS_ERROR);
 
             if (noMatchesFound || invalidFnr) {
                 HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
