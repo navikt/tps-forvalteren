@@ -20,7 +20,7 @@ public class ConvertDateToStringTest {
     @Test(expected = IllegalAccessException.class)
     public void callConstructorFails() throws  Exception{
         Class clazs = getClass().getClassLoader().loadClass("no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString");
-        clazs.newInstance();
+        clazs.getDeclaredConstructor().newInstance();
     }
 
     @Test

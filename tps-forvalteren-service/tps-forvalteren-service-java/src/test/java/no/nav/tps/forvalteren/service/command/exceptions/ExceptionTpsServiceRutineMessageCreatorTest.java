@@ -21,7 +21,7 @@ public class ExceptionTpsServiceRutineMessageCreatorTest {
 
         Class clazz = Class.forName(
                 "no.nav.tps.forvalteren.service.command.exceptions.ExceptionTpsServiceRutineMessageCreator");
-        clazz.newInstance();
+        clazz.getDeclaredConstructor().newInstance();
     }
 
     @Test
