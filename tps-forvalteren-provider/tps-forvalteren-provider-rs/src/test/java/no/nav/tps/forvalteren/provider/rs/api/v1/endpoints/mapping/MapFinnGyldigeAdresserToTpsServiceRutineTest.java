@@ -43,7 +43,7 @@ public class MapFinnGyldigeAdresserToTpsServiceRutineTest {
         assertEquals(J, tpsServiceRoutineRequest.getVisPostnr());
         assertEquals(N, tpsServiceRoutineRequest.getAlleSkrivevarianter());
         assertEquals(J, tpsServiceRoutineRequest.getAlltidRetur());
-        assertEquals(new Integer(5), tpsServiceRoutineRequest.getMaxRetur());
+        assertEquals(Integer.valueOf(5), tpsServiceRoutineRequest.getMaxRetur());
         assertEquals(ADRESSENAVN, tpsServiceRoutineRequest.getAdresseNavnsok());
     }
     

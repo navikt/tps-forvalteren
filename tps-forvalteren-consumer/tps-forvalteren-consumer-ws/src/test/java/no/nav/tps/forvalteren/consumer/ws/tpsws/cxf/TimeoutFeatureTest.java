@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.apache.cxf.endpoint.Client;
@@ -49,7 +49,7 @@ public class TimeoutFeatureTest {
 
         new TimeoutFeature(RECEIVE_TIMEOUT).initialize(client, null);
 
-        verifyZeroInteractions(conduit);
+        verifyNoInteractions(conduit);
     }
 
     @Test

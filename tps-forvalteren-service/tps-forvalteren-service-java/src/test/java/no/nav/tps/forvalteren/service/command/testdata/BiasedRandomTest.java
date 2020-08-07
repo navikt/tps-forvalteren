@@ -14,7 +14,7 @@ public class BiasedRandomTest {
     public void privateConstructorCannotBeCalled() throws Exception {
 
         Class clas = Class.forName("no.nav.tps.forvalteren.service.command.testdata.utils.BiasedRandom");
-        clas.newInstance();
+        clas.getDeclaredConstructor().newInstance();
     }
 
     @Test

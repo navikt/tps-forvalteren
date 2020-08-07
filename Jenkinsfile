@@ -1,7 +1,7 @@
 naiseratorApplicationPipeline {
     applicationName = "tps-forvalteren"
     team = "registre"
-    javaVersion = "1.8"
+    javaVersion = "11"
     namespace = "default"
     branchDeployments = [
         [branch: "release/test", namespace: "u2"],

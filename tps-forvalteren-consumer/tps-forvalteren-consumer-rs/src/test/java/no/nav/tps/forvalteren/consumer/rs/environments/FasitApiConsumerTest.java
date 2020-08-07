@@ -21,7 +21,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitApplication;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,9 +31,6 @@ public class FasitApiConsumerTest {
 
     @Mock
     private RestTemplate restTemplate;
-
-    @Mock
-    private MapperFacade mapperFacade;
 
     @Mock
     private ResponseEntity<FasitApplication[]> applications;
@@ -69,7 +65,7 @@ public class FasitApiConsumerTest {
     @Test
     public void getEnvironmentsReturnsListWithOneEnvironment() {
 
-        when(applications.getBody()).thenReturn((FasitApplication[]) Arrays.asList(q4).toArray());
+        when(applications.getBody()).thenReturn(new FasitApplication[] { q4 });
 
         List<String> response = Arrays.asList("q4");
 
@@ -79,7 +75,7 @@ public class FasitApiConsumerTest {
 
     @Test
     public void getEnvironmentsReturnsListWithAllEnvironments() {
-        when(applications.getBody()).thenReturn((FasitApplication[]) Arrays.asList(p, q4, t3).toArray());
+        when(applications.getBody()).thenReturn(new FasitApplication[] { p, q4, t3 });
 
         assertThat(consumer.getEnvironments("tpsws"), containsInAnyOrder("p", "q4", "t3"));
     }

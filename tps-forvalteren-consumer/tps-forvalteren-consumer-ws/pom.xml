@@ -107,7 +107,17 @@
             <artifactId>javaee-api</artifactId>
         </dependency>
 
+        <!-- API -->
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+        </dependency>
 
+        <!-- Runtime -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

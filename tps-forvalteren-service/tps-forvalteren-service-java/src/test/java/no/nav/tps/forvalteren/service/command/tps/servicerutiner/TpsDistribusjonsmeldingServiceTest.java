@@ -92,12 +92,12 @@ public class TpsDistribusjonsmeldingServiceTest {
     public void sendDetailedMessageToTps_sendError() throws Exception {
 
         when(messageQueueServiceFactory.createMessageQueueConsumer(ENV, QUEUE_NAME, true)).thenThrow(JMSException.class);
-        when(messageProvider.get(TPS_SEND_ERROR, null)).thenReturn(SEND_ERROR);
+        when(messageProvider.get(TPS_SEND_ERROR, (Object[]) null)).thenReturn(SEND_ERROR);
 
         String result = tpsDistribusjonsmeldingService.sendDetailedMessageToTps(DISTRIBUSJONSMELDING, MESSAGE, ENV, QUEUE_NAME, false);
 
         verify(messageQueueServiceFactory).createMessageQueueConsumer(ENV, QUEUE_NAME, true);
-        verify(messageProvider).get(TPS_SEND_ERROR, null);
+        verify(messageProvider).get(TPS_SEND_ERROR,  (Object[]) null);
         assertThat(result, is(equalTo(SEND_ERROR)));
     }
 
