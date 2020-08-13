@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,7 +55,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 
 @Slf4j
 @RestController
-@Transactional(propagation = Propagation.MANDATORY)
 @RequiredArgsConstructor
 @RequestMapping(value = "api/v1/dolly/testdata")
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
@@ -87,7 +85,7 @@ public class TestdataBestillingsController {
         return personer.stream().map(Person::getIdent).collect(toList());
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "flereTilTps") })
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)

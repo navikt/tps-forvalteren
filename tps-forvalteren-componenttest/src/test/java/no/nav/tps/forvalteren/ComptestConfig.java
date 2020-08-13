@@ -116,6 +116,6 @@ public class ComptestConfig {
 
     @Bean
     public ForkJoinPool tpsfForkJoinPool() {
-        return new ForkJoinPool(10, new ForkJoinWorkerThreadFactory(), null, true);
+        return new ForkJoinPool(1, new ForkJoinWorkerThreadFactory(), null, true);
     }
 }
