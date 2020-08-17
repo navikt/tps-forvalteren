@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -284,7 +285,7 @@ public class ImporterPersonService {
                 .relasjoner(nonNull(tpsPerson.getBruker().getRelasjoner()) ?
                         tpsPerson.getBruker().getRelasjoner().getRelasjon().parallelStream()
                                 .map(relasjon -> readFromTps(relasjon.getFnrRelasjon(), miljoe).getPerson())
-                                .filter(relasjon -> nonNull(relasjon))
+                                .filter(Objects::nonNull)
                                 .collect(Collectors.toList()) :
                         emptyList())
                 .hovedperson(tpsPerson)
