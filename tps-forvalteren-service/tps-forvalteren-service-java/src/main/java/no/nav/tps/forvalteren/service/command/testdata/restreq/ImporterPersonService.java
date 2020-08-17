@@ -4,7 +4,6 @@ import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.EKTE;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.ENKE;
@@ -101,11 +100,7 @@ public class ImporterPersonService {
             Person person = personMiljoe.values().iterator().next();
 
             List<PersonRelasjonDiv> personRelasjoner = detachReleasjoner(person);
-            personRelasjoner.forEach(person1 -> {
-                if (isNull(personRepository.findByIdent(person1.getPerson().getIdent()))) {
-                    savePerson(person1.getPerson());
-                }
-            });
+            personRelasjoner.forEach(person1 -> savePerson(person1.getPerson()));
 
             attachReleasjoner(personRelasjoner);
             personRelasjoner.forEach(person1 -> savePerson(person1.getPerson()));
@@ -309,7 +304,7 @@ public class ImporterPersonService {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PersonRelasjon {
+    private static class PersonRelasjon {
 
         private S610PersonType hovedperson;
         private List<S610PersonType> relasjoner;
@@ -320,7 +315,7 @@ public class ImporterPersonService {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PersonRelasjonMiljoe {
+    private static class PersonRelasjonMiljoe {
 
         private String miljoe;
         private PersonRelasjon personRelasjon;
@@ -331,7 +326,7 @@ public class ImporterPersonService {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PersonMiljoe {
+    private static class PersonMiljoe {
 
         private String miljoe;
         private Person person;
@@ -342,7 +337,7 @@ public class ImporterPersonService {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class TpsPersonMiljoe {
+    private static class TpsPersonMiljoe {
 
         private String miljoe;
         private S610PersonType person;
@@ -354,7 +349,7 @@ public class ImporterPersonService {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PersonRelasjonDiv {
+    private static class PersonRelasjonDiv {
 
         private Person person;
         private List<Sivilstand> sivilstander;
