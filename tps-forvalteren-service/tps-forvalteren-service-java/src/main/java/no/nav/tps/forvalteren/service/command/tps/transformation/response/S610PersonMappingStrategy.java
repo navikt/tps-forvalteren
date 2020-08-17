@@ -67,7 +67,8 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                                 .statsborgerskapRegdato(getTimestamp(tpsPerson.getStatsborgerskapDetalj().getDatoStatsborgerskap()))
                                 .person(person)
                                 .build());
-                        person.setDoedsdato(getTimestamp(tpsPerson.getDatoDo()));
+                        person.setDoedsdato(isNotBlank(tpsPerson.getDatoDo()) ?
+                                LocalDate.parse(tpsPerson.getDatoDo()).atStartOfDay() : null);
                         person.setTknr(getTknr(tpsPerson.getBruker().getNAVenhetDetalj()));
                         person.setTknavn(getTknavn(tpsPerson.getBruker().getNAVenhetDetalj()));
                         person.setGtType(getGtType(tpsPerson.getBruker().getGeografiskTilknytning()));

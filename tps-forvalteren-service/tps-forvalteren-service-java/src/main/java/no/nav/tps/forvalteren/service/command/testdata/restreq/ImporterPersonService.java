@@ -19,7 +19,6 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getSivilstand;
 import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getTimestamp;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,6 +40,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.ctg.s610.domain.RelasjonType;
 import no.nav.tps.ctg.s610.domain.S610PersonType;
@@ -56,12 +57,14 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImporterPersonService {
 
     private static final String STATUS = "status";
     private static final String STATUS_OK = "00";
+    private static final String STATUS_WARN = "04";
     private static final String TPSWS = "tpsws";
 
     private final PersonRepository personRepository;
@@ -164,14 +167,17 @@ public class ImporterPersonService {
         tpsFamilie.forEach(person ->
                 familie.get(person.getFodselsnummer()).getRelasjoner().addAll(
                         nonNull(person.getBruker().getRelasjoner()) ?
-                        person.getBruker().getRelasjoner().getRelasjon().parallelStream()
-                                .map(relasjon -> Relasjon.builder()
-                                        .relasjonTypeNavn(isGift(relasjon.getTypeRelasjon()) ? PARTNER.name() :
-                                                relasjon.getTypeRelasjon().name())
-                                        .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
-                                        .person(familie.get(person.getFodselsnummer()))
-                                        .build())
-                                .collect(Collectors.toList()) : emptyList()));
+                                person.getBruker().getRelasjoner().getRelasjon().stream()
+                                        .filter(relasjon ->
+                                                tpsFamilie.stream().anyMatch(person1 ->
+                                                        relasjon.getFnrRelasjon().equals(person1.getFodselsnummer())))
+                                        .map(relasjon -> Relasjon.builder()
+                                                .relasjonTypeNavn(isGift(relasjon.getTypeRelasjon()) ? PARTNER.name() :
+                                                        relasjon.getTypeRelasjon().name())
+                                                .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
+                                                .person(familie.get(person.getFodselsnummer()))
+                                                .build())
+                                        .collect(Collectors.toList()) : emptyList()));
 
         mapSivilstand(tpsFamilie, familie);
 
@@ -226,23 +232,41 @@ public class ImporterPersonService {
         return environments.parallelStream()
                 .map(env -> TpsPersonMiljoe.builder()
                         .miljoe(env)
-                        .person(readFromTps(request.getIdent(), env))
+                        .person(readFromTps(request.getIdent(), env).getPerson())
                         .build())
-                .filter(tpsPerson -> isNotBlank(tpsPerson.getPerson().getFodselsnummer()))
+                .filter(tpsPerson -> nonNull(tpsPerson.getPerson()))
                 .collect(Collectors.toMap(TpsPersonMiljoe::getMiljoe, TpsPersonMiljoe::getPerson));
     }
 
-    private S610PersonType readFromTps(String ident, String environment) {
+    private TpsPersonMiljoe readFromTps(String ident, String environment) {
 
-        TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
-                buildRequest(ident, environment), true);
+        try {
+            TpsServiceRoutineResponse response = tpsServiceRoutineService.execute(PERSON_KERNINFO_SERVICE_ROUTINE,
+                    buildRequest(ident, environment), true);
 
-        if (STATUS_OK.equals(((ResponseStatus) ((Map) response.getResponse()).get(STATUS)).getKode())) {
-            return objectMapper.convertValue(((Map) response.getResponse()).get("data1"), S610PersonType.class);
-
-        } else {
-            return new S610PersonType();
+            if (isStatusOK(((ResponseStatus) ((Map) response.getResponse()).get(STATUS)))) {
+                return TpsPersonMiljoe.builder()
+                        .person(objectMapper.convertValue(((Map) response.getResponse()).get("data1"), S610PersonType.class))
+                        .miljoe(environment)
+                        .build();
+            } else {
+                return TpsPersonMiljoe.builder()
+                        .errorMsg(((ResponseStatus) ((Map) response.getResponse()).get(STATUS)).getUtfyllendeMelding())
+                        .miljoe(environment)
+                        .build();
+            }
+        } catch (RuntimeException e) {
+            log.error(e.getMessage(), e);
+            return TpsPersonMiljoe.builder()
+                    .errorMsg(e.getMessage().contains("Unable to find environment") ?
+                            format("Unable to find environment %s", environment) : e.getMessage())
+                    .miljoe(environment)
+                    .build();
         }
+    }
+
+    private static boolean isStatusOK(ResponseStatus status) {
+        return STATUS_OK.equals(status.getKode()) || STATUS_WARN.equals(status.getKode());
     }
 
     private Map<String, PersonRelasjon> getRelasjoner(Map<String, S610PersonType> tpsPerson) {
@@ -260,7 +284,8 @@ public class ImporterPersonService {
         return PersonRelasjon.builder()
                 .relasjoner(nonNull(tpsPerson.getBruker().getRelasjoner()) ?
                         tpsPerson.getBruker().getRelasjoner().getRelasjon().parallelStream()
-                                .map(relasjon -> readFromTps(relasjon.getFnrRelasjon(), miljoe))
+                                .map(relasjon -> readFromTps(relasjon.getFnrRelasjon(), miljoe).getPerson())
+                                .filter(Objects::nonNull)
                                 .collect(Collectors.toList()) :
                         emptyList())
                 .hovedperson(tpsPerson)
@@ -317,6 +342,7 @@ public class ImporterPersonService {
 
         private String miljoe;
         private S610PersonType person;
+        private String errorMsg;
     }
 
     @Getter
