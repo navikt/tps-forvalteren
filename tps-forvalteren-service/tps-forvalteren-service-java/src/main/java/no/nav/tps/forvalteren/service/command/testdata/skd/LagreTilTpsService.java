@@ -118,7 +118,7 @@ public class LagreTilTpsService {
             Set<String> safeEnvironments = Sets.newHashSet(environments);
             Set<String> unsafeEnvironment = new HashSet<>();
             skdMldResponse.stream()
-                    .filter(response -> response.getSkdmeldingstype().equals(TPS))
+                    .filter(response -> TPS.equals(response.getSkdmeldingstype()))
                     .map(response -> response.getStatus().keySet())
                     .collect(Collectors.toSet()).forEach(unsafeEnvironment::addAll);
 
@@ -140,6 +140,7 @@ public class LagreTilTpsService {
             return new RsSkdMeldingResponse(null, skdMldResponse, serviceRoutineResponser);
 
         } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
             throw new TpsfTechnicalException("Multi-threading feilet mot TPS", e);
         }
     }
