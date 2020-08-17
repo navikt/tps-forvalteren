@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.core.Is.is;
@@ -72,6 +73,9 @@ public class LagreTilTpsServiceTest {
     @Mock
     private PersonService personService;
 
+    @Mock
+    private PersonStatusFraMiljoService personStatusFraMiljoService;
+
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;
 
@@ -103,8 +107,7 @@ public class LagreTilTpsServiceTest {
         when(findGruppeByIdMock.execute(GRUPPE_ID)).thenReturn(gruppe);
         when(findPersonerSomSkalHaFoedselsmelding.execute(personsInGruppe)).thenReturn(persons);
 
-        when(skdMeldingSender.sendInnvandringsMeldinger(anyList(), anySet())).thenReturn(
-                List.of(SendSkdMeldingTilTpsResponse.builder().skdmeldingstype(INNVANDRING_MLD).status(Map.of("env","OK")).build()));
+        when(skdMeldingSender.sendInnvandringsMeldinger(anyList(), anySet())).thenReturn(innvandringResponse);
         when(skdMeldingSender.sendUpdateInnvandringsMeldinger(anyList(), anySet())).thenReturn(updateInnvadringResponse);
         when(skdMeldingSender.sendFoedselsMeldinger(anyList(), anySet())).thenReturn(foedselsmeldingResponse);
         when(skdMeldingSender.sendRelasjonsmeldinger(anyList(), anySet())).thenReturn(relasjonsResponse);
@@ -116,6 +119,10 @@ public class LagreTilTpsServiceTest {
     @Test
     public void checkThatServicesGetsCalled() throws Exception {
         innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("123").build());
+        when(skdMeldingSender.sendInnvandringsMeldinger(anyList(), anySet())).thenReturn(
+                        List.of(SendSkdMeldingTilTpsResponse.builder().skdmeldingstype(INNVANDRING_MLD)
+                                .status(newHashMap(Map.of("env","OK"))).build()));
+
         lagreTilTpsService.execute(GRUPPE_ID, environments);
 
         verify(skdMeldingSender, times(3)).sendInnvandringsMeldinger(any(), anySet());
