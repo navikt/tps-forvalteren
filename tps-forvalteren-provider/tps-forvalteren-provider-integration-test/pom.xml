@@ -107,6 +107,11 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tps.forvalteren</groupId>
+            <artifactId>tps-forvalteren-application</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

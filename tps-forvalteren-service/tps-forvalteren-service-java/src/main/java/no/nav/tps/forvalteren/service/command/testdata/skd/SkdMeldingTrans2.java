@@ -19,7 +19,7 @@ public class SkdMeldingTrans2 implements SkdMelding {
 	}
 
 	public String getFodselsnummer() {
-		return skdMelding.substring(0, 11);
+		return skdMelding.substring(46, 57);
 	}
 	
 	@Override
