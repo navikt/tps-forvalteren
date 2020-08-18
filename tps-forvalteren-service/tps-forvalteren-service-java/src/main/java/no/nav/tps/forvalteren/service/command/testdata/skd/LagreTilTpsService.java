@@ -16,6 +16,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Sets;
 
 import lombok.RequiredArgsConstructor;
@@ -77,27 +78,9 @@ public class LagreTilTpsService {
 
             environments.parallelStream().map(env -> {
 
-                try {
-                    List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerInkludertIdenthistorikk, singleton(env));
-                    List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
-
-                    personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
-                    List<Person> threadPersonerSomSkalFoedes = createListPersonerSomSkalFoedes(personerSomSkalFoedes, personerSomAlleredeEksitererITpsMiljoe);
-
-                    amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(env)));
-                    amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(env)));
-                    amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(threadPersonerSomSkalFoedes, singleton(env)));
-
-                    return "found";
-                } catch (RuntimeException e) {
-                    if (e.getMessage().contains("Unable to find environment")) {
-                        envNotFoundMap.put(env, "Miljø finnes ikke");
-                    } else {
-                        envNotFoundMap.put(env, e.getMessage());
-                        log.error("Lagring til miljø feilet, " + e.getMessage(), e);
-                    }
-                    return env;
-                }
+                return getOpprettPersonITPS(personerIGruppen, personerInkludertIdenthistorikk,
+                        personerSomSkalFoedes, innvandringCreateResponse,
+                        innvandringUpdateResponse, foedselMldResponse, envNotFoundMap, env);
             }).collect(Collectors.toSet());
 
             List threadStatus = new ArrayList<>();
@@ -142,6 +125,34 @@ public class LagreTilTpsService {
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
             throw new TpsfTechnicalException("Multi-threading feilet mot TPS", e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public String getOpprettPersonITPS(List<Person> personerIGruppen, List<Person> personerInkludertIdenthistorikk, List<Person> personerSomSkalFoedes,
+            Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse, Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse,
+            Map<String, SendSkdMeldingTilTpsResponse> foedselMldResponse, Map<String, String> envNotFoundMap, String env) {
+
+        try {
+            List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerInkludertIdenthistorikk, singleton(env));
+            List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
+
+            personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
+            List<Person> threadPersonerSomSkalFoedes = createListPersonerSomSkalFoedes(personerSomSkalFoedes, personerSomAlleredeEksitererITpsMiljoe);
+
+            amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(env)));
+            amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(env)));
+            amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(threadPersonerSomSkalFoedes, singleton(env)));
+
+            return "found";
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Unable to find environment")) {
+                envNotFoundMap.put(env, "Miljø finnes ikke");
+            } else {
+                envNotFoundMap.put(env, e.getMessage());
+                log.error("Lagring til miljø feilet, " + e.getMessage(), e);
+            }
+            return env;
         }
     }
 
