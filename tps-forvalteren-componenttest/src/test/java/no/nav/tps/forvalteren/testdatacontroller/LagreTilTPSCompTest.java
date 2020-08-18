@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.jms.JMSException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +45,16 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
  * <p>
  * Merk: I flyway-skriptet er regdato DATE. Derfor blir klokkeslettet satt til 00:00:00
  */
-@Ignore
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
 
-    private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = List.of("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
+    private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt");
-    private static final List<String> EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL = List.of("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
-    private static final List<String> EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL = List.of("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
+    private static final List<String> EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
+    private static final List<String> EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");
-    private static final List<String> EXPECTED_SKD_DOEDSMELDING_IS_REQUESTS_URL = List.of("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
+    private static final List<String> EXPECTED_SKD_DOEDSMELDING_IS_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_doedsmelding_fnr_11031250155.txt");
     private static final String XML_FIND_EXISTING_IDENTS_IN_TPS_REQUEST = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_request.xml";
     private static final String XML_FIND_EXISTING_IDENTS_IN_TPS_RESPONSE = "testdatacontroller/lagretiltps/Finn_identer_i_TPS_FS03-FDLISTER-DISKNAVN-M_response.xml";
     private static final String XML_HENT_KJERNEINFO_REQUEST_02020403694 = "testdatacontroller/lagretiltps/servicerutine_request_kjerneinfo_fnr_02020403694.xml";
@@ -65,7 +63,7 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     private static final String XML_HENT_KJERNEINFO_REQUEST_11031250155 = "testdatacontroller/lagretiltps/servicerutine_request_kjerneinfo_fnr_11031250155.xml";
     private static final String XML_HENT_KJERNEINFO_REQUEST_12017500617 = "testdatacontroller/lagretiltps/servicerutine_request_kjerneinfo_fnr_12017500617.xml";
     private static final String XML_HENT_KJERNEINFO_RESPONSE = "testdatacontroller/lagretiltps/servicerutine_response_kjerneinfo.xml";
-    private static final List<String> ENVIRONMENTS = List.of("t1", "t2", "u5");
+    private static final List<String> ENVIRONMENTS = asList("t1", "t2", "u5");
     private List<String> expectedSkdRequests = constructExpectedRequests();
 
     private Long gruppeId;
