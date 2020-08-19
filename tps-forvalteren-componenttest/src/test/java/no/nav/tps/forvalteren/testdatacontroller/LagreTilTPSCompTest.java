@@ -38,6 +38,7 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
+@Ignore
 /**
  * Komptesten utfører følgende fra REST-grensesnitt til mock-versjon av messageQueueConsumer:
  * REST-tjenesten for "Lagre til TPS" blir kalt med gruppe og miljøer satt i request. Basert på testpersonene lagret på denne gruppen i databasen, blir innvandringsmelding osv. sendt til TPS.
@@ -46,7 +47,6 @@ import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentSer
  * <p>
  * Merk: I flyway-skriptet er regdato DATE. Derfor blir klokkeslettet satt til 00:00:00
  */
-@Ignore
 public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest {
 
     private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = List.of("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",

@@ -93,7 +93,7 @@ public class LagreTilTpsService {
         }).collect(Collectors.toSet());
 
         Set<String> safeEnvironments = Sets.newHashSet(environments);
-        safeEnvironments.remove(envNotFoundMap.keySet());
+        envNotFoundMap.keySet().forEach(safeEnvironments::remove);
 
         List skdMldResponse = new ArrayList();
         skdMldResponse.addAll(!envNotFoundMap.isEmpty() ?
