@@ -51,9 +51,6 @@ public final class ExtractDataFromTpsServiceRoutineResponse {
                     String returStatus = (String) getArtifact(svarStatus, "returStatus");
                     if (!"08".equals(returStatus) && nonNull(data) && nonNull(data.get("fnr"))) {
                         identer.add(String.valueOf(data.get("fnr")));
-                        if (nonNull(data.get("forespurtFnr"))) {
-                            identer.add(String.valueOf(data.get("forespurtFnr")));
-                        }
                     }
                 }
             }

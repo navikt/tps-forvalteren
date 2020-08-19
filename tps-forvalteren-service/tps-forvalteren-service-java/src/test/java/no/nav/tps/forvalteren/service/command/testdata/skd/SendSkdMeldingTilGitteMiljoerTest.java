@@ -1,11 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static java.util.Arrays.asList;
+import static org.assertj.core.util.Sets.newHashSet;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,17 +15,21 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.testdata.skd.impl.SendEnSkdMelding;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SendSkdMeldingTilGitteMiljoerTest {
 
-    private static final String ENV1 = "miljø1";
-    private static final String ENV2 = "miljø2";
+    private static final String ENV1 = "miljø";
+    private static final String ENV2 = "miljø";
     private static final String MESSAGE = "melding";
 
     @Mock
     private SendEnSkdMelding sendEnSkdMelding;
+
+    @Mock
+    private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     @InjectMocks
     private SendSkdMeldingTilGitteMiljoer sendSkdMeldingTilGitteMiljoer;
@@ -34,16 +39,15 @@ public class SendSkdMeldingTilGitteMiljoerTest {
     @Before
     public void setup() {
         skdRequestMeldingDefinition = new TpsSkdRequestMeldingDefinition();
+        when(filterEnvironmentsOnDeployedEnvironment.execute(anySet())).thenReturn(newHashSet(asList(ENV1)));
     }
 
     @Test
     public void setSendToMultipleEnvironments() {
 
-        when(sendEnSkdMelding.sendSkdMelding(anyString(), eq(skdRequestMeldingDefinition), anyString())).thenReturn(MESSAGE);
-        sendSkdMeldingTilGitteMiljoer.execute(MESSAGE, skdRequestMeldingDefinition, Set.of(ENV1, ENV2));
+        sendSkdMeldingTilGitteMiljoer.execute(MESSAGE, skdRequestMeldingDefinition, newHashSet(asList(ENV1, ENV2)));
 
         verify(sendEnSkdMelding).sendSkdMelding(eq(MESSAGE), eq(skdRequestMeldingDefinition), eq(ENV1));
-        verify(sendEnSkdMelding).sendSkdMelding(eq(MESSAGE), eq(skdRequestMeldingDefinition), eq(ENV2));
     }
 
     @Test

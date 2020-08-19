@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
 import static no.nav.tps.forvalteren.domain.test.provider.PersonProvider.aMalePerson;
 import static org.hamcrest.core.Is.is;
@@ -34,7 +33,6 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoed
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
-import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LagreTilTpsServiceTest {
@@ -69,14 +67,10 @@ public class LagreTilTpsServiceTest {
     private SkdMeldingSender skdMeldingSender;
 
     @Mock
-    private PersonService personService;
-
-    @Mock
     private PersonStatusFraMiljoService personStatusFraMiljoService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;
-
     private List<Person> persons = new ArrayList<>();
     private List<Person> personsInGruppe = new ArrayList<>();
     private Gruppe gruppe = Gruppe.builder().personer(personsInGruppe).build();
@@ -113,12 +107,8 @@ public class LagreTilTpsServiceTest {
     }
 
     @Test
-    public void checkThatServicesGetsCalled() throws Exception {
+    public void checkThatServicesGetsCalled() {
         innvandringResponse.add(SendSkdMeldingTilTpsResponse.builder().personId("123").build());
-        when(skdMeldingSender.sendInnvandringsMeldinger(anyList(), anySet())).thenReturn(
-                        List.of(SendSkdMeldingTilTpsResponse.builder().skdmeldingstype(INNVANDRING_MLD)
-                                .status(newHashMap(Map.of("env","OK"))).build()));
-
         lagreTilTpsService.execute(GRUPPE_ID, environments);
 
         verify(skdMeldingSender, times(3)).sendInnvandringsMeldinger(any(), anySet());
