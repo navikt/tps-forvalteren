@@ -1,21 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
-import static java.util.stream.Collectors.toSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
+import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
@@ -23,28 +25,22 @@ import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironme
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
+import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LagreTilTpsService {
 
-    @Autowired
-    private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+    private static final String TPS = "TPS";
 
-    @Autowired
-    private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
-
-    @Autowired
-    private FindGruppeById findGruppeById;
-
-    @Autowired
-    private SendNavEndringsmeldinger sendNavEndringsmeldinger;
-
-    @Autowired
-    private SkdMeldingSender skdMeldingSender;
-
-    @Autowired
-    private PersonStatusFraMiljoService personStatusFraMiljoService;
+    private final FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+    private final FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+    private final FindGruppeById findGruppeById;
+    private final SendNavEndringsmeldinger sendNavEndringsmeldinger;
+    private final SkdMeldingSender skdMeldingSender;
+    private final PersonStatusFraMiljoService personStatusFraMiljoService;
+    private final PersonService personService;
 
     public RsSkdMeldingResponse execute(Long gruppeId, Set<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
@@ -53,65 +49,62 @@ public class LagreTilTpsService {
     }
 
     public RsSkdMeldingResponse execute(List<Person> personerIGruppen, Set<String> environments) {
+
+        environments = environments.stream().map(String::toLowerCase).collect(Collectors.toSet());
         return sendMeldinger(personerIGruppen, environments);
     }
 
-    private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
+    private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, final Set<String> environments) {
 
-        environments = environments.stream().map(String::toLowerCase).collect(toSet());
         personerIGruppen.forEach(Person::toUppercase);
+
+        List<Person> personerInkludertIdenthistorikk = getPersonUtvidelseForIdenthistorikk(personerIGruppen);
+        personerInkludertIdenthistorikk.forEach(Person::toUppercase);
+        List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();
         Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse = newHashMap();
         Map<String, SendSkdMeldingTilTpsResponse> foedselMldResponse = newHashMap();
-        Map<String, SendSkdMeldingTilTpsResponse> utvandringMldResponse = newHashMap();
-        Map<String, SendSkdMeldingTilTpsResponse> envNotFound = newHashMap();
         Map<String, String> envNotFoundMap = new HashMap();
 
-        Set<String> safeEnvironments = Sets.newHashSet(environments);
-        Iterator<String> it = safeEnvironments.iterator();
-        while (it.hasNext()) {
+        environments.parallelStream().map(env -> {
 
-            String environment = it.next();
             try {
-                List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, singleton(environment));
-                personerSomIkkeEksitererITpsMiljoe.forEach(Person::toUppercase);
+                List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerInkludertIdenthistorikk, singleton(env));
                 List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
-                List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
 
                 personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
-                personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
+                List<Person> threadPersonerSomSkalFoedes = createListPersonerSomSkalFoedes(personerSomSkalFoedes, personerSomAlleredeEksitererITpsMiljoe);
 
-                amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(environment)));
-                amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(environment)));
-                amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(personerSomSkalFoedes, singleton(environment)));
+                amendStatus(innvandringCreateResponse, skdMeldingSender.sendInnvandringsMeldinger(personerSomIkkeEksitererITpsMiljoe, singleton(env)));
+                amendStatus(innvandringUpdateResponse, skdMeldingSender.sendUpdateInnvandringsMeldinger(personerSomAlleredeEksitererITpsMiljoe, singleton(env)));
+                amendStatus(foedselMldResponse, skdMeldingSender.sendFoedselsMeldinger(threadPersonerSomSkalFoedes, singleton(env)));
 
+                return "found";
             } catch (RuntimeException e) {
                 if (e.getMessage().contains("Unable to find environment")) {
-                    envNotFoundMap.put(environment, "Miljø finnes ikke");
+                    envNotFoundMap.put(env, "Miljø finnes ikke");
                 } else {
-                    envNotFoundMap.put(environment, e.getMessage());
+                    envNotFoundMap.put(env, e.getMessage());
                     log.error("Lagring til miljø feilet, " + e.getMessage(), e);
                 }
-                it.remove();
+                return env;
             }
-        }
+        }).collect(Collectors.toSet());
 
-        if (!envNotFoundMap.isEmpty()) {
-            envNotFound.put(personerIGruppen.get(0).getIdent(), SendSkdMeldingTilTpsResponse.builder()
-                    .personId(personerIGruppen.get(0).getIdent())
-                    .skdmeldingstype("TPS")
-                    .status(envNotFoundMap)
-                    .build());
-        }
+        Set<String> safeEnvironments = Sets.newHashSet(environments);
+        envNotFoundMap.keySet().forEach(safeEnvironments::remove);
 
         List skdMldResponse = new ArrayList();
-
-        skdMldResponse.addAll(envNotFound.values());
+        skdMldResponse.addAll(!envNotFoundMap.isEmpty() ?
+                List.of(SendSkdMeldingTilTpsResponse.builder()
+                                .personId(personerIGruppen.get(0).getIdent())
+                                .skdmeldingstype(TPS)
+                                .status(envNotFoundMap)
+                                .build()) : emptyList());
         skdMldResponse.addAll(innvandringCreateResponse.values());
         skdMldResponse.addAll(innvandringUpdateResponse.values());
         skdMldResponse.addAll(foedselMldResponse.values());
-        skdMldResponse.addAll(utvandringMldResponse.values());
 
         skdMldResponse.addAll(skdMeldingSender.sendRelasjonsmeldinger(personerIGruppen, safeEnvironments));
         skdMldResponse.addAll(skdMeldingSender.sendSivilstand(personerIGruppen, safeEnvironments));
@@ -129,12 +122,30 @@ public class LagreTilTpsService {
         return new RsSkdMeldingResponse(null, skdMldResponse, serviceRoutineResponser);
     }
 
+    private List<Person> getPersonUtvidelseForIdenthistorikk(List<Person> personerIGruppen) {
+        List<Person> gruppePersoner = newArrayList(personerIGruppen);
+        gruppePersoner.addAll(personService.getPersonerByIdenter(newArrayList(
+                personerIGruppen.stream().map(Person::getIdentHistorikk)
+                        .flatMap(historikk -> historikk.stream().map(IdentHistorikk::getAliasPerson))
+                        .map(Person::getIdent).collect(Collectors.toSet())))
+        );
+        return gruppePersoner;
+    }
+
     private List<Person> createListPersonerSomAlleredeEksiterer(List<Person> personerIGruppe, List<Person> personerSomIkkeEksisterer) {
-        List<Person> personerSomAlleredeEksisterer = new ArrayList<>();
-        personerSomAlleredeEksisterer.addAll(personerIGruppe);
+
+        List<Person> personerSomAlleredeEksisterer = newArrayList(personerIGruppe);
         personerSomAlleredeEksisterer.removeAll(personerSomIkkeEksisterer);
 
         return personerSomAlleredeEksisterer;
+    }
+
+    private List<Person> createListPersonerSomSkalFoedes(List<Person> personerSomSkalFoedes, List<Person> personerAlleredeIMiljoe) {
+
+        List<Person> personerSomskalFoedesCopy = newArrayList(personerSomSkalFoedes);
+        personerSomskalFoedesCopy.removeAll(personerAlleredeIMiljoe);
+
+        return personerSomskalFoedesCopy;
     }
 
     private void amendStatus(Map<String, SendSkdMeldingTilTpsResponse> total, List<SendSkdMeldingTilTpsResponse> partial) {
