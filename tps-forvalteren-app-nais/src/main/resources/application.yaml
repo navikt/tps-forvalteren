@@ -5,8 +5,6 @@ application:
 
 spring:
   datasource:
-    hikari:
-      validation-timeout: 300000
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}
