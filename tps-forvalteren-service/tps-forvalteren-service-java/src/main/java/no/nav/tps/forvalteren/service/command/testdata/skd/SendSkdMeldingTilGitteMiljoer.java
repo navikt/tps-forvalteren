@@ -1,7 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import static com.google.common.collect.Maps.newHashMap;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,12 +17,9 @@ public class SendSkdMeldingTilGitteMiljoer {
 
     public Map<String, String> execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
 
-        return environments.size() > 1 ?
-                environments.parallelStream()
+        return environments.parallelStream()
                         .collect(Collectors.toMap(env -> env,
-                                env -> sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env))) :
-                newHashMap(Map.of(environments.iterator().next(),
-                        execute(skdMelding, skdRequestMeldingDefinition, environments.iterator().next())));
+                                env -> sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env)));
     }
 
     public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String environment) {
