@@ -3,7 +3,6 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.config;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
-import java.util.concurrent.ForkJoinPool;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -134,10 +133,5 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     public KodeverkConsumer kodeverkConsumer() {
         return mock(KodeverkConsumer.class);
-    }
-
-    @Bean
-    public ForkJoinPool tpsfForkJoinPool() {
-        return new ForkJoinPool(10, new no.nav.tps.forvalteren.ForkJoinWorkerThreadFactory(), null, true);
     }
 }

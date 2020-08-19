@@ -4,7 +4,6 @@ import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -112,10 +111,5 @@ public class ComptestConfig {
     @Bean
     public FasitApiConsumer fasitApiConsumer() {
         return mock(FasitApiConsumer.class);
-    }
-
-    @Bean
-    public ForkJoinPool tpsfForkJoinPool() {
-        return new ForkJoinPool(1, new ForkJoinWorkerThreadFactory(), null, true);
     }
 }
