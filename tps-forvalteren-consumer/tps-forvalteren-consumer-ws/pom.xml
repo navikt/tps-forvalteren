@@ -45,9 +45,9 @@
 
         <!--Nav Diskresjonstjeneste-->
         <dependency>
-            <groupId>no.nav.tjenester.pip</groupId>
-            <artifactId>nav-pip-diskresjonskode-v1-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-pip-diskresjonskode-tjenestespesifikasjon</artifactId>
+            <version>${diskresjonskode-v1.version}</version>
         </dependency>
 
         <!--Nav EgenAnsatt-tjeneste -->
