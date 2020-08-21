@@ -15,6 +15,27 @@
 
     <packaging>pom</packaging>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/navikt/tps-forvalteren</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <developerConnection>scm:git:git@github.com:navikt/tps-forvalteren.git</developerConnection>
+        <connection>scm:git:git@github.com:navikt/tps-forvalteren.git</connection>
+        <url>https://github.com/navikt/tps-forvalteren</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>github-package-registry-navikt</id>
+            <url>https://maven.pkg.github.com/navikt/maven-release</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>tps-forvalteren-application</module>
         <module>tps-forvalteren-app-nais</module>
@@ -531,12 +552,4 @@
             </plugin>
         </plugins>
     </build>
-
-
-    <repositories>
-        <repository>
-            <id>github-package-registry-navikt</id>
-            <url>https://maven.pkg.github.com/navikt/maven-release</url>
-        </repository>
-    </repositories>
 </project>
