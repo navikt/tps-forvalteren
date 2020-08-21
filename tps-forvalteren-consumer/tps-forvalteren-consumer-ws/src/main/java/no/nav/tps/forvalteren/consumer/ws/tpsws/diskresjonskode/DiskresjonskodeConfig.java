@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.ConsumerConfigUtil;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 

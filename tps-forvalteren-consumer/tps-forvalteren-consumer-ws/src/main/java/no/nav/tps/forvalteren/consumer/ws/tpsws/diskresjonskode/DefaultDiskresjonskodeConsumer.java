@@ -1,15 +1,12 @@
 package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
-import java.util.List;
 import javax.xml.rpc.soap.SOAPFaultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.modig.common.MDCOperations;
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 
@@ -61,20 +58,6 @@ public class DefaultDiskresjonskodeConsumer implements DiskresjonskodeConsumer {
         } finally {
             MDCOperations.remove(MDCOperations.MDC_CALL_ID);
         }
-    }
-
-    @Override
-    public HentDiskresjonskodeBolkResponse getDiskresjonskodeBolk(List<String> fNrListe) {
-        HentDiskresjonskodeBolkRequest request = createBulkRequest(fNrListe);
-
-        return diskresjonskodePortType.hentDiskresjonskodeBolk(request);
-    }
-
-    private HentDiskresjonskodeBolkRequest createBulkRequest(List<String> fNrListe) {
-        HentDiskresjonskodeBolkRequest request = new HentDiskresjonskodeBolkRequest();
-        request.getIdentListe().addAll(fNrListe);
-
-        return request;
     }
 
     private HentDiskresjonskodeRequest createRequest(String fNr) {

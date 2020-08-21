@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import no.nav.tjeneste.pip.egenansatt.v1.binding.EgenAnsattV1;
+import no.nav.tjeneste.pip.egen.ansatt.v1.EgenAnsattV1;
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.ConsumerConfigUtil;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 

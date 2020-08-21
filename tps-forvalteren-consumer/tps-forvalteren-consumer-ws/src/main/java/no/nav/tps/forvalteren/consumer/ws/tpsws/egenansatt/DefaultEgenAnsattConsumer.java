@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import no.nav.modig.common.MDCOperations;
-import no.nav.tjeneste.pip.egenansatt.v1.binding.EgenAnsattV1;
-import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
-import no.nav.tjeneste.pip.egenansatt.v1.meldinger.HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
+import no.nav.tjeneste.pip.egen.ansatt.v1.EgenAnsattV1;
+import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
+import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 
 public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEgenAnsattConsumer.class);
@@ -40,12 +40,12 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
             return false;
         }
 
-        HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
+        WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = createRequest(fnr);
 
         MDCOperations.putToMDC(MDCOperations.MDC_CALL_ID, MDCOperations.generateCallId());
 
         try {
-            HentErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(request);
+            WSHentErEgenAnsattEllerIFamilieMedEgenAnsattResponse response = pipEgenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(request);
 
             return response.isEgenAnsatt();
         } catch (SOAPFaultException exception) {
@@ -66,8 +66,8 @@ public class DefaultEgenAnsattConsumer implements EgenAnsattConsumer {
 
     }
 
-    private HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fnr) {
-        HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = new HentErEgenAnsattEllerIFamilieMedEgenAnsattRequest();
+    private WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest createRequest(String fnr) {
+        WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest request = new WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest();
         request.setIdent(fnr);
 
         return request;
