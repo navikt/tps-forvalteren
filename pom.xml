@@ -532,11 +532,11 @@
         </plugins>
     </build>
 
-    <!-- Configuring NAV's internal Maven repository (Nexus). -->
-    <distributionManagement>
+
+    <repositories>
         <repository>
             <id>github-package-registry-navikt</id>
             <url>https://maven.pkg.github.com/navikt/maven-release</url>
         </repository>
-    </distributionManagement>
+    </repositories>
 </project>
