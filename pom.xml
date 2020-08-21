@@ -54,7 +54,7 @@
         <modig-security.version>3.0.5</modig-security.version>
         <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
         <diskresjonskode-v1.version>1.2020.07.17-17.06-31e5aa824db7</diskresjonskode-v1.version>
-        <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
+        <egenansatt-v1.version>1.2020.07.17-17.06-31e5aa824db7</egenansatt-v1.version>
         <tps.interface.library.version>1.62.0</tps.interface.library.version>
         <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg.property.version>1.2.0</freg.property.version>
@@ -298,6 +298,12 @@
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
                 <artifactId>nav-pip-diskresjonskode-tjenestespesifikasjon</artifactId>
                 <version>${diskresjonskode-v1.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>egenansatt-v1-tjenestespesifikasjon</artifactId>
+                <version>${egenansatt-v1.version}</version>
             </dependency>
 
             <!--LANGUAGE EXTENSIONS-->
