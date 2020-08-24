@@ -26,6 +26,8 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
     private static final String SOAP_FAULT_ERROR                   = "Soap error";
+    private static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
+    private static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     //Test users
     private static final String TEST_FNR            = "11223344556";
@@ -86,7 +88,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsInvalidFnrError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(DefaultDiskresjonskodeConsumer.INVALID_FNR_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(
                 any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
@@ -98,7 +100,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsNoMatchFoundError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(DefaultDiskresjonskodeConsumer.NO_MATCHES_FOUND_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(NO_MATCHES_FOUND_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
 

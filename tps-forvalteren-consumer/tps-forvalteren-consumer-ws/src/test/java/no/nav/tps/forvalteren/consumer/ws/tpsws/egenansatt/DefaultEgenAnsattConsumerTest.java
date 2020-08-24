@@ -24,9 +24,13 @@ import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgen
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattConsumerTest {
+
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Database connection error";
     private static final String SOAP_Fault_Error                   = "Soap error";
     private static final String TEST_FNR                           = "11223344556";
+    private static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
+    private static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    private static final String EMPTY_FNR_TPSWS_ERROR = "FNR MÅ FYLLES UT";
 
     @InjectMocks
     private DefaultEgenAnsattConsumer egenAnsattConsumer;
@@ -42,7 +46,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithEmptyString() {
-        when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.EMPTY_FNR_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(EMPTY_FNR_TPSWS_ERROR);
         when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
@@ -60,7 +64,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void isEgenAnsattReturnsFalseWhenCalledWithInvalidFnr() {
-        when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.INVALID_FNR_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
         when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
@@ -94,7 +98,7 @@ public class DefaultEgenAnsattConsumerTest {
 
     @Test
     public void pingReturnsTrueWhenIsEgenAnsattThrowsPersonNotFoundException() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(DefaultEgenAnsattConsumer.PERSON_NOT_FOUND_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(PERSON_NOT_FOUND_TPSWS_ERROR);
         when(egenAnsatt.hentErEgenAnsattEllerIFamilieMedEgenAnsatt(any(WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest.class)))
                 .thenThrow(soapFaultException);
 
