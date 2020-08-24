@@ -20,7 +20,7 @@ public class DiskresjonskodeConfig {
     @Value("${virksomhet.diskresjonskode.v1.endpointurl}")
     private String diskresjonskodeAddress;
 
-    private static final String DISKRESJON_WSDL_URL = "wsdl/no/nav/tjeneste/pip/diskresjonskode/meldinger/Diskresjonskode.wsdl";
+    private static final String DISKRESJON_WSDL_URL = "wsdl/Diskresjonskode.wsdl";
     private static final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "DiskresjonskodePortTypePort");
 
     @Bean
