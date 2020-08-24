@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
@@ -76,7 +75,6 @@ public class TestdataBestillingsController {
     private final ImporterPersonService importerPersonService;
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
@@ -86,7 +84,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "flereTilTps") })
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
     public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
@@ -94,7 +91,6 @@ public class TestdataBestillingsController {
         return lagreTilTps.execute(personer, newHashSet(tpsRequest.getMiljoer()));
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "personerdata") })
     @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
     public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
@@ -103,7 +99,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentpersoner") })
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
@@ -111,14 +106,12 @@ public class TestdataBestillingsController {
         return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkpersoner") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public CheckIdentResponse checkIdentList(@RequestBody List<String> identer) {
         return sjekkIdenterService.finnLedigeIdenter(identer);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "excel") })
     @RequestMapping(value = "/excel", method = RequestMethod.POST)
     public ResponseEntity<Resource> getExcelForIdenter(@RequestBody List<String> identer) {
@@ -135,7 +128,6 @@ public class TestdataBestillingsController {
         }
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
@@ -144,7 +136,6 @@ public class TestdataBestillingsController {
         personService.deletePersons(miljoer, identer);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
     @RequestMapping(value = "/aliaser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -154,7 +145,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -163,7 +153,6 @@ public class TestdataBestillingsController {
         return endrePersonBestillingService.execute(ident, request);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "relasjonperson") })
     @RequestMapping(value = "/relasjonperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -172,7 +161,6 @@ public class TestdataBestillingsController {
         return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -188,7 +176,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)

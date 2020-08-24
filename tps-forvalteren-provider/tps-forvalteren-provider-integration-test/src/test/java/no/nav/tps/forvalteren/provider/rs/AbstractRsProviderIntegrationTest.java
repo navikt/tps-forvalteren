@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs;
 
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -18,7 +17,6 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
@@ -54,9 +52,6 @@ public abstract class AbstractRsProviderIntegrationTest {
         HentDiskresjonskodeResponse response = new HentDiskresjonskodeResponse();
         response.setDiskresjonskode("");
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
-
-        HentDiskresjonskodeBolkResponse bolkResponse = new HentDiskresjonskodeBolkResponse();
-        when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyList())).thenReturn(bolkResponse);
 
         when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
     }

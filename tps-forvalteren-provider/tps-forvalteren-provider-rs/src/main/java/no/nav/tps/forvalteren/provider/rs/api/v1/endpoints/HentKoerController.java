@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitApplication;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitMQInformation;
@@ -44,7 +43,6 @@ public class HentKoerController {
     @Autowired
     private MqInfoMapper mqInfoMapper;
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/applications", method = RequestMethod.GET)
     public List<FasitApplication> getApplications(@RequestParam(name = "appname", required = false, defaultValue = "") String appNavn) {
@@ -58,7 +56,6 @@ public class HentKoerController {
         return applikasjoner;
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getQueues") })
     @RequestMapping(value = "/queues", method = RequestMethod.GET)
     public List<FasitMQInformation> getQueues(@RequestParam("appname") String appNavn) {

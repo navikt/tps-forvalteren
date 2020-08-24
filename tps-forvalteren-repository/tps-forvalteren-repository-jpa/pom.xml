@@ -23,10 +23,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
-        </dependency>
 
     </dependencies>
 </project>

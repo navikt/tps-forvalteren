@@ -21,7 +21,6 @@ import com.google.common.collect.Sets;
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
@@ -130,7 +129,6 @@ public class TestdataController {
 
     @ApiOperation(value = "createDummyAdresse new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
             + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody @Valid RsPersonKriteriumRequest personKriterierListe) {
@@ -146,14 +144,12 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deletePersons") })
     @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updatePersons") })
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<RsPerson> personListe) {
@@ -161,14 +157,12 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkIdentList") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
         return sjekkIdenterService.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createPersoner") })
     @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
     public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
@@ -179,7 +173,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "saveTPS") })
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
@@ -187,7 +180,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSimpleGruppe> getGrupper() {
@@ -196,7 +188,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -205,7 +196,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
@@ -214,7 +204,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -222,7 +211,6 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "testdataGruppeToSkdEndringsmeldingGruppe") })
     @RequestMapping(value = "/skd/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -231,27 +219,23 @@ public class TestdataController {
     }
 
     @Transactional
-    @LogExceptions
     @GetMapping(value = "/tpsStatus")
     public RsTpsStatusPaaIdenterResponse getTestdataStatusFromTpsInAllEnvironments(@RequestParam("identer") List<String> identer) {
         return statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(identer);
     }
 
     @Transactional
-    @LogExceptions
     @RequestMapping(value = "/vergemaal", method = RequestMethod.POST)
     public void createVergemaal(@RequestBody RsVergemaal rsVergemaal) {
         opprettVergemaal.execute(rsVergemaal);
     }
 
     @Transactional
-    @LogExceptions
     @RequestMapping(value = "/vergemaal/{vergemaalId}", method = RequestMethod.DELETE)
     public void deleteVergemaal(@PathVariable("vergemaalId") Long vergemaalId) {
         vergemaalRepository.deleteById(vergemaalId);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
     @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {

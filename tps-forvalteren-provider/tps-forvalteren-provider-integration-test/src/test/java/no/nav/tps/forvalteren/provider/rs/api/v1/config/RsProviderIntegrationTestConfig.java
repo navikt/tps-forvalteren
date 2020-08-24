@@ -17,7 +17,7 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;

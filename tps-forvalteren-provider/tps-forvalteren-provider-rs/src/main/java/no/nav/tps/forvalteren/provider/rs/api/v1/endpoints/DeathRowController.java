@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ma.glasnost.orika.MapperFacade;
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
@@ -63,14 +62,12 @@ public class DeathRowController {
     @Autowired
     private UserContextHolder userContextHolder;
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sjekkIdenter") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowCheckIdent rsDeathRowCheckIdent) {
         return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowCheckIdent.getIdenter(), rsDeathRowCheckIdent.getMiljoe());
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "settDodsmelding") })
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
     public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
@@ -81,14 +78,12 @@ public class DeathRowController {
         }
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "annullerDodsmelding") })
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public void deleteMelding(@PathVariable("id") Long id) {
         deathRowRepository.deleteById(id);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentLogg") })
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
     public List<RsDeathRow> getMeldingLogg() {
@@ -96,7 +91,6 @@ public class DeathRowController {
         return mapper.mapAsList(deathRowList, RsDeathRow.class);
     }
 
-    @LogExceptions
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterMelding") })
     public RsDeathRow updateMelding(@RequestBody RsDeathRow rsDeathRow) {
@@ -107,14 +101,12 @@ public class DeathRowController {
     }
 
     @Transactional(dontRollbackOn = TpsfFunctionalException.class)
-    @LogExceptions
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendSkjema") })
     public void sendToTps() {
         sendDodsmeldingTilTpsService.execute();
     }
 
-    @LogExceptions
     @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "tømSkjerma") })
     public void tomSkjema(@PathVariable("miljoe") String miljoe) {

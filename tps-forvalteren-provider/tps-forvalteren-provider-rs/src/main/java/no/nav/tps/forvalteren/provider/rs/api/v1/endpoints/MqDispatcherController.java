@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MQConnectionFactoryByFasit;
 import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
@@ -27,7 +26,6 @@ public class MqDispatcherController {
     @Autowired
     private MQConnectionFactoryByFasit mqConnectionFactoryByFasit;
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/mqdispatch", method = RequestMethod.POST)
     @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")

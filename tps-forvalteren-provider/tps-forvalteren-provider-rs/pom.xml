@@ -33,10 +33,6 @@
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-domain-rs</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.command.authorisation.ForbiddenCallHandlerService;
@@ -28,7 +27,6 @@ public class TpsServicesController {
     @Autowired
     private ForbiddenCallHandlerService authorisationService;
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getTpsServices") })
     @RequestMapping(value = "/" + REST_SERVICE_NAME, method = RequestMethod.GET)
     public List<TpsServiceRoutineDefinitionRequest> getTpsServicesMenu() {

@@ -7,11 +7,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,12 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
-
 import no.nav.freg.metrics.annotations.Metrics;
-import no.nav.freg.spring.boot.starters.log.exceptions.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
@@ -101,7 +97,6 @@ public class SkdEndringsmeldingController {
     @Autowired
     private IdentpoolService identpoolService;
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGrupper") })
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
@@ -109,7 +104,6 @@ public class SkdEndringsmeldingController {
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppe") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -124,7 +118,6 @@ public class SkdEndringsmeldingController {
         }
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getGruppePaginert") })
     @RequestMapping(value = "/gruppe/meldinger/{gruppeId}/{pageNumber}", method = RequestMethod.GET)
     public List<RsMeldingstype> getGruppePaginert(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
@@ -132,7 +125,6 @@ public class SkdEndringsmeldingController {
         return skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "klonAvspillergruppe") })
     @RequestMapping(value = "/gruppe/kloning/{originalGruppeId}", method = RequestMethod.POST)
     public void klonAvspillergruppe(@PathVariable("originalGruppeId") Long originalGruppeId, @RequestBody String nyttNavn) throws IOException {
@@ -156,7 +148,6 @@ public class SkdEndringsmeldingController {
         }
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createGruppe") })
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe) {
@@ -164,42 +155,36 @@ public class SkdEndringsmeldingController {
         skdEndringsmeldingsgruppeService.save(gruppe);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteGruppe") })
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMelding") })
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.POST)
     public void createMeldingFromMeldingstype(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
         createSkdEndringsmeldingFromTypeService.execute(gruppeId, rsNewSkdEndringsmelding);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createMeldingerFromText") })
     @RequestMapping(value = "/gruppe/{gruppeId}/raw", method = RequestMethod.POST)
     public void createMeldingerFromText(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsRawMeldinger meldingerAsText) {
         createAndSaveSkdEndringsmeldingerFromTextService.execute(gruppeId, meldingerAsText);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteMeldinger") })
     @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
     public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
         skdEndringsmeldingService.deleteById(rsSkdEdnringsmeldingIdListe.getIds());
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateMeldinger") })
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
         updateSkdEndringsmeldingService.update(meldinger);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "convertMelding") })
     @RequestMapping(value = "/convertmelding", method = RequestMethod.POST)
     public RsMeldingAsText convertMelding(@RequestBody RsMeldingstype rsMelding) {
@@ -207,14 +192,12 @@ public class SkdEndringsmeldingController {
         return new RsMeldingAsText(melding);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendToTps") })
     @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
     public AvspillingResponse sendToTps(@PathVariable Long skdMeldingGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         return sendEndringsmeldingToTpsService.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteFromTps") })
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/deleteFromTps")
@@ -223,7 +206,6 @@ public class SkdEndringsmeldingController {
         identpoolService.recycleIdents(new HashSet<>(identer));
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getLog") })
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
@@ -237,28 +219,24 @@ public class SkdEndringsmeldingController {
         }
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingMedId") })
     @RequestMapping(value = "/melding/{id}", method = RequestMethod.GET)
     public RsMeldingstype getMeldingMedId(@PathVariable("id") Long id) throws JsonProcessingException {
         return skdEndringsmeldingService.findEndringsmeldingById(id);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingerMedIder") })
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
     public List<RsMeldingstype> getMeldingerMedId(@RequestParam(value = "ids") List<Long> ids) throws JsonProcessingException {
         return skdEndringsmeldingService.findAllEndringsmeldingerByIds(ids);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingIder") })
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
     public List<Long> getMeldingIder(@PathVariable("gruppeId") Long gruppeId) {
         return skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
     }
 
-    @LogExceptions
     @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getMeldingIderMedFnr") })
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.POST)
     public List<Long> getMeldingIderMedFnr(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> identer) {
@@ -266,13 +244,11 @@ public class SkdEndringsmeldingController {
     }
 
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
-    @LogExceptions
     @PostMapping("save/{gruppeId}")
     public List<Long> saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> rsSkdMeldinger) {
         return saveSkdEndringsmeldingerService.save(rsSkdMeldinger, gruppeId);
     }
 
-    @LogExceptions
     @GetMapping("identer/{gruppeId}")
     public Set<String> filtrerIdenterPaaAarsakskodeOgTransaksjonstype(@PathVariable Long gruppeId, @RequestParam List<String> aarsakskode, @RequestParam String transaksjonstype) {
         return skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskode, transaksjonstype);

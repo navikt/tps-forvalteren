@@ -77,7 +77,6 @@
         <diskresjonskode-v1.version>1.2020.07.17-17.06-31e5aa824db7</diskresjonskode-v1.version>
         <egenansatt-v1.version>1.2020.07.17-17.06-31e5aa824db7</egenansatt-v1.version>
         <tps.interface.library.version>1.62.0</tps.interface.library.version>
-        <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <papertrailapp.version>1.0.0</papertrailapp.version>
@@ -246,17 +245,6 @@
                 <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-service</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
-                <version>${freg-spring-boot-starter-dependencies.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
-                <version>${freg-spring-boot-starter-log-exceptions.version}</version>
             </dependency>
 
             <!-- CXF library -->
