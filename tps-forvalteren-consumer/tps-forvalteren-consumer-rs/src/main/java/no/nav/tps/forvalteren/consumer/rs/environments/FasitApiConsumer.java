@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes.QUEUE_MANAGER;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
-import static no.nav.tps.forvalteren.consumer.rs.fasit.config.FasitConstants.QUEUE_MANAGER_ALIAS;
+import static no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitConstants.QUEUE_MANAGER_ALIAS;
 
 import java.util.ArrayList;
 import java.util.Collection;

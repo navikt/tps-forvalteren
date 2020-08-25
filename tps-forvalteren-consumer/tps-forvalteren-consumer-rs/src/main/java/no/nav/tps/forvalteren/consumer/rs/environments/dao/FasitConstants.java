@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.consumer.rs.fasit.config;
+package no.nav.tps.forvalteren.consumer.rs.environments.dao;
 
 /**
  * Extracted Fasit constants to simplify the process of connecting to new queues and managers, when they are defined

@@ -25,12 +25,12 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse
 public class DefaultDiskresjonskodeConsumerTest {
 
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
-    private static final String SOAP_FAULT_ERROR                   = "Soap error";
+    private static final String SOAP_FAULT_ERROR = "Soap error";
     private static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
-    private static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
+    private static final String INVALID_FNR_TPSWS_ERROR = "FÃ˜DSELSNUMMER INNGITT ER UGYLDIG";
 
     //Test users
-    private static final String TEST_FNR            = "11223344556";
+    private static final String TEST_FNR = "11223344556";
 
     @Mock
     private DiskresjonskodePortType diskresjonskodePortType;

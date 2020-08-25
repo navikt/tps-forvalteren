@@ -77,6 +77,7 @@
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <papertrailapp.version>1.0.0</papertrailapp.version>
+        <plexus-utils-version>3.3.0</plexus-utils-version>
 
         <!--Dependency versions-->
         <bootstrap.version>3.3.5</bootstrap.version>
@@ -117,11 +118,11 @@
             <optional>true</optional>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -502,6 +503,16 @@
                     <noFeatureMerge>true</noFeatureMerge>
                     <pushFeatures>true</pushFeatures>
                     <pushHotfixes>true</pushHotfixes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <source>1.11</source>
+                    <target>1.11</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
         </plugins>

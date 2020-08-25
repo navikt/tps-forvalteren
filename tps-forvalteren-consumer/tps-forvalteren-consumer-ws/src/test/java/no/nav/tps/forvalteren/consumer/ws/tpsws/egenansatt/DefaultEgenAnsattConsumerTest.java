@@ -21,16 +21,15 @@ import no.nav.tjeneste.pip.egen.ansatt.v1.EgenAnsattV1;
 import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultEgenAnsattConsumerTest {
 
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Database connection error";
-    private static final String SOAP_Fault_Error                   = "Soap error";
-    private static final String TEST_FNR                           = "11223344556";
+    private static final String SOAP_Fault_Error = "Soap error";
+    private static final String TEST_FNR = "11223344556";
     private static final String PERSON_NOT_FOUND_TPSWS_ERROR = "PERSON IKKE FUNNET";
-    private static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
-    private static final String EMPTY_FNR_TPSWS_ERROR = "FNR MÅ FYLLES UT";
+    private static final String INVALID_FNR_TPSWS_ERROR = "FÃ˜DSELSNUMMER INNGITT ER UGYLDIG";
+    private static final String EMPTY_FNR_TPSWS_ERROR = "FNR MÃ… FYLLES UT";
 
     @InjectMocks
     private DefaultEgenAnsattConsumer egenAnsattConsumer;
