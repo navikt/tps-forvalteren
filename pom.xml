@@ -77,7 +77,6 @@
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <papertrailapp.version>1.0.0</papertrailapp.version>
-        <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
 
         <!--Dependency versions-->
         <bootstrap.version>3.3.5</bootstrap.version>
@@ -101,7 +100,6 @@
         <spring-cloud.version>2.2.0.RELEASE</spring-cloud.version>
         <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
         <h2.database.version>1.4.197</h2.database.version>
-        <fasit.client.version>5.8.57</fasit.client.version>
         <jaxws-version>2.3.3</jaxws-version>
 
         <!--Plugin versions-->
@@ -454,13 +452,6 @@
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>4.11</version>
-            </dependency>
-
-            <!-- Fasit -->
-            <dependency>
-                <groupId>no.nav.aura.fasit</groupId>
-                <artifactId>fasit-client-api</artifactId>
-                <version>${fasit.client.version}</version>
             </dependency>
 
             <dependency>

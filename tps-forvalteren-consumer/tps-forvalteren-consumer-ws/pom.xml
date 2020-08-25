@@ -67,12 +67,6 @@
             <artifactId>cxf-rt-ws-security</artifactId>
         </dependency>
 
-        <!--SERVICES-->
-        <dependency>
-            <groupId>no.nav.aura.fasit</groupId>
-            <artifactId>fasit-client-api</artifactId>
-        </dependency>
-
         <!--LANGUAGE EXTENSIONS-->
         <dependency>
             <groupId>com.google.guava</groupId>

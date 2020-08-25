@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
@@ -20,7 +20,7 @@ public class FasitMessageQueueConsumerTest {
     private final String APPLICATION = "application";
 
     @Mock
-    private FasitClient fasitClientMock;
+    private FasitApiConsumer fasitClientMock;
 
     @Mock
     private QueueManager queueManagerMock;
