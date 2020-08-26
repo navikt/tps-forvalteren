@@ -34,10 +34,6 @@
             <id>github-package-registry-navikt</id>
             <url>https://maven.pkg.github.com/navikt/maven-release</url>
         </repository>
-        <repository>
-            <id>maven-repos-icm</id>
-            <url>https://mvnrepository.com/repos/icm</url>
-        </repository>
     </repositories>
 
     <modules>
@@ -88,9 +84,7 @@
         <logstash.logback.encoder.version>4.11</logstash.logback.encoder.version>
         <cxf.version>3.1.12</cxf.version>
         <ibm-mq-version>9.1.5.0</ibm-mq-version>
-        <jdbc.ojdbc.version>18.3.0.0</jdbc.ojdbc.version>
-        <jdbc.ucp.version>12.2.0.1</jdbc.ucp.version>
-        <jdbc.ons.version>12.2.0.1</jdbc.ons.version>
+        <jdbc.version>19.7.0.0</jdbc.version>
         <javaee-api.version>8.0</javaee-api.version>
         <guava.version>21.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
@@ -285,21 +279,9 @@
 
             <!-- JDBC -->
             <dependency>
-                <groupId>com.oracle.jdbc</groupId>
+                <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ojdbc8</artifactId>
-                <version>${jdbc.ojdbc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ucp</artifactId>
-                <version>${jdbc.ucp.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ons</artifactId>
-                <version>${jdbc.ons.version}</version>
+                <version>${jdbc.version}</version>
             </dependency>
 
             <!--SERVICES-->
