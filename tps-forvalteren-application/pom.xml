@@ -66,10 +66,10 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-property-reader</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>no.nav.freg</groupId>-->
+<!--            <artifactId>freg-property-reader</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>net.logstash.logback</groupId>
