@@ -73,7 +73,7 @@
         <jackson-datatype-jsr310.version>2.9.0</jackson-datatype-jsr310.version>
         <diskresjonskode-v1.version>1.2020.07.17-17.06-31e5aa824db7</diskresjonskode-v1.version>
         <egenansatt-v1.version>1.2020.07.17-17.06-31e5aa824db7</egenansatt-v1.version>
-        <tps.interface.library.version>1.62.0</tps.interface.library.version>
+        <tps.interface.library.version>2020.08.27-09.53-183ead3d81eb</tps.interface.library.version>
         <freg.property.version>1.2.0</freg.property.version>
         <freg-metrics.version>1.0.0</freg-metrics.version>
         <papertrailapp.version>1.0.0</papertrailapp.version>
