@@ -19,4 +19,4 @@ jobs:
           node-version: '10'
       - name: Compile with Maven
         working-directory: tps-forvalteren-provider/tps-forvalteren-provider-web/src/main/web-src
-        run: npm install
+        run: npm install --loglevel verbose
