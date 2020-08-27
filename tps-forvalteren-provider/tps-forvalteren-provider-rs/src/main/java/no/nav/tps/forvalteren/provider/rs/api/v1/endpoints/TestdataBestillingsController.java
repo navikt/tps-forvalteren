@@ -2,8 +2,6 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +24,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
@@ -75,7 +72,6 @@ public class TestdataBestillingsController {
     private final ImporterPersonService importerPersonService;
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromKriterier") })
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public List<String> createPersonerFraBestillingskriterier(@RequestBody RsPersonBestillingKriteriumRequest personKriteriumRequest) {
@@ -84,14 +80,12 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "flereTilTps") })
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
     public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
         List<Person> personer = personService.getPersonerByIdenter(tpsRequest.getIdenter());
         return lagreTilTps.execute(personer, newHashSet(tpsRequest.getMiljoer()));
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "personerdata") })
     @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
     public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
         List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
@@ -99,20 +93,17 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "hentpersoner") })
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
 
         return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "checkpersoner") })
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public CheckIdentResponse checkIdentList(@RequestBody List<String> identer) {
         return sjekkIdenterService.finnLedigeIdenter(identer);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "excel") })
     @RequestMapping(value = "/excel", method = RequestMethod.POST)
     public ResponseEntity<Resource> getExcelForIdenter(@RequestBody List<String> identer) {
 
@@ -128,7 +119,6 @@ public class TestdataBestillingsController {
         }
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "slettpersoner") })
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "deletePersons")
@@ -136,7 +126,6 @@ public class TestdataBestillingsController {
         personService.deletePersons(miljoer, identer);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "opprettaliaser") })
     @RequestMapping(value = "/aliaser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public RsAliasResponse opprettAliaser(@RequestBody RsAliasRequest request) {
@@ -145,7 +134,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "oppdaterperson") })
     @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public RsOppdaterPersonResponse oppdaterPerson(@RequestParam String ident, @RequestBody RsPersonBestillingKriteriumRequest request) {
@@ -153,7 +141,6 @@ public class TestdataBestillingsController {
         return endrePersonBestillingService.execute(ident, request);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "relasjonperson") })
     @RequestMapping(value = "/relasjonperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
@@ -161,7 +148,6 @@ public class TestdataBestillingsController {
         return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<RsPersonMiljoe> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
@@ -176,7 +162,6 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "importerperson") })
     @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public RsPerson importerPerson(@RequestBody ImporterPersonLagreRequest request) {

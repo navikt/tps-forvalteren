@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
-
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 
 import ma.glasnost.orika.MapperFacade;
-import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
@@ -39,7 +35,6 @@ public class TestdataMalController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewTestdataMal") })
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createTestdataMal(@RequestBody RsPersonMal rsPersonMal) {
         Personmal personmal = mapper.map(rsPersonMal, Personmal.class);
@@ -47,7 +42,6 @@ public class TestdataMalController {
         personmalRepository.save(personmal);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "updateTestdataMal") })
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public void updateTestdataMal() {
 
@@ -55,21 +49,18 @@ public class TestdataMalController {
     }
 
     @Transactional
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "deleteTestdataMal") })
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public void deleteTestdataMal(@PathVariable("id") Long id) {
 
         personmalRepository.deleteById(id);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getTestdataMal") })
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public RsPersonMal getTestdataMal(@PathVariable("id") Long id) {
 
         return mapper.map(personmalRepository.findById(id), RsPersonMal.class);
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getAllTestdataMal") })
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public List getAllTestdataMal() {
         List<Personmal> personmalList = personmalRepository.findAll();
@@ -81,7 +72,6 @@ public class TestdataMalController {
         return rsPersonMalList;
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "createNewPersonsFromMal") })
     @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
 

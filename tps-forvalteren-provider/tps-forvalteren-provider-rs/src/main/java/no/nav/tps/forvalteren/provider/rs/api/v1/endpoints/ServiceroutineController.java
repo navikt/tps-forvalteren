@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
-
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.provider.rs.api.v1.RestAuthorizationService;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
@@ -35,7 +31,6 @@ public class ServiceroutineController extends BaseProvider {
     @Value("${tps.forvalteren.production.mode}")
     private boolean currentEnvironmentIsProd;
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "getService") })
     @RequestMapping(value = "/" + REST_SERVICE_NAME + "/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
     public TpsServiceRoutineResponse executeServiceRoutine(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         loggSporing(serviceRutinenavn, tpsRequestParameters);

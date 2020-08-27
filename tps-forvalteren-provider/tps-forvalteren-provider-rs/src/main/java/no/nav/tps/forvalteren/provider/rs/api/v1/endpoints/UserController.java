@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.domain.service.user.User;
-import no.nav.tps.forvalteren.provider.rs.config.ProviderConstants;
 import no.nav.tps.forvalteren.service.user.UserContextHolder;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -26,7 +24,6 @@ public class UserController {
     @Autowired
     private UserContextHolder userContextHolder;
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "getUser") })
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public User getUser(@ApiIgnore HttpSession session) {
         User user = userContextHolder.getUser();
@@ -34,7 +31,6 @@ public class UserController {
         return user;
     }
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = ProviderConstants.RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = ProviderConstants.OPERATION, value = "logout") })
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
         logoutUser(request, response);

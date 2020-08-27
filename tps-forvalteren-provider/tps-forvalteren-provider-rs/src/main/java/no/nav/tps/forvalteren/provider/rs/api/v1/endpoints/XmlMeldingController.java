@@ -1,8 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.OPERATION;
-import static no.nav.tps.forvalteren.provider.rs.config.ProviderConstants.RESTSERVICE;
-
 import javax.jms.JMSException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -11,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.nav.freg.metrics.annotations.Metrics;
 import no.nav.tps.forvalteren.domain.rs.RsPureXmlMessageResponse;
 import no.nav.tps.forvalteren.domain.rs.RsTpsMelding;
 import no.nav.tps.forvalteren.provider.rs.security.logging.BaseProvider;
@@ -27,7 +23,6 @@ public class XmlMeldingController extends BaseProvider {
     @Autowired
     private TpsXmlSender tpsXmlSender;
 
-    @Metrics(value = "provider", tags = { @Metrics.Tag(key = RESTSERVICE, value = REST_SERVICE_NAME), @Metrics.Tag(key = OPERATION, value = "sendXmlMelding") })
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
     public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws JMSException {
 
