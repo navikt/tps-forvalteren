@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import javax.jms.JMSException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -40,8 +41,8 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
     private Set<String> fasitRegistrerteEnvMedTps = new HashSet<>();
     private Gruppe testgruppe;
 
-    @Autowired
-    private FetchEnvironmentsManager fetchEnvironmentsManagerSpy; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
+    @Mock
+    private FetchEnvironmentsManager fetchEnvironmentsManager; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
 
     @Autowired
     private MessageQueueConsumer messageQueueConsumer;
@@ -56,7 +57,7 @@ public class CheckIdentListCompTest extends AbstractTestdataControllerComponentT
         reset(messageQueueConsumer);
 
         fasitRegistrerteEnvMedTps.addAll(asList("q0"));
-        when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
+        when(fetchEnvironmentsManager.getEnvironments("tpsws")).thenReturn(fasitRegistrerteEnvMedTps);
 
         mockTps();
     }
