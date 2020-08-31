@@ -21,6 +21,7 @@ import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
@@ -133,5 +134,10 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     public KodeverkConsumer kodeverkConsumer() {
         return mock(KodeverkConsumer.class);
+    }
+
+    @Bean
+    public FasitApiConsumer fasitApiConsumer() {
+        return mock(FasitApiConsumer.class);
     }
 }
