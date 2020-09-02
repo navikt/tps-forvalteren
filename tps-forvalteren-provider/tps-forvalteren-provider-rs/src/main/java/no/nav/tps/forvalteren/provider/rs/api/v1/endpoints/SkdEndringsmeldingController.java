@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;
@@ -93,12 +94,14 @@ public class SkdEndringsmeldingController {
     @Autowired
     private IdentpoolService identpoolService;
 
+    @LogExceptions
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
         List<SkdEndringsmeldingGruppe> grupper = skdEndringsmeldingsgruppeService.findAllGrupper();
         return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
         int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerInGruppe(gruppeId);
@@ -112,12 +115,14 @@ public class SkdEndringsmeldingController {
         }
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/meldinger/{gruppeId}/{pageNumber}", method = RequestMethod.GET)
     public List<RsMeldingstype> getGruppePaginert(@PathVariable("gruppeId") Long gruppeId, @PathVariable("pageNumber") int pageNumber) throws IOException {
         List<SkdEndringsmelding> skdEndringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, pageNumber);
         return skdEndringsmeldingService.convertSkdEndringsmeldingerToRsMeldingstyper(skdEndringsmeldinger);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/kloning/{originalGruppeId}", method = RequestMethod.POST)
     public void klonAvspillergruppe(@PathVariable("originalGruppeId") Long originalGruppeId, @RequestBody String nyttNavn) throws IOException {
         SkdEndringsmeldingGruppe originalGruppe = skdEndringsmeldingsgruppeService.findGruppeById(originalGruppeId);
@@ -140,48 +145,57 @@ public class SkdEndringsmeldingController {
         }
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSkdEndringsmeldingGruppe rsSkdEndringsmeldingGruppe) {
         SkdEndringsmeldingGruppe gruppe = mapper.map(rsSkdEndringsmeldingGruppe, SkdEndringsmeldingGruppe.class);
         skdEndringsmeldingsgruppeService.save(gruppe);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.POST)
     public void createMeldingFromMeldingstype(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsNewSkdEndringsmelding rsNewSkdEndringsmelding) {
         createSkdEndringsmeldingFromTypeService.execute(gruppeId, rsNewSkdEndringsmelding);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/{gruppeId}/raw", method = RequestMethod.POST)
     public void createMeldingerFromText(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsRawMeldinger meldingerAsText) {
         createAndSaveSkdEndringsmeldingerFromTextService.execute(gruppeId, meldingerAsText);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/deletemeldinger", method = RequestMethod.POST)
     public void deleteSkdEndringsmeldinger(@RequestBody RsSkdEdnringsmeldingIdListe rsSkdEdnringsmeldingIdListe) {
         skdEndringsmeldingService.deleteById(rsSkdEdnringsmeldingIdListe.getIds());
     }
 
+    @LogExceptions
     @RequestMapping(value = "/updatemeldinger", method = RequestMethod.POST)
     public void updateMeldinger(@RequestBody List<RsMeldingstype> meldinger) {
         updateSkdEndringsmeldingService.update(meldinger);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/convertmelding", method = RequestMethod.POST)
     public RsMeldingAsText convertMelding(@RequestBody RsMeldingstype rsMelding) {
         String melding = convertMeldingFromJsonToText.execute(rsMelding);
         return new RsMeldingAsText(melding);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
     public AvspillingResponse sendToTps(@PathVariable Long skdMeldingGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
         return sendEndringsmeldingToTpsService.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
     }
 
+    @LogExceptions
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/deleteFromTps")
     public void deleteIdentsFromTps(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam List<String> identer) {
@@ -189,6 +203,7 @@ public class SkdEndringsmeldingController {
         identpoolService.recycleIdents(new HashSet<>(identer));
     }
 
+    @LogExceptions
     @RequestMapping(value = "/gruppe/{gruppeId}/tpslogg", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingLogg> getLogg(@PathVariable("gruppeId") Long gruppeId) {
         int antallMeldingerIGruppe = skdEndringsmeldingService.countMeldingerInGruppe(gruppeId);
@@ -201,32 +216,38 @@ public class SkdEndringsmeldingController {
         }
     }
 
+    @LogExceptions
     @RequestMapping(value = "/melding/{id}", method = RequestMethod.GET)
     public RsMeldingstype getMeldingMedId(@PathVariable("id") Long id) throws JsonProcessingException {
         return skdEndringsmeldingService.findEndringsmeldingById(id);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
     public List<RsMeldingstype> getMeldingerMedId(@RequestParam(value = "ids") List<Long> ids) throws JsonProcessingException {
         return skdEndringsmeldingService.findAllEndringsmeldingerByIds(ids);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.GET)
     public List<Long> getMeldingIder(@PathVariable("gruppeId") Long gruppeId) {
         return skdEndringsmeldingService.findAllMeldingIdsInGruppe(gruppeId);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/meldinger/{gruppeId}", method = RequestMethod.POST)
     public List<Long> getMeldingIderMedFnr(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> identer) {
         return skdEndringsmeldingService.finnAlleMeldingIderMedFoedselsnummer(gruppeId, identer);
     }
 
+    @LogExceptions
     @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
     @PostMapping("save/{gruppeId}")
     public List<Long> saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> rsSkdMeldinger) {
         return saveSkdEndringsmeldingerService.save(rsSkdMeldinger, gruppeId);
     }
 
+    @LogExceptions
     @GetMapping("identer/{gruppeId}")
     public Set<String> filtrerIdenterPaaAarsakskodeOgTransaksjonstype(@PathVariable Long gruppeId, @RequestParam List<String> aarsakskode, @RequestParam String transaksjonstype) {
         return skdEndringsmeldingService.filtrerIdenterPaaAarsakskodeOgTransaksjonstype(gruppeId, aarsakskode, transaksjonstype);

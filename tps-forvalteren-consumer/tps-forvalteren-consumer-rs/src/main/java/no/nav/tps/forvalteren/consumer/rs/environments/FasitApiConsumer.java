@@ -122,7 +122,7 @@ public class FasitApiConsumer {
         return mapperFacade.map(resource.getBody(), FasitResource.class);
     }
 
-    @Cacheable(CACHE_FASIT)
+//    @Cacheable(CACHE_FASIT)
     public QueueManager getQueueManager(String environment) {
 
         List<FasitResource> fasitResources = getResourcesByAliasAndTypeAndEnvironment(QUEUE_MANAGER_ALIAS, QUEUE_MANAGER, environment);

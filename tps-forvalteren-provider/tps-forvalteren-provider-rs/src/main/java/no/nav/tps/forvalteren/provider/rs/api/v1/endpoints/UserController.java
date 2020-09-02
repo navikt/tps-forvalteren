@@ -24,6 +24,7 @@ public class UserController {
     @Autowired
     private UserContextHolder userContextHolder;
 
+    @LogExceptions
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public User getUser(@ApiIgnore HttpSession session) {
         User user = userContextHolder.getUser();
@@ -31,6 +32,7 @@ public class UserController {
         return user;
     }
 
+    @LogExceptions
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public void logout(@ApiIgnore HttpServletRequest request, @ApiIgnore HttpServletResponse response) {
         logoutUser(request, response);

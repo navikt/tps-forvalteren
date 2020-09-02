@@ -17,6 +17,7 @@ import com.google.common.collect.Sets;
 
 import io.swagger.annotations.ApiOperation;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
@@ -123,6 +124,7 @@ public class TestdataController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
+    @LogExceptions
     @ApiOperation(value = "createDummyAdresse new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
             + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
@@ -138,23 +140,27 @@ public class TestdataController {
         setGruppeIdAndSavePersonBulkTx.execute(personerSomSkalPersisteres, gruppeId);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/deletepersoner", method = RequestMethod.POST)
     public void deletePersons(@RequestBody RsPersonIdListe personIdListe) {
         deletePersonerByIdIn.execute(personIdListe.getIds());
     }
 
+    @LogExceptions
     @RequestMapping(value = "/updatepersoner", method = RequestMethod.POST)
     public void updatePersons(@RequestBody List<RsPerson> personListe) {
         List<Person> personer = mapper.mapAsList(personListe, Person.class);
         savePersonListService.execute(personer);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdentList(@RequestBody List<String> personIdentListe) {
         return sjekkIdenterService.finnGyldigeOgLedigeIdenter(personIdentListe);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/createpersoner/{gruppeId}", method = RequestMethod.POST)
     public void createPersonerFraIdentliste(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> personIdentListe) {
         List<Person> personer = opprettPersonerServiceFraIdenter.execute(personIdentListe);
@@ -163,12 +169,14 @@ public class TestdataController {
         savePersonListService.execute(personer);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/tps/{gruppeId}", method = RequestMethod.POST)
     public RsSkdMeldingResponse lagreTilTPS(@PathVariable("gruppeId") Long gruppeId, @RequestBody List<String> environments) {
         return lagreTilTpsService.execute(gruppeId, Sets.newHashSet(environments));
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSimpleGruppe> getGrupper() {
@@ -176,6 +184,7 @@ public class TestdataController {
         return mapper.mapAsList(grupper, RsSimpleGruppe.class);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/gruppe/{gruppeId}", method = RequestMethod.GET)
     public RsGruppe getGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -183,6 +192,7 @@ public class TestdataController {
         return mapper.map(gruppe, RsGruppe.class);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/gruppe", method = RequestMethod.POST)
     public void createGruppe(@RequestBody RsSimpleGruppe rsGruppe) {
@@ -190,12 +200,14 @@ public class TestdataController {
         saveGruppe.execute(gruppe);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/deletegruppe/{gruppeId}", method = RequestMethod.POST)
     public void deleteGruppe(@PathVariable("gruppeId") Long gruppeId) {
         deleteGruppeById.execute(gruppeId);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/skd/{gruppeId}", method = RequestMethod.GET)
     public RsSkdEndringsmeldingGruppe testdataGruppeToSkdEndringsmeldingGruppe(@PathVariable("gruppeId") Long gruppeId) {
@@ -203,24 +215,28 @@ public class TestdataController {
         return mapper.map(newSkdEndringsmeldingGruppe, RsSkdEndringsmeldingGruppe.class);
     }
 
+    @LogExceptions
     @Transactional
     @GetMapping(value = "/tpsStatus")
     public RsTpsStatusPaaIdenterResponse getTestdataStatusFromTpsInAllEnvironments(@RequestParam("identer") List<String> identer) {
         return statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(identer);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/vergemaal", method = RequestMethod.POST)
     public void createVergemaal(@RequestBody RsVergemaal rsVergemaal) {
         opprettVergemaal.execute(rsVergemaal);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/vergemaal/{vergemaalId}", method = RequestMethod.DELETE)
     public void deleteVergemaal(@PathVariable("vergemaalId") Long vergemaalId) {
         vergemaalRepository.deleteById(vergemaalId);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
 

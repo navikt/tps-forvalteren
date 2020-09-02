@@ -25,6 +25,7 @@ public class TpsServicesController {
     @Autowired
     private ForbiddenCallHandlerService authorisationService;
 
+    @LogExceptions
     @RequestMapping(value = "/" + REST_SERVICE_NAME, method = RequestMethod.GET)
     public List<TpsServiceRoutineDefinitionRequest> getTpsServicesMenu() {
         return getTpsServiceRutinerService.execute().stream()

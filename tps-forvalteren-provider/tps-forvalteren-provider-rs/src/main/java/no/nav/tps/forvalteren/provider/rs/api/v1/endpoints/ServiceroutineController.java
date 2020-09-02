@@ -31,6 +31,7 @@ public class ServiceroutineController extends BaseProvider {
     @Value("${tps.forvalteren.production.mode}")
     private boolean currentEnvironmentIsProd;
 
+    @LogExceptions
     @RequestMapping(value = "/" + REST_SERVICE_NAME + "/{" + TPS_SERVICE_ROUTINE_PARAM_NAME + "}", method = RequestMethod.GET)
     public TpsServiceRoutineResponse executeServiceRoutine(@RequestParam(required = false) Map<String, Object> tpsRequestParameters, @PathVariable String serviceRutinenavn) {
         loggSporing(serviceRutinenavn, tpsRequestParameters);

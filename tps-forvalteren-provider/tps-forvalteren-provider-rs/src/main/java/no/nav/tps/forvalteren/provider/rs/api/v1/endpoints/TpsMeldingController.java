@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsDoedsmeldingRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.RsTpsFoedselsmeldingRequest;
 import no.nav.tps.forvalteren.service.command.dodsmeldinger.SendTpsDoedsmeldingService;
@@ -26,12 +27,14 @@ public class TpsMeldingController {
     @Autowired
     private SendTpsDoedsmeldingService sendTpsDoedsmeldingService;
 
+    @LogExceptions
     @RequestMapping(value = "/foedselsmelding", method = RequestMethod.POST)
     public SendSkdMeldingTilTpsResponse sendFoedselsmelding(@RequestBody RsTpsFoedselsmeldingRequest tpsFoedselsmeldingRequest) {
 
         return sendTpsFoedselsmeldingService.sendFoedselsmelding(tpsFoedselsmeldingRequest);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/doedsmelding", method = RequestMethod.POST)
     public SendSkdMeldingTilTpsResponse sendDoedsmelding(@RequestBody RsTpsDoedsmeldingRequest tpsDoedsmeldinpsRequest) {
 

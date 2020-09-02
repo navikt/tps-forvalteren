@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
@@ -72,6 +73,7 @@ public class TestdataBestillingsController {
     private final ImporterPersonService importerPersonService;
 
     @Transactional
+    @LogExceptions
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/personer", method = RequestMethod.POST)
     public List<String> createPersonerFraBestillingskriterier(@RequestBody RsPersonBestillingKriteriumRequest personKriteriumRequest) {
@@ -80,18 +82,21 @@ public class TestdataBestillingsController {
     }
 
     @Transactional
+    @LogExceptions
     @RequestMapping(value = "/tilTpsFlere", method = RequestMethod.POST)
     public RsSkdMeldingResponse sendFlerePersonerTilTps(@RequestBody RsIdenterMiljoer tpsRequest) {
         List<Person> personer = personService.getPersonerByIdenter(tpsRequest.getIdenter());
         return lagreTilTps.execute(personer, newHashSet(tpsRequest.getMiljoer()));
     }
 
+    @LogExceptions
     @RequestMapping(value = "/personerdata", method = RequestMethod.GET)
     public List<RsPerson> getPersons(@RequestParam("identer") String personer) {
         List<String> identer = listExtractorKommaSeperated.extractIdenter(personer);
         return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/hentpersoner", method = RequestMethod.POST)
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
@@ -99,11 +104,13 @@ public class TestdataBestillingsController {
         return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public CheckIdentResponse checkIdentList(@RequestBody List<String> identer) {
         return sjekkIdenterService.finnLedigeIdenter(identer);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/excel", method = RequestMethod.POST)
     public ResponseEntity<Resource> getExcelForIdenter(@RequestBody List<String> identer) {
 
@@ -119,6 +126,7 @@ public class TestdataBestillingsController {
         }
     }
 
+    @LogExceptions
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "deletePersons")
@@ -126,6 +134,7 @@ public class TestdataBestillingsController {
         personService.deletePersons(miljoer, identer);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/aliaser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public RsAliasResponse opprettAliaser(@RequestBody RsAliasRequest request) {
@@ -133,6 +142,7 @@ public class TestdataBestillingsController {
         return personIdenthistorikkService.prepareAliases(request);
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/leggtilpaaperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -141,6 +151,7 @@ public class TestdataBestillingsController {
         return endrePersonBestillingService.execute(ident, request);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/relasjonperson", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<String> relasjonPerson(@RequestParam String ident, @RequestBody RsPersonBestillingRelasjonRequest request) {
@@ -148,6 +159,7 @@ public class TestdataBestillingsController {
         return relasjonEksisterendePersonerBestillingService.makeRelasjon(ident, request);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<RsPersonMiljoe> hentPersonFraTps(@RequestBody ImporterPersonRequest request) {
@@ -161,6 +173,7 @@ public class TestdataBestillingsController {
                 .collect(Collectors.toList());
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/import/lagre", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)

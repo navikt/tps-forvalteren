@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Personmal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMal;
 import no.nav.tps.forvalteren.domain.rs.RsPersonMalRequest;
@@ -35,6 +36,7 @@ public class TestdataMalController {
     @Autowired
     private CreateTestdataPerson createTestdataPerson;
 
+    @LogExceptions
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createTestdataMal(@RequestBody RsPersonMal rsPersonMal) {
         Personmal personmal = mapper.map(rsPersonMal, Personmal.class);
@@ -42,12 +44,14 @@ public class TestdataMalController {
         personmalRepository.save(personmal);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public void updateTestdataMal() {
 
         throw new TpsfFunctionalException("Funksjonen er ikke implementert");
     }
 
+    @LogExceptions
     @Transactional
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public void deleteTestdataMal(@PathVariable("id") Long id) {
@@ -55,12 +59,14 @@ public class TestdataMalController {
         personmalRepository.deleteById(id);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public RsPersonMal getTestdataMal(@PathVariable("id") Long id) {
 
         return mapper.map(personmalRepository.findById(id), RsPersonMal.class);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/getall", method = RequestMethod.GET)
     public List getAllTestdataMal() {
         List<Personmal> personmalList = personmalRepository.findAll();
@@ -72,6 +78,7 @@ public class TestdataMalController {
         return rsPersonMalList;
     }
 
+    @LogExceptions
     @RequestMapping(value = "/mal/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromMal(@PathVariable("gruppeId") Long gruppeId, @RequestBody RsPersonMalRequest inputPersonRequest) {
 

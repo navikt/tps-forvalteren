@@ -33,6 +33,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
     @Autowired
     private TpsServiceRoutineService tpsServiceRoutineService;
 
+    @LogExceptions
     @RequestMapping(value = "/kerninfo", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getKerninfo(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put(AKSJONSKODE.getName(), "B0");
@@ -40,6 +41,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
         return tpsServiceRoutineService.execute(KJERNEINFO_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/adrhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrhist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put(AKSJONSKODE.getName(), "B0");
@@ -47,6 +49,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
         return tpsServiceRoutineService.execute(ADRESSEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/adrlinjhist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getAdrlinjhist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put(AKSJONSKODE.getName(), "A0");
@@ -55,6 +58,7 @@ public class GeografiskTilhoerighetController extends BaseProvider {
         return tpsServiceRoutineService.execute(ADRESSELINJEHISTORIKK_SERVICE_ROUTINE, tpsRequestParameters, true);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/soaihist", method = RequestMethod.GET)
     public TpsServiceRoutineResponse getSoaihist(@RequestParam Map<String, Object> tpsRequestParameters) {
         tpsRequestParameters.put(AKSJONSKODE.getName(), "A0");

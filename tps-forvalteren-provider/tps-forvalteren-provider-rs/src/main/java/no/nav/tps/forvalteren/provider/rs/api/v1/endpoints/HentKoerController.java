@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitApplication;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitMQInformation;
@@ -39,6 +40,7 @@ public class HentKoerController {
     @Autowired
     private MqInfoMapper mqInfoMapper;
 
+    @LogExceptions
     @RequestMapping(value = "/applications", method = RequestMethod.GET)
     public List<FasitApplication> getApplications(@RequestParam(name = "appname", required = false, defaultValue = "") String appNavn) {
 
@@ -51,6 +53,7 @@ public class HentKoerController {
         return applikasjoner;
     }
 
+    @LogExceptions
     @RequestMapping(value = "/queues", method = RequestMethod.GET)
     public List<FasitMQInformation> getQueues(@RequestParam("appname") String appNavn) {
 

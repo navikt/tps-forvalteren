@@ -23,6 +23,7 @@ public class XmlMeldingController extends BaseProvider {
     @Autowired
     private TpsXmlSender tpsXmlSender;
 
+    @LogExceptions
     @RequestMapping(value = "/xmlmelding", method = RequestMethod.POST)
     public RsPureXmlMessageResponse sendXmlMelding(@RequestBody RsTpsMelding rsTpsMelding) throws JMSException {
 

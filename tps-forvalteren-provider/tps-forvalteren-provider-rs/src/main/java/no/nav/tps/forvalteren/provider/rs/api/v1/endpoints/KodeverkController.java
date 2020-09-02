@@ -18,16 +18,19 @@ public class KodeverkController {
     @Autowired
     private KodeverkCache kodeverkCache;
 
+    @LogExceptions
     @GetMapping(value = "/knr")
     public List<Kode> getKodeverkKommuner() {
         return kodeverkCache.getKodeverkKommunerKoder();
     }
 
+    @LogExceptions
     @GetMapping(value = "/postnummer")
     public List<Kode> getKodeverkPostnummer() {
         return kodeverkCache.getKodeverkPostnummerKoder();
     }
 
+    @LogExceptions
     @GetMapping(value = "/landkoder")
     public List<Kode> getKodeverkLandkoder() {
         return kodeverkCache.getKodeverkLandkoder();

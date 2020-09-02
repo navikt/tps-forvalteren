@@ -17,6 +17,7 @@ public class AppInfoController {
     @Value("${application.version}")
     private String appVersion;
 
+    @LogExceptions
     @RequestMapping(value = "/appinfo", method = RequestMethod.GET)
     public ApplicationInfo getInfo() {
         ApplicationInfo applicationInfo = new ApplicationInfo();

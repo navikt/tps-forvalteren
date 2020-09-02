@@ -22,6 +22,7 @@ public class MqDispatcherController {
     @Autowired
     private MQConnectionFactoryByFasit mqConnectionFactoryByFasit;
 
+    @LogExceptions
     @RequestMapping(value = "/mqdispatch", method = RequestMethod.POST)
     @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production-mode", havingValue = "false")
     public RsPureXmlMessageResponse putMsgOnQueue(@RequestBody RsTpsMelding tpsMelding,

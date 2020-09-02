@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.DeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRow;
 import no.nav.tps.forvalteren.domain.rs.RsDeathRowBulk;
@@ -58,11 +59,13 @@ public class DeathRowController {
     @Autowired
     private UserContextHolder userContextHolder;
 
+    @LogExceptions
     @RequestMapping(value = "/checkpersoner", method = RequestMethod.POST)
     public Set<IdentMedStatus> checkIdList(@RequestBody RsDeathRowCheckIdent rsDeathRowCheckIdent) {
         return sjekkIdenterForDodsmelding.finnGyldigeOgLedigeIdenterForDoedsmeldinger(rsDeathRowCheckIdent.getIdenter(), rsDeathRowCheckIdent.getMiljoe());
     }
 
+    @LogExceptions
     @RequestMapping(value = "/opprett", method = RequestMethod.POST)
     public void createMelding(@RequestBody RsDeathRowBulk rsDeathRowBulk) {
         List<DeathRow> deathRowList = mapper.map(rsDeathRowBulk, List.class);
@@ -72,17 +75,20 @@ public class DeathRowController {
         }
     }
 
+    @LogExceptions
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public void deleteMelding(@PathVariable("id") Long id) {
         deathRowRepository.deleteById(id);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/meldinger", method = RequestMethod.GET)
     public List<RsDeathRow> getMeldingLogg() {
         List<DeathRow> deathRowList = findAllDeathRows.execute();
         return mapper.mapAsList(deathRowList, RsDeathRow.class);
     }
 
+    @LogExceptions
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public RsDeathRow updateMelding(@RequestBody RsDeathRow rsDeathRow) {
         DeathRow mappedDeathRow = mapper.map(rsDeathRow, DeathRow.class);
@@ -91,12 +97,14 @@ public class DeathRowController {
         return mapper.map(updatedDeathRow, RsDeathRow.class);
     }
 
+    @LogExceptions
     @Transactional(dontRollbackOn = TpsfFunctionalException.class)
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public void sendToTps() {
         sendDodsmeldingTilTpsService.execute();
     }
 
+    @LogExceptions
     @RequestMapping(value = "/clearskjema/{miljoe}", method = RequestMethod.POST)
     public void tomSkjema(@PathVariable("miljoe") String miljoe) {
         if (!"undefined".equals(miljoe)) {
