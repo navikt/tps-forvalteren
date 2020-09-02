@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes.QUEUE_MANAGER;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
-import static no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitConstants.QUEUE_MANAGER_ALIAS;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -35,13 +35,16 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 @Service
 public class FasitApiConsumer {
 
-    protected static final String BASE_URL = "https://fasit.adeo.no";
     private static final String DEV_ENVIRONMENT = "D8";
     private static final String PREFIX_MQ_QUEUES = "QA.";
     private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
     private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
-    private static final String APP_NAME = "dummy";
     private static final String ZONE = "FSS";
+    private static final String FASIT_APP_NAME = "dummy";
+    private static final String QUEUE_MANAGER_ALIAS  = "mqGateway";
+
+    @Value(value = "${fasit.url}")
+    private String fasitUrl;
 
     @Autowired
     private MapperFacade mapperFacade;
@@ -80,7 +83,7 @@ public class FasitApiConsumer {
     @Cacheable(CACHE_FASIT)
     public List<FasitApplication> getApplications(String name) {
         String urlPattern = FasitUrl.APPLICATIONS_V2_GET.getUrl() + createQueryPatternByParamName("name", "pr_page");
-        String url = String.format(urlPattern, BASE_URL, name, 1000);
+        String url = String.format(urlPattern, fasitUrl, name, 1000);
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
@@ -90,7 +93,7 @@ public class FasitApiConsumer {
     @Cacheable(CACHE_FASIT)
     public List<FasitApplication> getApplicationInstances(String application, boolean usage) {
         String urlPattern = FasitUrl.APPLICATIONINSTANCES_V2_GET.getUrl() + createQueryPatternByParamName("application", "usage");
-        String url = String.format(urlPattern, BASE_URL, application, true);
+        String url = String.format(urlPattern, fasitUrl, application, true);
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
@@ -100,7 +103,7 @@ public class FasitApiConsumer {
     @Cacheable(CACHE_FASIT)
     public List<FasitResource> getResourcesByAliasAndType(String alias, FasitPropertyTypes propertyTypes) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type");
-        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName());
+        String url = String.format(urlPattern, fasitUrl, alias, propertyTypes.getPropertyName());
 
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
 
@@ -111,7 +114,7 @@ public class FasitApiConsumer {
     public List<FasitResource> getResourcesByAliasAndTypeAndEnvironment(String alias, FasitPropertyTypes propertyTypes, String environment) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type", "environment" +
                 (environment.length() == 1 ? "class" : ""));
-        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName(), environment);
+        String url = String.format(urlPattern, fasitUrl, alias, propertyTypes.getPropertyName(), environment);
 
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
 
@@ -123,7 +126,7 @@ public class FasitApiConsumer {
         String urlPattern = FasitUrl.SCOPED_RESOURCE_V2_GET.getUrl() +
                 createQueryPatternByParamName("alias", "type", "environment", "application", "zone");
 
-        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName(), environment, APP_NAME, ZONE);
+        String url = String.format(urlPattern, fasitUrl, alias, propertyTypes.getPropertyName(), environment, FASIT_APP_NAME, ZONE);
 
         ResponseEntity<FasitResourceWithUnmappedProperties> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties.class);
 
@@ -136,6 +139,7 @@ public class FasitApiConsumer {
         return mapperFacade.map(resource.getBody(), FasitResource.class);
     }
 
+    @Cacheable(CACHE_FASIT)
     public QueueManager getQueueManager(String environment) {
 
         FasitResource fasitResource = getScopedResource(QUEUE_MANAGER_ALIAS, QUEUE_MANAGER, environment);
