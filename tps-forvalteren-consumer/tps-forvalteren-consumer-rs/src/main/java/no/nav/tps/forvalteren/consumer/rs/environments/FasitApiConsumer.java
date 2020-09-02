@@ -40,6 +40,8 @@ public class FasitApiConsumer {
     private static final String PREFIX_MQ_QUEUES = "QA.";
     private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
     private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
+    private static final String APP_NAME = "dummy";
+    private static final String ZONE = "FSS";
 
     @Autowired
     private MapperFacade mapperFacade;
@@ -117,16 +119,27 @@ public class FasitApiConsumer {
     }
 
     @Cacheable(CACHE_FASIT)
+    public FasitResource getScopedResource(String alias, FasitPropertyTypes propertyTypes, String environment) {
+        String urlPattern = FasitUrl.SCOPED_RESOURCE_V2_GET.getUrl() +
+                createQueryPatternByParamName("alias", "type", "environment", "application", "zone");
+
+        String url = String.format(urlPattern, BASE_URL, alias, propertyTypes.getPropertyName(), environment, APP_NAME, ZONE);
+
+        ResponseEntity<FasitResourceWithUnmappedProperties> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties.class);
+
+        return mapperFacade.map(properties.getBody(), FasitResource.class);
+    }
+
+    @Cacheable(CACHE_FASIT)
     public FasitResource getResourceFromRef(String refurl) {
         ResponseEntity<FasitResourceWithUnmappedProperties> resource = restTemplate.getForEntity(refurl, FasitResourceWithUnmappedProperties.class);
         return mapperFacade.map(resource.getBody(), FasitResource.class);
     }
 
-//    @Cacheable(CACHE_FASIT)
     public QueueManager getQueueManager(String environment) {
 
-        List<FasitResource> fasitResources = getResourcesByAliasAndTypeAndEnvironment(QUEUE_MANAGER_ALIAS, QUEUE_MANAGER, environment);
-        FasitMQManager mqManager = (FasitMQManager) fasitResources.get(0).getProperties();
+        FasitResource fasitResource = getScopedResource(QUEUE_MANAGER_ALIAS, QUEUE_MANAGER, environment);
+        FasitMQManager mqManager = (FasitMQManager) fasitResource.getProperties();
         return QueueManager.builder()
                 .name(mqManager.getName())
                 .hostname(mqManager.getHostname())

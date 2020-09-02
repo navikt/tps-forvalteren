@@ -7,7 +7,8 @@ public enum FasitUrl {
 
     APPLICATIONS_V2_GET("%s/api/v2/applications"),
     APPLICATIONINSTANCES_V2_GET("%s/api/v2/applicationinstances"),
-    RESOURCES_V2_GET("%s/api/v2/resources");
+    RESOURCES_V2_GET("%s/api/v2/resources"),
+    SCOPED_RESOURCE_V2_GET("%s/api/v2/scopedresource");
 
     private final String url;
 
