@@ -41,6 +41,7 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyLanguageServ
 import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @Component
 @RequiredArgsConstructor
@@ -52,6 +53,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private final DummyAdresseService dummyAdresseService;
     private final DummyLanguageService dummyLanguageService;
     private final KontonrGeneratorService kontonrGeneratorService;
+    private final LandkodeEncoder landkodeEncoder;
 
     @Override
     public void register(MapperFactory factory) {
@@ -161,7 +163,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
 
-        if (nonNull(kriteriumRequest.getStatsborgerskap())) {
+        if (isNotBlank(kriteriumRequest.getStatsborgerskap())) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(kriteriumRequest.getStatsborgerskap())
@@ -172,7 +174,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         } else if (person.getStatsborgerskap().isEmpty()) {
 
             person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(FNR.name().equals(person.getIdenttype()) ? "NOR" : kriteriumRequest.getInnvandretFraLand())
+                    .statsborgerskap(FNR.name().equals(person.getIdenttype()) ? "NOR" :
+                            landkodeEncoder.getRandomLandTla())
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getInnvandretFraLandFlyttedato(),
                             hentDatoFraIdentService.extract(person.getIdent())))
                     .person(person)
