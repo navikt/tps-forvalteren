@@ -1,4 +1,4 @@
-name: Deploy u2
+name: Deploy dev u2
 
 on:
   push:
