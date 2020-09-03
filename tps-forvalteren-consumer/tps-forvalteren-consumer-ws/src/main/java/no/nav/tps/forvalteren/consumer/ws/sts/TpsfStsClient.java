@@ -93,7 +93,7 @@ public class TpsfStsClient extends STSClient {
         clientTpsf.getRequestContext().put("ws-security.sts.client", this);
         setServiceQName(new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/wsdl", "SecurityTokenServiceProvider"));
         setEndpointQName(new QName("http://docs.oasis-open.org/ws-sx/ws-trust/200512/wsdl", "SecurityTokenServiceSOAP"));
-        setWsdlLocation("wsdl/ws-trust-1.4-service.wsdl");
+        setWsdlLocation("classpath:wsdl/ws-trust-1.4-service.wsdl");
         setEnableAppliesTo(false);
         setAllowRenewing(false);
     }

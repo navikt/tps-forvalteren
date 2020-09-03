@@ -25,7 +25,6 @@
             <artifactId>tps-forvalteren-domain-service</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-common-test</artifactId>
@@ -40,21 +39,9 @@
 
         <!--JMS AND MQ-->
         <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>jms</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm</groupId>
-            <artifactId>mqjms</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.ibm.mq</groupId>
-            <artifactId>jmqi</artifactId>
+            <artifactId>com.ibm.mq.allclient</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.ibm.disthub2</groupId>
-            <artifactId>dhbcore</artifactId>
-        </dependency>
-    </dependencies>
 
+    </dependencies>
 </project>

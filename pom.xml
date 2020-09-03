@@ -15,6 +15,27 @@
 
     <packaging>pom</packaging>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/navikt/tps-forvalteren</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <developerConnection>scm:git:git@github.com:navikt/tps-forvalteren.git</developerConnection>
+        <connection>scm:git:git@github.com:navikt/tps-forvalteren.git</connection>
+        <url>https://github.com/navikt/tps-forvalteren</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>github-package-registry-navikt</id>
+            <url>https://maven.pkg.github.com/navikt/maven-release</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>tps-forvalteren-application</module>
         <module>tps-forvalteren-app-nais</module>
@@ -50,41 +71,27 @@
         <!--NAV dependency versions-->
         <jackson-dataformat-xml.version>2.11.0</jackson-dataformat-xml.version>
         <jackson-datatype-jsr310.version>2.9.0</jackson-datatype-jsr310.version>
-        <modig-log-jaxws.version>1.1.3</modig-log-jaxws.version>
-        <modig-security.version>3.0.5</modig-security.version>
-        <modig-testcertificates.version>1.2.2</modig-testcertificates.version>
-        <diskresjonskode-v1.version>1.2.3</diskresjonskode-v1.version>
-        <pipEgenAnsatt-v1.version>1.0.1</pipEgenAnsatt-v1.version>
-        <tps.interface.library.version>1.62.0</tps.interface.library.version>
-        <freg-spring-boot-starter-dependencies.version>1.5.0</freg-spring-boot-starter-dependencies.version>
-        <freg.property.version>1.2.0</freg.property.version>
-        <freg-metrics.version>1.0.0</freg-metrics.version>
+        <diskresjonskode-v1.version>1.2020.07.17-17.06-31e5aa824db7</diskresjonskode-v1.version>
+        <egenansatt-v1.version>1.2020.07.17-17.06-31e5aa824db7</egenansatt-v1.version>
+        <tps.interface.library.version>2020.08.27-09.53-183ead3d81eb</tps.interface.library.version>
         <papertrailapp.version>1.0.0</papertrailapp.version>
-        <freg-spring-boot-starter-log-exceptions.version>1.4.0</freg-spring-boot-starter-log-exceptions.version>
+        <plexus-utils-version>3.3.0</plexus-utils-version>
 
         <!--Dependency versions-->
         <bootstrap.version>3.3.5</bootstrap.version>
         <logstash.logback.encoder.version>4.11</logstash.logback.encoder.version>
-        <cxf.version>3.1.6</cxf.version>
-        <dhbcore.version>DH610-GOLD</dhbcore.version>
-        <jdbc.ojdbc.version>18.3.0.0</jdbc.ojdbc.version>
-        <jdbc.ucp.version>12.2.0.1</jdbc.ucp.version>
-        <jdbc.ons.version>12.2.0.1</jdbc.ons.version>
-        <java.version>1.8</java.version>
+        <cxf.version>3.1.12</cxf.version>
+        <ibm-mq-version>9.1.5.0</ibm-mq-version>
+        <jdbc.version>19.7.0.0</jdbc.version>
         <javaee-api.version>8.0</javaee-api.version>
-        <javax-jms.version>2.0</javax-jms.version>
-        <jmqi.version>7.1.0.0</jmqi.version>
-        <jms.version>1.1</jms.version>
         <guava.version>21.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <orika.version>1.5.1</orika.version>
-        <mqjms.version>7.1</mqjms.version>
         <springfox-swagger.version>2.9.2</springfox-swagger.version>
         <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
         <spring-cloud.version>2.2.0.RELEASE</spring-cloud.version>
         <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
         <h2.database.version>1.4.197</h2.database.version>
-        <fasit.client.version>5.8.57</fasit.client.version>
         <jaxws-version>2.3.3</jaxws-version>
 
         <!--Plugin versions-->
@@ -102,11 +109,11 @@
             <optional>true</optional>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -227,17 +234,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>freg-spring-boot-starter-selftest-spi</artifactId>
-                <version>${freg-spring-boot-starter-dependencies.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
-                <version>${freg-spring-boot-starter-log-exceptions.version}</version>
-            </dependency>
-
             <!-- CXF library -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -247,6 +243,11 @@
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-ws-security</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
 
@@ -276,35 +277,22 @@
 
             <!-- JDBC -->
             <dependency>
-                <groupId>com.oracle.jdbc</groupId>
+                <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ojdbc8</artifactId>
-                <version>${jdbc.ojdbc.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ucp</artifactId>
-                <version>${jdbc.ucp.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ons</artifactId>
-                <version>${jdbc.ons.version}</version>
+                <version>${jdbc.version}</version>
             </dependency>
 
             <!--SERVICES-->
             <dependency>
-                <groupId>no.nav.tjenester.pip</groupId>
-                <artifactId>nav-pip-diskresjonskode-v1-tjenestespesifikasjon</artifactId>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>nav-pip-diskresjonskode-tjenestespesifikasjon</artifactId>
                 <version>${diskresjonskode-v1.version}</version>
-                <classifier>jaxws</classifier>
             </dependency>
+
             <dependency>
-                <groupId>no.nav.tjenester.pip</groupId>
-                <artifactId>nav-pip-egenAnsatt-v1-tjenestespesifikasjon</artifactId>
-                <version>${pipEgenAnsatt-v1.version}</version>
-                <classifier>jaxws</classifier>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>egenansatt-v1-tjenestespesifikasjon</artifactId>
+                <version>${egenansatt-v1.version}</version>
             </dependency>
 
             <!--LANGUAGE EXTENSIONS-->
@@ -312,33 +300,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
-            </dependency>
-
-            <!-- MODIG -->
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-security-core</artifactId>
-                <version>${modig-security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-security-ws</artifactId>
-                <version>${modig-security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-security-sts</artifactId>
-                <version>${modig-security.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-log-jaxws</artifactId>
-                <version>${modig-log-jaxws.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.modig</groupId>
-                <artifactId>modig-testcertificates</artifactId>
-                <version>${modig-testcertificates.version}</version>
             </dependency>
 
             <!-- WEBJARS -->
@@ -399,24 +360,10 @@
             <!--JMS AND MQ-->
             <dependency>
                 <groupId>com.ibm.mq</groupId>
-                <artifactId>jmqi</artifactId>
-                <version>${jmqi.version}</version>
+                <artifactId>com.ibm.mq.allclient</artifactId>
+                <version>${ibm-mq-version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ibm.disthub2</groupId>
-                <artifactId>dhbcore</artifactId>
-                <version>${dhbcore.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.jms</groupId>
-                <artifactId>jms</artifactId>
-                <version>${jms.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ibm</groupId>
-                <artifactId>mqjms</artifactId>
-                <version>${mqjms.version}</version>
-            </dependency>
+
             <!-- Database -->
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -426,17 +373,6 @@
             </dependency>
 
             <!-- Intern -->
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>metrics-spring</artifactId>
-                <version>${freg-metrics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>metrics-annotations</artifactId>
-                <version>${freg-metrics.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>no.nav.repository.fellesreg.tpsws</groupId>
                 <artifactId>nav-repository-fellesregister-jaxb-tps-s004-domain</artifactId>
@@ -471,19 +407,6 @@
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>4.11</version>
-            </dependency>
-
-            <!-- Fasit -->
-            <dependency>
-                <groupId>no.nav.aura.fasit</groupId>
-                <artifactId>fasit-client-api</artifactId>
-                <version>${fasit.client.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.freg</groupId>
-                <artifactId>freg-property-reader</artifactId>
-                <version>${freg.property.version}</version>
             </dependency>
 
             <!-- API -->
@@ -530,21 +453,16 @@
                     <pushHotfixes>true</pushHotfixes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <source>1.11</source>
+                    <target>1.11</target>
+                    <release>11</release>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
-    <!-- Configuring NAV's internal Maven repository (Nexus). -->
-    <distributionManagement>
-        <repository>
-            <id>m2internal</id>
-            <name>NAV Maven2 Internal Repository</name>
-            <url>http://maven.adeo.no/nexus/content/repositories/m2internal</url>
-        </repository>
-        <snapshotRepository>
-            <id>m2snapshot</id>
-            <name>NAV Maven2 Snapshot Repository</name>
-            <url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

@@ -33,7 +33,7 @@ public class EnvironmentControllerIntegrationTest extends AbstractRsProviderInte
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.environments", hasSize(greaterThanOrEqualTo(8))))
+                .andExpect(jsonPath("$.environments", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.productionMode", is(false)));
     }
 }

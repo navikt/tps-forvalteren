@@ -44,9 +44,10 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>no.nav.aura.fasit</groupId>
-            <artifactId>fasit-client-api</artifactId>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
         </dependency>
 
         <!--LANGUAGE EXTENSIONS-->

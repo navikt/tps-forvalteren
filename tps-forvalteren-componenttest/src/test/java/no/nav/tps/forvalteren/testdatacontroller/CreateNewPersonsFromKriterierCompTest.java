@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.jms.JMSException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -45,8 +46,8 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     private Long gruppeId;
     private Gruppe testgruppe;
 
-    @Autowired
-    private FetchEnvironmentsManager fetchEnvironmentsManagerSpy; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
+    @Mock
+    private FetchEnvironmentsManager fetchEnvironmentsManager; //Alternativet er å wiremocke https://fasit.adeo.no/api/v2/applicationinstances?application=tpsws&usage=true
 
     @Autowired
     private FiktiveIdenterGenerator fiktiveIdenterGeneratormock;
@@ -65,7 +66,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
 
         when(fiktiveIdenterGeneratormock.genererFiktiveIdenter(any(RsPersonKriterier.class))).thenReturn(IDENTER);
 
-        when(fetchEnvironmentsManagerSpy.getEnvironments("tpsws")).thenReturn(ENV_SET);
+        when(fetchEnvironmentsManager.getEnvironments("tpsws")).thenReturn(ENV_SET);
 
         mockTps();
     }

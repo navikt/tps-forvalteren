@@ -19,7 +19,12 @@ public class MQConnectionFactoryByFasit {
     public MessageQueueConsumer createMessageQueueConsumer(String manager, String host, String port, String queue, String channel) throws JMSException {
 
         //TODO dette skal gjøres om etter hvert. Channel er waste at den ikke abre er i QMaanger
-        QueueManager qm = new QueueManager(manager, host, port, channel);
+        QueueManager qm = QueueManager.builder()
+                .name(manager)
+                .hostname(host)
+                .port(port)
+                .channel(channel)
+                .build();
         ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(qm, channel);
 
         ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);

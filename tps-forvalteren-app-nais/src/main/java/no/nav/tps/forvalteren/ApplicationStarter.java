@@ -8,8 +8,6 @@ import org.apache.catalina.authenticator.jaspic.AuthConfigFactoryImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-import no.nav.fregpropertyreader.PropertyReader;
-
 @SpringBootApplication
 public class ApplicationStarter {
 

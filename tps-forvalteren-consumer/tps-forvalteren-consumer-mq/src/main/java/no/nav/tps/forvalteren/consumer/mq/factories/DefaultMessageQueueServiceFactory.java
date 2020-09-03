@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
 import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
 import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
@@ -23,7 +23,7 @@ import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
     @Autowired
-    private FasitClient fasitClient;
+    private FasitApiConsumer fasitClient;
 
     @Autowired
     private ConnectionFactoryFactory connectionFactoryFactory;

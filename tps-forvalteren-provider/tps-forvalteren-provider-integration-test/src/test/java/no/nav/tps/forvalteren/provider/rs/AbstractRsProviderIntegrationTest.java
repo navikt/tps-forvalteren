@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs;
 
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkResponse;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.config.RsProviderIntegrationTestConfig;
@@ -36,6 +36,9 @@ public abstract class AbstractRsProviderIntegrationTest {
 
     @Autowired
     protected EgenAnsattConsumer egenAnsattConsumerMock;
+
+    @Autowired
+    protected FasitApiConsumer fasitApiConsumer;
 
     protected MockMvc mvc;
 
@@ -55,10 +58,8 @@ public abstract class AbstractRsProviderIntegrationTest {
         response.setDiskresjonskode("");
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
 
-        HentDiskresjonskodeBolkResponse bolkResponse = new HentDiskresjonskodeBolkResponse();
-        when(diskresjonskodeConsumerMock.getDiskresjonskodeBolk(anyList())).thenReturn(bolkResponse);
-
         when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
+        when(fasitApiConsumer.getEnvironments(anyString())).thenReturn(Set.of("q1"));
     }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {

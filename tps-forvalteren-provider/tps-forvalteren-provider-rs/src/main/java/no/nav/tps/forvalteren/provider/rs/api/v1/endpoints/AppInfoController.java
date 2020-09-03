@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.appinfo.ApplicationInfo;
 
 @RestController
@@ -17,6 +18,7 @@ public class AppInfoController {
     @Value("${application.version}")
     private String appVersion;
 
+    @LogExceptions
     @RequestMapping(value = "/appinfo", method = RequestMethod.GET)
     public ApplicationInfo getInfo() {
         ApplicationInfo applicationInfo = new ApplicationInfo();

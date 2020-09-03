@@ -30,6 +30,7 @@ import com.google.common.base.Charsets;
 
 import io.swagger.annotations.ApiParam;
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
@@ -71,6 +72,7 @@ public class AvspillerController {
     private MessageProvider messageProvider;
 
     @Cacheable(CACHE_AVSPILLER)
+    @LogExceptions
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -87,6 +89,7 @@ public class AvspillerController {
     }
 
     @Cacheable(CACHE_AVSPILLER)
+    @LogExceptions
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
             @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
@@ -113,6 +116,7 @@ public class AvspillerController {
     }
 
     @PostMapping("/meldinger")
+    @LogExceptions
     public TpsAvspiller sendTilTps(@RequestBody RsAvspillerRequest request) {
 
         TpsAvspiller avspillerStatus = avspillerDaoService.save(request);
@@ -124,6 +128,7 @@ public class AvspillerController {
     }
 
     @Cacheable(CACHE_FASIT)
+    @LogExceptions
     @GetMapping("/meldingskoer")
     public List<String> getMeldingskoer(@RequestParam("miljoe") String miljoe, @RequestParam("format") Meldingsformat format) {
 
@@ -145,6 +150,7 @@ public class AvspillerController {
         return queues;
     }
 
+    @LogExceptions
     @GetMapping("/statuser")
     public RsTpsAvspiller getStatuser(@RequestParam(value = "bestilling", required = false) Long bestillingId) {
 
@@ -152,6 +158,7 @@ public class AvspillerController {
         return mapperFacade.map(avspiller, RsTpsAvspiller.class);
     }
 
+    @LogExceptions
     @GetMapping("/melding")
     public String showRequest(@RequestParam(value = "miljoe") String miljoe,
             @RequestParam(value = "format", required = false) Meldingsformat format,
@@ -160,6 +167,7 @@ public class AvspillerController {
         return format("{\"data\": \"%s\"}", Base64.getEncoder().encodeToString(avspillerService.showRequest(miljoe, format, meldingnr).getBytes(Charsets.UTF_8)));
     }
 
+    @LogExceptions
     @DeleteMapping("/meldinger")
     public RsTpsAvspiller cancelSendTilTps(@RequestParam(value = "bestillingId") Long bestillingId) {
 

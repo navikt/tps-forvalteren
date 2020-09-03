@@ -1,10 +1,6 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiParam;
-import no.nav.tps.forvalteren.domain.rs.restTPS.RsEndreRelasjon;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsResponseToJsonHandler;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon.ENDRE_RELASJON;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.navmeldinger.EndreRelasjon.ENDRE_RELASJON;
+import io.swagger.annotations.ApiParam;
+import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.domain.rs.restTPS.RsEndreRelasjon;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
+import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsResponseToJsonHandler;
 
 @RestController
 @RequestMapping(value = "/api/tps")
@@ -31,6 +32,7 @@ public class TpsRestApiController {
     @Autowired
     private TpsResponseToJsonHandler tpsResponseToJsonHandler;
 
+    @LogExceptions
     @GetMapping("/kjerneinfo")
     public Map fetchKjerneinfoPaaPersonS610(
             @RequestParam("fnr") String fnr,
@@ -42,6 +44,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/kontaktinformasjon")
     public Map fetchKontaktinformasjonPaaPersonS600(
             @RequestParam("fnr") String fnr,
@@ -53,6 +56,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/inn-og-utvandring")
     public Map fetchInnOgUtvandringPaaPersonS016(
             @RequestParam(value = "aksjonsDato") String aksjonsDato,
@@ -69,6 +73,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/person-kort-inkl-gt-data")
     public Map fetchKortPersondataS300(
             @RequestParam("fnr") String fnr,
@@ -80,6 +85,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/gdpr-data")
     public Map fetchGDPprDataPaaPersonS301(
             @RequestParam("fnr") String fnr,
@@ -91,6 +97,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/personstatus-og-adresse-person")
     public Map fetchPersonstatusOgAdresseS018(
             @RequestParam("fnr") String fnr,
@@ -105,6 +112,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/adresse-historikk-linjeadresse")
     public Map fetchAdresseHistorikkLinjeS015(
             @RequestParam("fnr") String fnr,
@@ -119,6 +127,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/adresse-historikk-bosted")
     public Map fetchAdresseHistorikkBostedS010(
             @RequestParam("fnr") String fnr,
@@ -131,6 +140,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/personopplysninger")
     public Map fetchPersonopplysningerS004(
             @RequestParam("fnr") String fnr,
@@ -143,6 +153,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/fnr-dnr-historikk")
     public Map fetchFnrDnrHistrikkS011(
             @RequestParam("fnr") String fnr,
@@ -155,6 +166,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/vergemaal")
     public Map fetchPersonopplysningerS137(
             @RequestParam("fnr") String fnr,
@@ -168,6 +180,7 @@ public class TpsRestApiController {
 
     // FS03-NAADRSOK-PERSDATA-O?aksjonsDato=2018-08-01&aksjonsKode=A0&buffNr=1&environment=u6&etternavn=Thomassen&fornavn=Jonas&sortering=Navn
 
+    @LogExceptions
     @GetMapping("/sok-persondata")
     public Map fetchSokPersondataS050(
             @RequestParam(value = "aksjonsDato", required = false) String aksjonsDato,
@@ -190,6 +203,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @GetMapping("/personrelasjoner")
     public Map fetchPersonrelasjonerS005(
             @RequestParam("fnr") String fnr,
@@ -202,6 +216,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
+    @LogExceptions
     @PutMapping("/relasjon")
     public Map endreRelasjon(@RequestBody RsEndreRelasjon req) {
         TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(objectMapper.convertValue(req, Map.class), ENDRE_RELASJON);

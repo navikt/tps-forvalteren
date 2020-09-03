@@ -2,14 +2,11 @@ package no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.List;
 import javax.xml.ws.soap.SOAPFaultException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,8 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
-import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeBolkRequest;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeRequest;
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
 
@@ -29,11 +25,12 @@ import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse
 public class DefaultDiskresjonskodeConsumerTest {
 
     private static final String THE_DATABASE_DOES_NOT_ANSWER_ERROR = "Databasen svarer ikke";
-    private static final String SOAP_FAULT_ERROR                   = "Soap error";
+    private static final String SOAP_FAULT_ERROR = "Soap error";
+    private static final String NO_MATCHES_FOUND_TPSWS_ERROR = "Ingen forekomster funnet";
+    private static final String INVALID_FNR_TPSWS_ERROR = "FØDSELSNUMMER INNGITT ER UGYLDIG";
 
     //Test users
-    private static final String TEST_FNR            = "11223344556";
-    private static final List<String> TEST_FNR_LIST = Arrays.asList("11223344556", "99887766554");
+    private static final String TEST_FNR = "11223344556";
 
     @Mock
     private DiskresjonskodePortType diskresjonskodePortType;
@@ -90,18 +87,8 @@ public class DefaultDiskresjonskodeConsumerTest {
     }
 
     @Test
-    public void getDiskresjonskodeBolkRequestIsSentWithCorrectFNr() {
-        diskresjonskodeConsumer.getDiskresjonskodeBolk(TEST_FNR_LIST);
-
-        ArgumentCaptor<HentDiskresjonskodeBolkRequest> captor = ArgumentCaptor.forClass(HentDiskresjonskodeBolkRequest.class);
-        verify(diskresjonskodePortType).hentDiskresjonskodeBolk(captor.capture());
-
-        assertThat(captor.getValue().getIdentListe(), containsInAnyOrder(TEST_FNR_LIST.toArray(new String[TEST_FNR_LIST.size()])));
-    }
-
-    @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsInvalidFnrError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(DefaultDiskresjonskodeConsumer.INVALID_FNR_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(INVALID_FNR_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(
                 any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
@@ -113,7 +100,7 @@ public class DefaultDiskresjonskodeConsumerTest {
 
     @Test
     public void getDiskresjonskodeReturnsWithoutDiskresjonskodeWhenHentDiskresjonskodeThrowsNoMatchFoundError() throws Exception {
-        when(soapFaultException.getMessage()).thenReturn(DefaultDiskresjonskodeConsumer.NO_MATCHES_FOUND_TPSWS_ERROR);
+        when(soapFaultException.getMessage()).thenReturn(NO_MATCHES_FOUND_TPSWS_ERROR);
         when(diskresjonskodePortType.hentDiskresjonskode(any(HentDiskresjonskodeRequest.class)))
                 .thenThrow(soapFaultException);
 

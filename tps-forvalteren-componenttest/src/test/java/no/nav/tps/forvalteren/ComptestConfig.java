@@ -23,7 +23,6 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
-import no.nav.tps.forvalteren.consumer.rs.fasit.FasitClient;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
@@ -52,8 +51,8 @@ public class ComptestConfig {
     
     @Bean
     @Primary
-    public FasitClient fasitClient() {
-        return mock(FasitClient.class);
+    public FasitApiConsumer fasitClient() {
+        return mock(FasitApiConsumer.class);
     }
     
     @Bean(name = "cxfStsClientDiskresjonskode")

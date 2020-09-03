@@ -33,10 +33,6 @@
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-domain-rs</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>freg-spring-boot-starter-log-exceptions</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -69,21 +65,13 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
+
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
             <artifactId>orika-core</artifactId>
         </dependency>
 
         <!-- Interne -->
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>metrics-annotations</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.freg</groupId>
-            <artifactId>metrics-spring</artifactId>
-        </dependency>
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-domain-test</artifactId>

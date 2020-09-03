@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import no.nav.tjeneste.pip.diskresjonskode.binding.DiskresjonskodePortType;
+import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
 import no.nav.tps.forvalteren.consumer.ws.kodeverk.config.ConsumerConfigUtil;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
 
@@ -20,7 +20,7 @@ public class DiskresjonskodeConfig {
     @Value("${virksomhet.diskresjonskode.v1.endpointurl}")
     private String diskresjonskodeAddress;
 
-    private static final String DISKRESJON_WSDL_URL = "wsdl/no/nav/tjeneste/pip/Diskresjonskode/Diskresjonskode.wsdl";
+    private static final String DISKRESJON_WSDL_URL = "wsdl/Diskresjonskode.wsdl";
     private static final QName DISKRESJON_QNAME = new QName("http://nav.no/tjeneste/pip/diskresjonskode/", "DiskresjonskodePortTypePort");
 
     @Bean
