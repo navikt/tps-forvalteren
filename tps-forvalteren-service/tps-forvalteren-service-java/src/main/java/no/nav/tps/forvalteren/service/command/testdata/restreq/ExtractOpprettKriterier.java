@@ -121,8 +121,7 @@ public class ExtractOpprettKriterier {
 
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
-                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
+        List<Adresse> adresser = getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo());
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -227,7 +226,7 @@ public class ExtractOpprettKriterier {
                 partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
                 partnere.get(partnerStartIndex + partnerNr);
 
-        return hasAdresse(partner) ? partner.getBoadresse().get(0) : null;
+        return hasAdresse(partner) && !partner.getBoadresse().isEmpty() ? partner.getBoadresse().get(0) : null;
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
