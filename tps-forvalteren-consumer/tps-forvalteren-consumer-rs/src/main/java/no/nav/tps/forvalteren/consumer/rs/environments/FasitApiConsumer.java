@@ -1,17 +1,11 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes.QUEUE_MANAGER;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,7 +14,14 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import ma.glasnost.orika.MapperFacade;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitApplication;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResourceWithUnmappedProperties;
@@ -41,7 +42,7 @@ public class FasitApiConsumer {
     private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
     private static final String ZONE = "FSS";
     private static final String FASIT_APP_NAME = "dummy";
-    private static final String QUEUE_MANAGER_ALIAS  = "mqGateway";
+    private static final String QUEUE_MANAGER_ALIAS = "mqGateway";
 
     @Value(value = "${fasit.url}")
     private String fasitUrl;
@@ -87,7 +88,7 @@ public class FasitApiConsumer {
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
-        return newArrayList(applications.getBody());
+        return Arrays.stream(applications.getBody()).collect(Collectors.toList());
     }
 
     @Cacheable(CACHE_FASIT)
@@ -97,7 +98,7 @@ public class FasitApiConsumer {
 
         ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
 
-        return newArrayList(applications.getBody());
+        return Arrays.stream(applications.getBody()).collect(Collectors.toList());
     }
 
     @Cacheable(CACHE_FASIT)
