@@ -295,7 +295,7 @@ public class ImporterPersonService {
     private Map buildRequest(String ident, String environment) {
         Map<String, Object> params = new HashMap<>();
         params.put("fnr", ident);
-        params.put("aksjonsKode", "C1");
+        params.put("aksjonsKode", "D1");
         params.put("environment", environment);
         return params;
     }

@@ -94,8 +94,8 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                         mapTiadAdresse(tpsPerson, person);
                         person.setSpesreg(tpsPerson.getBruker().getDiskresjonDetalj().getKodeDiskresjon());
                         person.setSpesregDato(getTimestamp(tpsPerson.getBruker().getDiskresjonDetalj().getDiskresjonTidspunkt()));
-                        person.setEgenAnsattDatoFom(TRUE.equals(tpsPerson.getBruker().getPersEgenAnsatt()) ?
-                                LocalDateTime.now() : null);
+                        person.setEgenAnsattDatoFom(isNotBlank(tpsPerson.getBruker().getEgenAnsatt().getFom()) ?
+                                LocalDate.parse(tpsPerson.getBruker().getEgenAnsatt().getFom()).atStartOfDay() : null);
                         person.setSivilstand(getSivilstand(tpsPerson));
                         person.setSivilstandRegdato(getTimestamp(tpsPerson.getSivilstandDetalj().getSivilstTidspunkt()));
                         person.setImportFra(TPS);
@@ -212,6 +212,7 @@ public class S610PersonMappingStrategy implements MappingStrategy {
             adresse = Gateadresse.builder()
                     .adresse(tpsBoadresse.getOffAdresse().getGateNavn())
                     .husnummer(skipLeadZeros(tpsBoadresse.getOffAdresse().getHusnr()))
+                    .gatekode(tpsBoadresse.getOffAdresse().getGatekode())
                     .build();
 
         } else if (MATR_ADRESSE.equals(tpsBoadresse.getAdresseType())) {
@@ -273,7 +274,10 @@ public class S610PersonMappingStrategy implements MappingStrategy {
 
         return nonNull(telefoner) ? telefoner.getTelefon().stream()
                 .filter(telefon -> telefontype.equals(telefon.getTlfType()))
-                .map(TelefonType::getTlfLandkode)
+                .map(telefon ->
+                        isNotBlank(telefon.getTlfLandkode()) ?
+                                telefon.getTlfLandkode() : "+47"
+                )
                 .findFirst().orElse(null) : null;
     }
 
