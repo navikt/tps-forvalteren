@@ -19,7 +19,7 @@
         <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
             <host>audit.nais</host> <!-- remote system to log to -->
             <port>6514</port> <!-- remote port to log to -->
-            <ident>dkif</ident> <!-- program name to log as -->
+            <ident>tps-forvalteren</ident> <!-- program name to log as -->
             <maxMessageLength>128000</maxMessageLength> <!-- max log message length in bytes -->
         </syslogConfig>
     </appender>

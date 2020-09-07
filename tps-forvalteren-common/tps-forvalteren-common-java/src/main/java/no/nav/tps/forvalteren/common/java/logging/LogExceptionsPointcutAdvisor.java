@@ -6,10 +6,12 @@ import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class LogExceptionsPointcutAdvisor extends AbstractPointcutAdvisor {
 
-    static final StaticMethodMatcherPointcut POINTCUT = new StaticMethodMatcherPointcut() {
+    private static final StaticMethodMatcherPointcut POINTCUT = new StaticMethodMatcherPointcut() {
         @Override
         public boolean matches(Method method, Class<?> aClass) {
             return method.isAnnotationPresent(LogExceptions.class);

@@ -2,20 +2,15 @@ package no.nav.tps.forvalteren.common.java.logging;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
 public class LogExceptionsMethodInterceptor implements MethodInterceptor {
-    private final Logger exceptionLogger;
-    private final Logger functionalLogger;
-
-    public LogExceptionsMethodInterceptor(Logger exceptionLogger, Logger functionalLogger) { // NOSONAR - Sonar complains about taking a exceptionLogger as parameter.
-        this.exceptionLogger = exceptionLogger;
-        this.functionalLogger = functionalLogger;
-    }
 
     @Override
-    // Throwable can be thrown by methodInvocation.proceed(), and therefore it has to be thrown here.
-    // The NOSONAR comment tells SonarQube to ignore that line.
     public Object invoke(MethodInvocation mi) throws Throwable { // NOSONAR
         try {
             return mi.proceed();
@@ -32,9 +27,9 @@ public class LogExceptionsMethodInterceptor implements MethodInterceptor {
 
     private void logException(LogExceptions le, Throwable e) {
         if (arrayContainsExceptionType(le.functional(), e)) {
-            functionalLogger.error(e.getClass().getSimpleName() + " - " + e.getMessage()); // NOSONAR - Only need general info, not stacktrace
+            log.error(e.getClass().getSimpleName() + " - " + e.getMessage()); // NOSONAR - Only need general info, not stacktrace
         } else if (!arrayContainsExceptionType(le.ignored(), e)) {
-            exceptionLogger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
