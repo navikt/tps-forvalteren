@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.4.RELEASE</version>
+        <version>2.3.3.RELEASE</version>
     </parent>
 
     <groupId>no.nav.tps.forvalteren</groupId>
@@ -62,15 +62,8 @@
         <application.name>tps-forvalteren</application.name>
         <application.version>${project.version}</application.version>
         <commons-lang3.version>3.5</commons-lang3.version>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-
-        <!--SonarQube-->
-        <sonar.exclusions>**/*Config.java,**/ConsumerConfigUtil.java,**/application/local/**,**/tps-forvalteren/domain/test/**</sonar.exclusions>
-        <sonar.coverage.exclusions>**/forvalteren/domain/**,**Constants.java,**ServletInitializer.java</sonar.coverage.exclusions>
 
         <!--NAV dependency versions-->
-        <jackson-dataformat-xml.version>2.11.0</jackson-dataformat-xml.version>
-        <jackson-datatype-jsr310.version>2.9.0</jackson-datatype-jsr310.version>
         <diskresjonskode-v1.version>1.2020.07.17-17.06-31e5aa824db7</diskresjonskode-v1.version>
         <egenansatt-v1.version>1.2020.07.17-17.06-31e5aa824db7</egenansatt-v1.version>
         <tps.interface.library.version>2020.08.27-09.53-183ead3d81eb</tps.interface.library.version>
@@ -82,17 +75,13 @@
         <logstash.logback.encoder.version>4.11</logstash.logback.encoder.version>
         <cxf.version>3.1.12</cxf.version>
         <ibm-mq-version>9.1.5.0</ibm-mq-version>
-        <jdbc.version>19.7.0.0</jdbc.version>
         <javaee-api.version>8.0</javaee-api.version>
-        <guava.version>21.0</guava.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <orika.version>1.5.1</orika.version>
         <springfox-swagger.version>2.9.2</springfox-swagger.version>
-        <spring-jms.version>4.3.2.RELEASE</spring-jms.version>
-        <spring-cloud.version>2.2.0.RELEASE</spring-cloud.version>
-        <flyway-maven-plugin.version>5.0.7</flyway-maven-plugin.version>
-        <h2.database.version>1.4.197</h2.database.version>
         <jaxws-version>2.3.3</jaxws-version>
+        <spring-cloud-dependencies.version>Hoxton.SR6</spring-cloud-dependencies.version>
+        <h2.database.version>1.4.197</h2.database.version>
 
         <!--Plugin versions-->
         <aura-maven-plugin.version>6.2.4</aura-maven-plugin.version>
@@ -108,16 +97,9 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-devtools</artifactId>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
         </dependency>
 
         <dependency>
@@ -141,6 +123,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!--INTERNAL-->
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
@@ -251,37 +241,6 @@
                 <version>${cxf.version}</version>
             </dependency>
 
-            <!--SPRING-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jms</artifactId>
-                <version>${spring-jms.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-vault-config</artifactId>
-                <version>${spring-cloud.version}</version>
-            </dependency>
-
-            <!-- JDBC -->
-            <dependency>
-                <groupId>com.oracle.database.jdbc</groupId>
-                <artifactId>ojdbc8</artifactId>
-                <version>${jdbc.version}</version>
-            </dependency>
-
             <!--SERVICES-->
             <dependency>
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
@@ -293,13 +252,6 @@
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
                 <artifactId>egenansatt-v1-tjenestespesifikasjon</artifactId>
                 <version>${egenansatt-v1.version}</version>
-            </dependency>
-
-            <!--LANGUAGE EXTENSIONS-->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
             </dependency>
 
             <!-- WEBJARS -->
@@ -314,23 +266,6 @@
                 <groupId>org.apache.directory.studio</groupId>
                 <artifactId>org.apache.commons.io</artifactId>
                 <version>${org.apache.commons.io.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-xml</artifactId>
-                <version>${jackson-dataformat-xml.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson-datatype-jsr310.version}</version>
             </dependency>
 
             <!-- DOCUMENTATION -->
@@ -365,6 +300,7 @@
             </dependency>
 
             <!-- Database -->
+            <!--new versions of h2 not supported  -->
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
@@ -406,7 +342,7 @@
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
-                <version>4.11</version>
+                <version>${logstash.logback.encoder.version}</version>
             </dependency>
 
             <!-- API -->

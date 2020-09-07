@@ -67,12 +67,6 @@
             <artifactId>cxf-rt-ws-security</artifactId>
         </dependency>
 
-        <!--LANGUAGE EXTENSIONS-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
         <!-- DEPLOYMENT -->
         <dependency>
             <groupId>javax</groupId>

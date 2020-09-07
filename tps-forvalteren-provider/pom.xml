@@ -24,12 +24,6 @@
             <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-config</artifactId>
         </dependency>
-
-        <!--LANGUAGE EXTENSIONS-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
     </dependencies>
 
 </project>
