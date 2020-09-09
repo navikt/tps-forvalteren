@@ -1,5 +1,4 @@
 ![Build](https://github.com/navikt/tps-forvalteren/workflows/Build/badge.svg)
-![Release](https://github.com/navikt/tps-forvalteren/workflows/Release/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=navikt_tps-forvalteren&metric=alert_status)](https://sonarcloud.io/dashboard?id=navikt_tps-forvalteren)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_tps-forvalteren&metric=coverage)](https://sonarcloud.io/dashboard?id=navikt_tps-forvalteren)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=navikt_tps-forvalteren&metric=ncloc)](https://sonarcloud.io/dashboard?id=navikt_tps-forvalteren)
@@ -40,4 +39,4 @@ Så kjør `mvn clean install`
 
 ## Deploy status
 
-![Deploy tps-forvalteren](https://github.com/navikt/testnorge/workflows/Deploy%20tps-forvalteren/badge.svg)
+![Deploy dev default](https://github.com/navikt/tps-forvalteren/workflows/Deploy%20dev%20default/badge.svg)
