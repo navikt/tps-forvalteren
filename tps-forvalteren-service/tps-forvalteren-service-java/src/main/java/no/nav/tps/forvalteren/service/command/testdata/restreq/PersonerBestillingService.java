@@ -78,13 +78,13 @@ public class PersonerBestillingService {
         }
         List<Person> partnere = new ArrayList<>();
         if (!request.getRelasjoner().getPartnere().isEmpty()) {
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(request);
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request.getRelasjoner().getPartnere(), request.getHarMellomnavn());
             partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
         }
 
         List<Person> barn = new ArrayList<>();
         if (!request.getRelasjoner().getBarn().isEmpty()) {
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(request);
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request.getRelasjoner().getBarn(), request.getHarMellomnavn());
             barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
         }
 
@@ -202,19 +202,23 @@ public class PersonerBestillingService {
             for (int j = 0; j < antallPartnere; j++) {
 
                 int startIndexPartner = i * antallPartnere;
-                minePartnere.put(nullcheckSetDefaultValue(request.getRelasjoner().getPartnere().get(j).getPartnerNr(), j),
-                        partnere.get(startIndexPartner + j));
+                if (partnere.get(startIndexPartner +j).isNyPerson()) {
+                    minePartnere.put(nullcheckSetDefaultValue(request.getRelasjoner().getPartnere().get(j).getPartnerNr(), j),
+                            partnere.get(startIndexPartner + j));
+                }
             }
             minePartnere.values().forEach(partner -> lagPartnerRelasjon(hovedPerson, partner));
 
             for (int j = 0; j < antallBarn; j++) {
                 int startIndexBarn = i * antallBarn;
-                setBarnRelasjon(hovedPerson,
-                        antallPartnere > 0 ?
-                                getPartner(minePartnere, request.getRelasjoner().getBarn().get(j).getPartnerNr(), j % antallPartnere) :
-                                null,
-                        barn.get(startIndexBarn + j),
-                        request.getRelasjoner().getBarn().get(j));
+                if (barn.get(startIndexBarn + j).isNyPerson()) {
+                    setBarnRelasjon(hovedPerson,
+                            antallPartnere > 0 ?
+                                    getPartner(minePartnere, request.getRelasjoner().getBarn().get(j).getPartnerNr(), j % antallPartnere) :
+                                    null,
+                            barn.get(startIndexBarn + j),
+                            request.getRelasjoner().getBarn().get(j));
+                }
             }
         }
     }

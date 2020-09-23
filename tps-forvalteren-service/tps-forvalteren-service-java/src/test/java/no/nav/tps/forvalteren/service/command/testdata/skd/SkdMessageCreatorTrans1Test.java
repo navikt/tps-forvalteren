@@ -30,8 +30,8 @@ public class SkdMessageCreatorTrans1Test {
     private final static String INNVANDRING = "Innvandring";
 
     private Person person = PersonProvider.aMalePerson().build();
-    private Person person2 = PersonProvider.aMalePerson().build();
-    private Person person3 = PersonProvider.aMalePerson().build();
+    private Person person2 = PersonProvider.aFemalePerson().build();
+    private Person person3 = PersonProvider.aChildPerson().build();
     private List<Person> persons = new ArrayList<>();
 
     @Rule

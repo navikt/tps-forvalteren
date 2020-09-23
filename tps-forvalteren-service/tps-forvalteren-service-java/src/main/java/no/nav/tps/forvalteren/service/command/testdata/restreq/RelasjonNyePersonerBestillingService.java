@@ -3,8 +3,8 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
@@ -33,6 +33,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
     private final OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
     private final RelasjonExtractOpprettKriterier relasjonExtractOpprettKriterier;
     private final MessageProvider messageProvider;
+    private final PersonRepository personRepository;
 
     public List<Person> makeRelasjoner(RsPersonBestillingKriteriumRequest request, Person hovedperson) {
 
@@ -45,17 +46,21 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
             request.getRelasjoner().getPartnere().remove(0); // denne "partner" innehold oppdatering av sivilstand på forrige
         }
 
-        List<Person> partnere = new ArrayList();
-        if (!request.getRelasjoner().getPartnere().isEmpty()) {
-            RsPersonKriteriumRequest kriteriePartner = ExtractOpprettKriterier.extractPartner(request);
-            partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
-        }
+        List<Person> partnere = request.getRelasjoner().getPartnere().stream()
+                .map(reqPart -> isNotBlank(reqPart.getIdent()) ?
+                        personRepository.findByIdent(reqPart.getIdent()) :
+                        opprettPersonerOgSjekkMiljoeService
+                                .createNyeIdenter(ExtractOpprettKriterier.extractPartner(singletonList(reqPart),
+                                        request.getHarMellomnavn())).get(0))
+                .collect(Collectors.toList());
 
-        List<Person> barn = new ArrayList();
-        if (!request.getRelasjoner().getBarn().isEmpty()) {
-            RsPersonKriteriumRequest kriterieBarn = ExtractOpprettKriterier.extractBarn(request);
-            barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
-        }
+        List<Person> barn = request.getRelasjoner().getBarn().stream()
+                .map(reqBarn -> isNotBlank(reqBarn.getIdent()) ?
+                        personRepository.findByIdent(reqBarn.getIdent()) :
+                        opprettPersonerOgSjekkMiljoeService
+                                .createNyeIdenter(ExtractOpprettKriterier.extractBarn(singletonList(reqBarn),
+                                        request.getHarMellomnavn())).get(0))
+                .collect(Collectors.toList());
 
         setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn);
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
@@ -71,7 +76,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
 
     private boolean isSivilstandUpdateForrigePartner(Person person, RsSimpleRelasjoner request) {
 
-        if (request.getPartnere().isEmpty()) {
+        if (request.getPartnere().isEmpty() || isNotBlank(request.getPartnere().get(0).getIdent())) {
             return false;
         }
 

@@ -88,6 +88,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                 }
                             }
                         })
+                .exclude("ident")
                 .exclude("spesreg")
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")

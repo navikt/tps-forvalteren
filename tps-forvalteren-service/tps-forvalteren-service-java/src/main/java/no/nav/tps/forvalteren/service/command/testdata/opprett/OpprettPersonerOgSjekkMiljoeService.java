@@ -21,6 +21,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
@@ -39,6 +40,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
     private final IdentpoolService identpoolService;
     private final HentDatoFraIdentService hentDatoFraIdentService;
     private final MapperFacade mapperFacade;
+    private final PersonRepository personRepository;
 
     public List<Person> createEksisterendeIdenter(RsPersonBestillingKriteriumRequest request) {
 
@@ -88,6 +90,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         for (int i = 0; i < personerSomSkalPersisteres.size(); i++) {
 
+            personerSomSkalPersisteres.get(i).setNyPerson(true);
             if (personerSomSkalPersisteres.get(i).isDoedFoedt()) {
 
                 personerSomSkalPersisteres.get(i).setDoedsdato(
@@ -100,6 +103,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
             }
         }
 
+        personRepository.saveAll(personerSomSkalPersisteres);
         return personerSomSkalPersisteres;
     }
 

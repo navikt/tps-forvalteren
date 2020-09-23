@@ -6,7 +6,8 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 
 public final class PersonProvider {
 
-    private PersonProvider() {}
+    private PersonProvider() {
+    }
 
     public static Person.PersonBuilder aMalePerson() {
         return Person.builder()
@@ -28,6 +29,18 @@ public final class PersonProvider {
                 .kjonn("K")
                 .fornavn("Kari")
                 .mellomnavn("0")
+                .etternavn("Nordmann")
+                .regdato(now())
+                .opprettetDato(now())
+                .opprettetAv("b234567");
+    }
+
+    public static Person.PersonBuilder aChildPerson() {
+        return Person.builder()
+                .ident("22041278910")
+                .identtype("FNR")
+                .kjonn("K")
+                .fornavn("Helene")
                 .etternavn("Nordmann")
                 .regdato(now())
                 .opprettetDato(now())
