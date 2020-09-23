@@ -52,9 +52,10 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         List<Person> personer = opprettPersonerFraIdenter.execute(ledigeIdenterKorrigert);
 
-        personer.forEach(person ->
-                setNameOnPersonsService.execute(person, request.getHarMellomnavn())
-        );
+        personer.forEach(person -> {
+            setNameOnPersonsService.execute(person, request.getHarMellomnavn());
+            person.setNyPerson(true);
+        });
 
         return personer;
     }
