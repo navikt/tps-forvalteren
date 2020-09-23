@@ -2,12 +2,11 @@ package no.nav.tps.forvalteren.domain.test.provider;
 
 import static java.time.LocalDateTime.now;
 
+import lombok.experimental.UtilityClass;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
+@UtilityClass
 public final class PersonProvider {
-
-    private PersonProvider() {
-    }
 
     public static Person.PersonBuilder aMalePerson() {
         return Person.builder()
