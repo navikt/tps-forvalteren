@@ -1,12 +1,12 @@
 package no.nav.tps.forvalteren.service.command.exceptions;
 
+public class HttpInternalServerErrorException extends RuntimeException {
 
-public class HttpInternalServerErrorException extends HttpException {
-    public HttpInternalServerErrorException(String message, String path) {
-        super(message, path);
+    public HttpInternalServerErrorException(String message) {
+        super(message);
     }
 
-    public HttpInternalServerErrorException(Exception exception, String path) {
-        super(exception, path);
+    public HttpInternalServerErrorException(Exception exception) {
+        super(exception);
     }
 }

@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.exceptions;
 
-public class HttpCantSatisfyRequestException extends HttpException{
+public class HttpCantSatisfyRequestException extends RuntimeException {
 
-    public HttpCantSatisfyRequestException(String message, String path) {
-        super(message, path);
+    public HttpCantSatisfyRequestException(String message) {
+        super(message);
     }
 }

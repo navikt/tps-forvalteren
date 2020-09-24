@@ -37,10 +37,10 @@ public class TpsRequestSender {
             }
             return null;
         } catch (HttpForbiddenException ex) {
-            throw new HttpForbiddenException(ex, "api/v1/service/" + request.getServiceRutinenavn());
+            throw new HttpForbiddenException(ex);
 
         } catch (Exception exception) {
-            throw new HttpInternalServerErrorException(exception, "api/v1/service");
+            throw new HttpInternalServerErrorException(exception);
         }
 
         //TODO kan kaste SOAP Exception ogsaa. Fra EgenAnsattConsumer.

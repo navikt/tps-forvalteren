@@ -1,59 +1,80 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.advices;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.UrlPathHelper;
 
-import no.nav.tps.forvalteren.service.command.exceptions.ExceptionInformation;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpBadRequestException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
-import no.nav.tps.forvalteren.service.command.exceptions.HttpIllegalEnvironmentException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class HttpExceptionAdvice {
+
+    private final HttpServletRequest httpServletRequest;
+    private final UrlPathHelper urlPathHelper;
 
     @ResponseBody
     @ExceptionHandler(HttpUnauthorisedException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    ExceptionInformation unauthorisedAccess(HttpException exception) {
+    ExceptionInformation unauthorisedAccess(RuntimeException exception) {
         return informationForException(exception, HttpStatus.UNAUTHORIZED);
     }
 
     @ResponseBody
     @ExceptionHandler(HttpForbiddenException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    ExceptionInformation forbiddenAccess(HttpException exception) {
+    ExceptionInformation forbiddenAccess(RuntimeException exception) {
         return informationForException(exception, HttpStatus.FORBIDDEN);
     }
 
     @ResponseBody
     @ExceptionHandler({ HttpInternalServerErrorException.class, HttpCantSatisfyRequestException.class })
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    ExceptionInformation internalServerError(HttpException exception) {
+    ExceptionInformation internalServerError(RuntimeException exception) {
         return informationForException(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ResponseBody
-    @ExceptionHandler({ HttpBadRequestException.class, HttpIllegalEnvironmentException.class, TpsfFunctionalException.class })
+    @ExceptionHandler({ TpsfFunctionalException.class })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    ExceptionInformation badRequest(HttpException exception) {
+    ExceptionInformation badRequest(RuntimeException exception) {
         return informationForException(exception, HttpStatus.BAD_REQUEST);
     }
 
-    private ExceptionInformation informationForException(HttpException exception, HttpStatus status) {
-        return ExceptionInformation.create()
-                .setError(status.getReasonPhrase())
-                .setStatus(status.value())
-                .setMessage(exception.getMessage())
-                .setPath(exception.getPath())
-                .setTimestamp(new Date().getTime());
+    private ExceptionInformation informationForException(RuntimeException exception, HttpStatus status) {
+        return ExceptionInformation.builder()
+                .error(status.getReasonPhrase())
+                .status(status.value())
+                .message(exception.getMessage())
+                .path(urlPathHelper.getPathWithinApplication(httpServletRequest))
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExceptionInformation {
+
+        private String message;
+        private String error;
+        private String path;
+        private Integer status;
+        private LocalDateTime timestamp;
     }
 }

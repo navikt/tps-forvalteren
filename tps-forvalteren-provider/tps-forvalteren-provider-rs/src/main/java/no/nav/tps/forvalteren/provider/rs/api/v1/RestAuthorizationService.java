@@ -16,7 +16,7 @@ public class RestAuthorizationService {
         Set<UserRole> roller = userContextHolder.getRoles();
         for(UserRole role : requiredRoles){
             if(!roller.contains(role)){
-                throw new HttpUnauthorisedException("Ikke lov til å gjøre denne spørringen", "/");
+                throw new HttpUnauthorisedException("Ikke lov til å gjøre denne spørringen");
             }
         }
     }
