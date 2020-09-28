@@ -53,17 +53,16 @@ public class EndrePersonBestillingService {
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
 
-        List<String> nyeIdenter = relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
+        relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
                 .stream().map(Person::getIdent).collect(Collectors.toList());
 
         personRepository.save(person);
 
         List<RsOppdaterPersonResponse.IdentTuple> identer = person.getRelasjoner().stream()
                 .map(Relasjon::getPersonRelasjonMed)
-                .map(Person::getIdent)
-                .map(ident1 -> RsOppdaterPersonResponse.IdentTuple.builder()
-                        .ident(ident1)
-                        .lagtTil(nyeIdenter.contains(ident1))
+                .map(pers -> RsOppdaterPersonResponse.IdentTuple.builder()
+                        .ident(pers.getIdent())
+                        .lagtTil(pers.isNyPerson())
                         .build())
                 .collect(Collectors.toList());
 

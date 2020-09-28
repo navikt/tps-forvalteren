@@ -24,10 +24,10 @@ public class SendEnSkdMelding {
             return skdMeldingMQConsumer.sendMessage(skdMelding, skdMeldingDefinition, environment);
         } catch (JMSException jmsException) {
             LOGGER.error(jmsException.getMessage(), jmsException);
-            throw new HttpInternalServerErrorException(jmsException, "api/v1/testdata/saveTPS");
+            throw new HttpInternalServerErrorException(jmsException);
         } catch (HttpForbiddenException ex) {
             LOGGER.error(ex.getMessage(), ex);
-            throw new HttpForbiddenException(ex, "api/v1/testdata/saveTPS" + "skdInnvandring");
+            throw new HttpForbiddenException(ex);
         }
     }
 }

@@ -77,14 +77,14 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractPartner(RsPersonBestillingKriteriumRequest request) {
+    public static RsPersonKriteriumRequest extractPartner(List<RsPartnerRequest> partnerRequests, Boolean hovedpersonHarMellomnavn) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList<>(request.getRelasjoner().getPartnere().size());
-        request.getRelasjoner().getPartnere().forEach(partnerReq -> {
+        List<RsPersonKriterier> kriterier = new ArrayList<>(partnerRequests.size());
+        partnerRequests.forEach(partnerReq -> {
             RsPersonKriterier kriterium = prepareKriterium(partnerReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), request.getHarMellomnavn()));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
             kriterier.add(kriterium);
         });
 
@@ -93,14 +93,14 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractBarn(RsPersonBestillingKriteriumRequest request) {
+    public static RsPersonKriteriumRequest extractBarn(List<RsBarnRequest> barnRequests, Boolean hovedpersonHarMellomnavn) {
 
-        List<RsPersonKriterier> kriterier = new ArrayList<>(request.getRelasjoner().getBarn().size());
-        request.getRelasjoner().getBarn().forEach(barnReq -> {
+        List<RsPersonKriterier> kriterier = new ArrayList<>(barnRequests.size());
+        barnRequests.forEach(barnReq -> {
             RsPersonKriterier kriterium = prepareKriterium(barnReq);
             kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), request.getHarMellomnavn()));
+            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
             kriterier.add(kriterium);
         });
 
@@ -161,18 +161,27 @@ public class ExtractOpprettKriterier {
                                     !partnerRequest.getPostadresse().isEmpty() ? partnerRequest.getPostadresse() : req.getPostadresse(),
                                     RsPostadresse.class));
                     mapperFacade.map(partnerRequest, partnere.get(partnerStartIndex + j));
-                    Adresse adresse;
-                    if (nonNull(partnerRequest.getBoadresse())) {
-                        adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
-                    } else {
-                        adresse = hasAdresseMedHovedperson(partnerRequest, j) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
-                                hovedPersoner.get(i).getBoadresse().get(0) : getBoadresse(adresser, hovedPersoner.size() + partnerStartIndex + j);
-                    }
-                    mapBoadresse(partnere.get(partnerStartIndex + j), adresse, extractFlyttedato(partnerRequest.getBoadresse()),
-                            extractTilleggsadresse(partnerRequest.getBoadresse()));
+                    mapPartnerAdresse(hovedPersoner.get(i), partnere.get(partnerStartIndex + j), adresser,
+                            hovedPersoner.size() + partnerStartIndex + j, j, partnerRequest);
                     alignStatsborgerskapAndInnvandretFraLand(partnere.get(partnerStartIndex + j), hovedPersoner.get(i));
                 }
             }
+        }
+    }
+
+    private void mapPartnerAdresse(Person hovedPerson, Person partner, List<Adresse> adresser,
+            int adrIdxPartner, int partnerIdx, RsPartnerRequest partnerRequest) {
+
+        if (partner.isNyPerson()) {
+            Adresse adresse;
+            if (nonNull(partnerRequest.getBoadresse())) {
+                adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
+            } else {
+                adresse = hasAdresseMedHovedperson(partnerRequest, partnerIdx) && !hovedPerson.getBoadresse().isEmpty() ?
+                        hovedPerson.getBoadresse().get(0) : getBoadresse(adresser, adrIdxPartner);
+            }
+            mapBoadresse(partner, adresse, extractFlyttedato(partnerRequest.getBoadresse()),
+                    extractTilleggsadresse(partnerRequest.getBoadresse()));
         }
     }
 
@@ -191,19 +200,24 @@ public class ExtractOpprettKriterier {
                             !barnRequest.getPostadresse().isEmpty() ? barnRequest.getPostadresse() : req.getPostadresse(),
                             RsPostadresse.class));
                     mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    if (hasAdresse(barnRequest) && (
-                            hasBoadresse(hovedPersoner.get(i)) || hasBoadressePartner(partnere, getPartnerNr(j, antallPartnere)))) {
-                        mapBoadresse(barn.get(barnStartIndex + j),
-                                (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPersoner.get(i).getBoadresse().isEmpty() ?
-                                        hovedPersoner.get(i).getBoadresse().get(0) :
-                                        getPartnerAdresse(partnere, antallPartnere * i, barnRequest, getPartnerNr(j, antallPartnere)),
-                                extractFlyttedato(barnRequest.getBoadresse()),
-                                extractTilleggsadresse(barnRequest.getBoadresse()));
-                    }
+                    mapBarnAdresse(hovedPersoner.get(i), partnere, barn.get(barnStartIndex + j), antallPartnere, i, j, barnRequest);
                     alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
                     barn.get(barnStartIndex + j).setSivilstand(null);
                 }
             }
+        }
+    }
+
+    private void mapBarnAdresse(Person hovedPerson, List<Person> partnere, Person barn, int antallPartnere, int partnerIdx, int barnIdx, RsBarnRequest barnRequest) {
+
+        if (hasAdresse(barnRequest) && barn.isNyPerson() && (
+                hasBoadresse(hovedPerson) || hasBoadressePartner(partnere, getPartnerNr(barnIdx, antallPartnere)))) {
+            mapBoadresse(barn,
+                    (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPerson.getBoadresse().isEmpty() ?
+                            hovedPerson.getBoadresse().get(0) :
+                            getPartnerAdresse(partnere, antallPartnere * partnerIdx, barnRequest, getPartnerNr(barnIdx, antallPartnere)),
+                    extractFlyttedato(barnRequest.getBoadresse()),
+                    extractTilleggsadresse(barnRequest.getBoadresse()));
         }
     }
 

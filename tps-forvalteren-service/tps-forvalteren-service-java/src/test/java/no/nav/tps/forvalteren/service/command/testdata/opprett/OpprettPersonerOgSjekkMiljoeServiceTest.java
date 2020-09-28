@@ -24,6 +24,7 @@ import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 
@@ -50,6 +51,9 @@ public class OpprettPersonerOgSjekkMiljoeServiceTest {
 
     @Mock
     private MapperFacade mapperFacade;
+
+    @Mock
+    private PersonRepository personRepository;
 
     @InjectMocks
     private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;

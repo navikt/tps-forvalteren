@@ -28,14 +28,12 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -206,6 +204,9 @@ public class Person extends ChangeStamp {
 
     @Transient
     private LocalDateTime aliasRegdato;
+
+    @Transient
+    private boolean isNyPerson;
 
     public List<Postadresse> getPostadresse() {
         if (isNull(postadresse)) {

@@ -2,18 +2,18 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,8 +56,8 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_MannOgMannNullBarn() {
 
-        Person mann1 = Person.builder().kjonn("M").build();
-        Person mann2 = Person.builder().kjonn("M").build();
+        Person mann1 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person mann2 = Person.builder().kjonn("M").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), emptyList(), personBestillingKriteriumRequest);
 
@@ -74,8 +74,8 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_MannOgBarnUtenKvinneGirFoedsel() {
 
-        Person mann = Person.builder().kjonn("M").build();
-        Person barn = Person.builder().kjonn("K").build();
+        Person mann = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person barn = Person.builder().kjonn("K").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(mann), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
@@ -89,8 +89,8 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_KvinneOgBarnUtenMannGirFodsel() {
 
-        Person kvinne = Person.builder().kjonn("K").build();
-        Person barn = Person.builder().kjonn("K").build();
+        Person kvinne = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn = Person.builder().kjonn("K").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(kvinne), new ArrayList<>(), asList(barn), personBestillingKriteriumRequest);
 
@@ -104,9 +104,9 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_MannKvinneOgBarnGirFoedselRelasjonPaaFarOgMorOgMorFarRelasjonPaaBarn() {
 
-        Person mann = Person.builder().kjonn("M").build();
-        Person kvinne = Person.builder().kjonn("K").build();
-        Person barn = Person.builder().kjonn("K").build();
+        Person mann = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person kvinne = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn = Person.builder().kjonn("K").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn), personBestillingKriteriumRequest);
 
@@ -127,10 +127,10 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_MannOgKvinneOg2Barn() {
 
-        Person mann = Person.builder().kjonn("M").build();
-        Person kvinne = Person.builder().kjonn("K").build();
-        Person barn1 = Person.builder().kjonn("K").build();
-        Person barn2 = Person.builder().kjonn("M").build();
+        Person mann = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person kvinne = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn1 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn2 = Person.builder().kjonn("M").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(mann), asList(kvinne), asList(barn1, barn2), personBestillingKriteriumRequest);
 
@@ -156,12 +156,9 @@ public class PersonerBestillingServiceTest {
 
     @Test
     public void setRelasjonerPaaPersoner_MannMannOgBarnGirFarRelasjonPaaBeggeFedre() {
-        Person mann1 = new Person();
-        Person mann2 = new Person();
-        Person barn = new Person();
-        mann1.setKjonn("M");
-        mann2.setKjonn("M");
-        barn.setKjonn("K");
+        Person mann1 = Person.builder().kjonn("M").isNyPerson(true).build();;
+        Person mann2 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person barn = Person.builder().kjonn("K").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(mann1), asList(mann2), asList(barn), personBestillingKriteriumRequest);
 
@@ -181,20 +178,20 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setRelasjonerPaaPersoner_PersonerMedFlerePartnereOgMedBarn() {
 
-        Person mann = Person.builder().kjonn("M").build();
-        Person kvinne = Person.builder().kjonn("K").build();
+        Person mann = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person kvinne = Person.builder().kjonn("K").isNyPerson(true).build();
 
-        Person partner1 = Person.builder().kjonn("K").build();
-        Person partner2 = Person.builder().kjonn("K").build();
-        Person partner3 = Person.builder().kjonn("M").build();
-        Person partner4 = Person.builder().kjonn("M").build();
+        Person partner1 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person partner2 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person partner3 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person partner4 = Person.builder().kjonn("M").isNyPerson(true).build();
 
-        Person barn1 = Person.builder().kjonn("K").build();
-        Person barn2 = Person.builder().kjonn("M").build();
-        Person barn3 = Person.builder().kjonn("K").build();
-        Person barn4 = Person.builder().kjonn("M").build();
-        Person barn5 = Person.builder().kjonn("K").build();
-        Person barn6 = Person.builder().kjonn("M").build();
+        Person barn1 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn2 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person barn3 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn4 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person barn5 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn6 = Person.builder().kjonn("M").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(
                 asList(mann, kvinne),
@@ -253,9 +250,9 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setIdenthistorikkPaaPersonOgPartner() {
 
-        Person person = Person.builder().kjonn("M").build();
-        Person partner = Person.builder().kjonn("K").build();
-        Person barn = Person.builder().kjonn("M").build();
+        Person person = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person partner = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn = Person.builder().kjonn("M").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(person), asList(partner), asList(barn), personBestillingKriteriumRequest);
 
@@ -294,11 +291,11 @@ public class PersonerBestillingServiceTest {
     @Test
     public void setIdenthistorikkPaaPersonSomHarFlerePartnere() {
 
-        Person person = Person.builder().kjonn("M").build();
-        Person partner1 = Person.builder().kjonn("K").build();
-        Person partner2 = Person.builder().kjonn("K").build();
-        Person barn1 = Person.builder().kjonn("M").build();
-        Person barn2 = Person.builder().kjonn("M").build();
+        Person person = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person partner1 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person partner2 = Person.builder().kjonn("K").isNyPerson(true).build();
+        Person barn1 = Person.builder().kjonn("M").isNyPerson(true).build();
+        Person barn2 = Person.builder().kjonn("M").isNyPerson(true).build();
 
         personerBestillingService.setRelasjonerPaaPersoner(asList(person), asList(partner1, partner2), asList(barn1, barn2), personBestillingKriteriumRequest);
 

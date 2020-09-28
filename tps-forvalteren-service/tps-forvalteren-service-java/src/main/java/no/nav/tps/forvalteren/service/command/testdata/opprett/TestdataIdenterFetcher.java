@@ -98,7 +98,8 @@ public class TestdataIdenterFetcher {
                     counter++;
                 }
                 if (counter == MAX_TRIES) {
-                    HttpCantSatisfyRequestException exception = new HttpCantSatisfyRequestException(messageProvider.get("rest.service.request.exception.Unsatisfied"), "api/v1/testdata/");
+                    HttpCantSatisfyRequestException exception =
+                            new HttpCantSatisfyRequestException(messageProvider.get("rest.service.request.exception.Unsatisfied"));
                     LOGGER.error(exception.getMessage(), exception);
                     throw exception;
                 }

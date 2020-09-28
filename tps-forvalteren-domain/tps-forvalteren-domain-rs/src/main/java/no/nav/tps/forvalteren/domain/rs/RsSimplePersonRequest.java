@@ -23,6 +23,8 @@ import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 @AllArgsConstructor
 public class RsSimplePersonRequest {
 
+    protected String ident;
+
     @NotBlank
     @Size(min = 3, max = 3)
     protected String identtype;

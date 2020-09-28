@@ -2,11 +2,11 @@ package no.nav.tps.forvalteren.domain.test.provider;
 
 import static java.time.LocalDateTime.now;
 
+import lombok.experimental.UtilityClass;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
+@UtilityClass
 public final class PersonProvider {
-
-    private PersonProvider() {}
 
     public static Person.PersonBuilder aMalePerson() {
         return Person.builder()
@@ -28,6 +28,18 @@ public final class PersonProvider {
                 .kjonn("K")
                 .fornavn("Kari")
                 .mellomnavn("0")
+                .etternavn("Nordmann")
+                .regdato(now())
+                .opprettetDato(now())
+                .opprettetAv("b234567");
+    }
+
+    public static Person.PersonBuilder aChildPerson() {
+        return Person.builder()
+                .ident("22041278910")
+                .identtype("FNR")
+                .kjonn("K")
+                .fornavn("Helene")
                 .etternavn("Nordmann")
                 .regdato(now())
                 .opprettetDato(now())

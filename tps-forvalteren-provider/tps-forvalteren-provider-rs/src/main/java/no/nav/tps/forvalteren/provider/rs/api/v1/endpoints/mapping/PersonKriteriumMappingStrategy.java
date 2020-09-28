@@ -86,8 +86,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                                     mapBasicProperties(kriteriumRequest, person);
                                     mapAdresser(kriteriumRequest, person, mapperFacade);
                                 }
+                                person.setGtVerdi(null);
                             }
                         })
+                .exclude("ident")
                 .exclude("spesreg")
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
