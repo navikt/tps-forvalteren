@@ -5,6 +5,7 @@ import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
 
         setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn);
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
-        setSivilstandHistorikkPaaPersoner(request, hovedperson);
+        setSivilstandHistorikkPaaPersoner(request, hovedperson, partnere);
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
                 .addExtendedKriterumValuesToPerson(request, singletonList(hovedperson), partnere, barn);
@@ -95,7 +96,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
             } else {
 
                 request.getPartnere().get(0).getSivilstander().forEach(sivilstand ->
-                        setSivilstandHistory(person, partnerRelasjon,
+                        setSivilstandHistory(person, partnerRelasjon.getPersonRelasjonMed(),
                                 sivilstand.getSivilstand(), sivilstand.getSivilstandRegdato())
                 );
                 return true;
@@ -104,24 +105,16 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
         return false;
     }
 
-    private static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, Person person) {
+    private static void setSivilstandHistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, Person person, List<Person> partnere) {
 
-        List<Relasjon> partnerRelasjoner = person.getRelasjoner().stream()
-                .filter(Relasjon::isPartner)
-                .collect(Collectors.toList());
+        Iterator<Person> partIterator = partnere.iterator();
+        request.getRelasjoner().getPartnere().forEach(parterRequest -> {
 
-        List<Relasjon> nyePartnerRelasjoner = partnerRelasjoner.subList(
-                partnerRelasjoner.size() - request.getRelasjoner().getPartnere().size(),
-                partnerRelasjoner.size());
-
-        for (int i = 0; i < request.getRelasjoner().getPartnere().size(); i++) {
-
-            for (int j = 0; j < request.getRelasjoner().getPartnere().get(i).getSivilstander().size(); j++) {
-
-                setSivilstandHistory(person, nyePartnerRelasjoner.get(i),
-                        request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstand(),
-                        request.getRelasjoner().getPartnere().get(i).getSivilstander().get(j).getSivilstandRegdato());
+            Person partner = partIterator.next();
+            if (!parterRequest.getSivilstander().isEmpty()) {
+                parterRequest.getSivilstander().forEach(sivilstand ->
+                        setSivilstandHistory(person, partner, sivilstand.getSivilstand(), sivilstand.getSivilstandRegdato()));
             }
-        }
+        });
     }
 }
