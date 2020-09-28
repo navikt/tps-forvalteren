@@ -112,7 +112,7 @@ public class PersonerBestillingService {
                 if (PARTNER.name().equals(person.getRelasjoner().get(i).getRelasjonTypeNavn())) {
                     for (int j = 0; j < request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().size(); j++) {
 
-                        setSivilstandHistory(person, person.getRelasjoner().get(i),
+                        setSivilstandHistory(person, person.getRelasjoner().get(i).getPersonRelasjonMed(),
                                 request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstand(),
                                 request.getRelasjoner().getPartnere().get(partnerNumber).getSivilstander().get(j).getSivilstandRegdato());
                     }
@@ -123,15 +123,15 @@ public class PersonerBestillingService {
 
                             // Hvis sivilstand på hovedperson er annet enn gift preppes gift først da separert/skilt/enke må foranledes med gift
                             if (!GIFT.name().equals(request.getSivilstand())) {
-                                setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), GIFT.name(),
+                                setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed(), GIFT.name(),
                                         nullcheckSetDefaultValue(request.getSivilstandRegdato(), now()).minusYears(3));
                             }
-                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(),
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed(), request.getSivilstand(),
                                     nullcheckSetDefaultValue(request.getSivilstandRegdato(), now().minusYears(1)));
 
                         } else if (!request.getSivilstand().equals(person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed().getSivilstander().get(0).getSivilstand())) {
 
-                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber), request.getSivilstand(), now());
+                            setSivilstandHistory(person, person.getRelasjoner().get(partnerNumber).getPersonRelasjonMed(), request.getSivilstand(), now());
                         }
                     }
                     partnerNumber++;
@@ -145,18 +145,18 @@ public class PersonerBestillingService {
         return isNotBlank(sivilstand) && !UGIFT.getKodeverkskode().equals(sivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstand);
     }
 
-    protected static void setSivilstandHistory(Person person, Relasjon relasjon, String sivilstand, LocalDateTime regdato) {
+    protected static void setSivilstandHistory(Person person, Person partner, String sivilstand, LocalDateTime regdato) {
 
         person.getSivilstander().add(Sivilstand.builder()
                 .person(person)
-                .personRelasjonMed(relasjon.getPersonRelasjonMed())
+                .personRelasjonMed(partner)
                 .sivilstand(sivilstand)
                 .sivilstandRegdato(regdato)
                 .build());
 
-        relasjon.getPersonRelasjonMed().getSivilstander()
+        partner.getSivilstander()
                 .add(Sivilstand.builder()
-                        .person(relasjon.getPersonRelasjonMed())
+                        .person(partner)
                         .personRelasjonMed(person)
                         .sivilstand(sivilstand)
                         .sivilstandRegdato(regdato)
