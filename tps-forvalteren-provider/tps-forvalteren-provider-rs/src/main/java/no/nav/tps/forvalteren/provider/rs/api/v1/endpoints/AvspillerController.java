@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Charsets;
 
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
@@ -75,7 +75,7 @@ public class AvspillerController {
     @LogExceptions
     @GetMapping("/meldingstyper")
     public RsTyperOgKilderResponse getTyperOgKilder(@RequestParam("miljoe") String miljoe,
-            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
+            @Parameter(description = "yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format) {
 
@@ -92,13 +92,13 @@ public class AvspillerController {
     @LogExceptions
     @GetMapping("/meldinger")
     public RsMeldingerResponse getMeldinger(@RequestParam("miljoe") String miljoe,
-            @ApiParam("yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
+            @Parameter(description = "yyyy-MM-ddTHH:mm:ss $ yyyy-MM-ddTHH:mm:ss $ timeout")
             @RequestParam(value = "periode", required = false) String periode,
             @RequestParam(value = "format") Meldingsformat format,
             @RequestParam(value = "typer", required = false) String meldingstyper,
             @RequestParam(value = "kilder", required = false) String kilder,
             @RequestParam(value = "identer", required = false) String identer,
-            @ApiParam("bufferNumber $ bufferSize")
+            @Parameter(description = "bufferNumber $ bufferSize")
             @RequestParam(value = "buffer", required = false) String bufferParams) {
 
         return avspillerService.getMeldinger(RsAvspillerRequest.builder()

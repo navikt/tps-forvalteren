@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Sets;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
@@ -125,7 +125,7 @@ public class TestdataController {
     private CreateTestdataPerson createTestdataPerson;
 
     @LogExceptions
-    @ApiOperation(value = "createDummyAdresse new persons from criteria", notes = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
+    @Operation(method = "createDummyAdresse new persons from criteria", description = "En tilfeldig gyldig adresse blir hentet fra TPS for hver person når man har satt withAdresse=true. "
             + "Det er valgfritt å sende med ENTEN postnummer ELLER kommunenummer.")
     @RequestMapping(value = "/personer/{gruppeId}", method = RequestMethod.POST)
     public void createNewPersonsFromKriterier(@PathVariable("gruppeId") Long gruppeId, @RequestBody @Valid RsPersonKriteriumRequest personKriterierListe) {

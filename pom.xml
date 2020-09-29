@@ -78,7 +78,6 @@
         <javaee-api.version>8.0</javaee-api.version>
         <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
         <orika.version>1.5.1</orika.version>
-        <springfox-swagger.version>2.9.2</springfox-swagger.version>
         <jaxws-version>2.3.3</jaxws-version>
         <spring-cloud-dependencies.version>Hoxton.SR6</spring-cloud-dependencies.version>
         <h2.database.version>1.4.197</h2.database.version>
@@ -96,6 +95,7 @@
         <!--suppress UnresolvedMavenProperty Ligger som secret i github-->
         <sonar.login>${SONAR_LOGIN}</sonar.login>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+        <springdoc-openapi.version>1.4.7</springdoc-openapi.version>
     </properties>
 
     <dependencies>
@@ -277,15 +277,11 @@
 
             <!-- DOCUMENTATION -->
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${springfox-swagger.version}</version>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox-swagger.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>ma.glasnost.orika</groupId>
                 <artifactId>orika-core</artifactId>

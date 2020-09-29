@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -241,7 +241,7 @@ public class SkdEndringsmeldingController {
     }
 
     @LogExceptions
-    @ApiOperation("Lagrer Skd-endringsmeldingene i TPSF databasen.")
+    @Operation(method = "Lagrer Skd-endringsmeldingene i TPSF databasen.")
     @PostMapping("save/{gruppeId}")
     public List<Long> saveSkdEndringsmeldingerInTPSF(@PathVariable Long gruppeId, @RequestBody @Valid List<RsMeldingstype> rsSkdMeldinger) {
         return saveSkdEndringsmeldingerService.save(rsSkdMeldinger, gruppeId);
