@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
 import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.restTPS.RsEndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
@@ -208,7 +208,8 @@ public class TpsRestApiController {
     public Map fetchPersonrelasjonerS005(
             @RequestParam("fnr") String fnr,
             @RequestParam(value = "aksjonsKode", defaultValue = "A0", required = false) String aksjonsKode,
-            @ApiParam(value = "Format: 'yyyy-mm-dd'. Må være etter fødselsdato. Gylig relasjoner på denne datoen.") @RequestParam(value = "aksjonsDato", required = false) String aksjonsDato,
+            @Parameter(description = "Format: 'yyyy-mm-dd'. Må være etter fødselsdato. Gylig relasjoner på denne datoen.")
+            @RequestParam(value = "aksjonsDato", required = false) String aksjonsDato,
             @RequestParam("environment") String environment
     ) {
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
@@ -223,7 +224,7 @@ public class TpsRestApiController {
         return tpsResponseToJsonHandler.execute(res);
     }
 
-    private Map<String, Object> extractParams(String fnr, String aksjonsKode, String aksjonsDato, String environment){
+    private Map<String, Object> extractParams(String fnr, String aksjonsKode, String aksjonsDato, String environment) {
         Map<String, Object> collectionOfQueryParams = new HashMap<>();
         collectionOfQueryParams.put("aksjonsKode", aksjonsKode);
         collectionOfQueryParams.put("aksjonsDato", aksjonsDato);

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
@@ -129,7 +129,7 @@ public class TestdataBestillingsController {
     @LogExceptions
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "deletePersons")
+    @Operation(method = "deletePersons")
     public void slettPersoner(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam List<String> identer) {
         personService.deletePersons(miljoer, identer);
     }

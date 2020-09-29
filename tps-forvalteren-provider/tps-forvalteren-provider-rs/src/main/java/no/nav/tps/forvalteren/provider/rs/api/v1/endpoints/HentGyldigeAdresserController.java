@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
@@ -25,15 +25,15 @@ import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdre
 @RestController
 @RequestMapping(value = "api/v1/gyldigadresse")
 public class HentGyldigeAdresserController {
-    
+
     @Autowired
     private HentGyldigeAdresserService hentGyldigeAdresserService;
-    
+
     @Autowired
     private MapFinnGyldigeAdresserToTpsServiceRutine finnGyldigeAdresserMapper;
 
     @LogExceptions
-    @ApiOperation(value = "Få tilfeldige, gyldige adresser", notes = "Denne tjenesten returnerer en tilfeldig, gyldig adresse. Default returnerer den én adresse.\n"
+    @Operation(method = "Få tilfeldige, gyldige adresser", description = "Denne tjenesten returnerer en tilfeldig, gyldig adresse. Default returnerer den én adresse.\n"
             + "     * Dersom man ønsker flere, så må man oppgi antall i query.\n\r"
             + "     * Man kan også legge ved kriterier/spesifikasjoner i spørringen, på hva adressen må inneholde:\n\r"
             + "     * kommunenummer, gatenavn (minst 3 tegn), postnummer.")
@@ -45,7 +45,7 @@ public class HentGyldigeAdresserController {
     }
 
     @LogExceptions
-    @ApiOperation(value = "Søk etter gyldige adresser i TPS", notes = "De query parametrene som ikke spesifiseres, følger default verdier. \n\r"
+    @Operation(method = "Søk etter gyldige adresser i TPS", description = "De query parametrene som ikke spesifiseres, følger default verdier. \n\r"
             + "Default verdier: typesok(F), visPostnr(J),alleSkrivevarianter(N),maxRetur(5),sortering(N). "
             + "Gyldige adresser er default sortert på adressenavn(N). Typesøket er Fonetisk(F).\n\r \n\r"
             + " Hvis alleSkrivevarianter=J og visPostNr=J, så returneres KUN adresser som har postnr.")
@@ -54,7 +54,7 @@ public class HentGyldigeAdresserController {
             @ModelAttribute FinnGyldigeAdresserRequestParam finnGyldigeAdresserRequestParam) {
         TpsFinnGyldigeAdresserRequest tpsServiceRoutineRequest = TpsFinnGyldigeAdresserRequest.builder().typesok(F).visPostnr(J).alleSkrivevarianter(N).alltidRetur(J).maxRetur(5).build();
         tpsServiceRoutineRequest = finnGyldigeAdresserMapper.map(finnGyldigeAdresserRequestParam, tpsServiceRoutineRequest);
-        
+
         return hentGyldigeAdresserService.finnGyldigAdresse(tpsServiceRoutineRequest);
     }
 }
