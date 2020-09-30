@@ -13,6 +13,7 @@ spec:
   port: 8080
   ingresses:
     - https://tps-forvalteren-u2.nais.preprod.local
+    - https://tps-forvalteren-dev.dev.adeo.no
   liveness:
     path: /internal/isAlive
     initialDelay: 20
