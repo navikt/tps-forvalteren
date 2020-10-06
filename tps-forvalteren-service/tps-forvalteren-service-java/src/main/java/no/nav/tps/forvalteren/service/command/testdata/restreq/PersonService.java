@@ -11,7 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -127,5 +131,20 @@ public class PersonService {
             personRepository.deleteByIdIn(personIds);
             identpoolService.recycleIdents(idents);
         }
+    }
+
+    public List<Person> searchPerson(String request) {
+        Optional<String> ident = Stream.of(request.split(" "))
+                .filter(StringUtils::isNumeric)
+                .findFirst();
+
+        List<String> navn = List.of(request.split(" ")).stream()
+                .filter(fragment -> StringUtils.isNotBlank(fragment) && !StringUtils.isNumeric(fragment))
+                .collect(Collectors.toList());
+
+        return personRepository.findByWildcardIdent(ident.orElse(null),
+                !navn.isEmpty() ? navn.get(0).toUpperCase() : null,
+                navn.size() > 1 ? navn.get(1).toUpperCase() : null,
+                PageRequest.of(0, 10));
     }
 }
