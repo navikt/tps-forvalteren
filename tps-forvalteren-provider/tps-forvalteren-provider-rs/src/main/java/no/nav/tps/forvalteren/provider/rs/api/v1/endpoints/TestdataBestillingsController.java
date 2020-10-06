@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
@@ -29,6 +32,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.RsPersonnavn;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonLagreRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsIdenterMiljoer;
@@ -180,5 +184,16 @@ public class TestdataBestillingsController {
     public RsPerson importerPerson(@RequestBody ImporterPersonLagreRequest request) {
 
         return mapperFacade.map(importerPersonService.importFraTpsOgLagre(request), RsPerson.class);
+    }
+
+    @LogExceptions
+    @Transactional(Transactional.TxType.NEVER)
+    @GetMapping(value = "/soekperson")
+    @Operation(method = "Søk/let etter personer", description = "Søk basert på fragment av ident og/eller en eller to navn")
+    @ResponseStatus(HttpStatus.OK)
+    public List<RsPersonnavn> soekperson(@Parameter(description = "Partiell ident og/eller flere navn",
+            examples = @ExampleObject(value = "nat 324 bær")) String fragment) {
+
+        return mapperFacade.mapAsList(personService.searchPerson(fragment), RsPersonnavn.class);
     }
 }
