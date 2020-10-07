@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_NOT_FOUND;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,9 @@ public class UpdateSkdEndringsmeldingService {
     
     public void update(List<RsMeldingstype> meldinger) {
         for (RsMeldingstype melding : meldinger) {
-            SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(melding.getId());
-            if (skdEndringsmelding != null) {
-                saveSkdEndringsmeldingService.save(melding, skdEndringsmelding);
+            Optional<SkdEndringsmelding> skdEndringsmelding = skdEndringsmeldingRepository.findById(melding.getId());
+            if (skdEndringsmelding.isPresent()) {
+                saveSkdEndringsmeldingService.save(melding, skdEndringsmelding.get());
             } else {
                 throw new SkdEndringsmeldingNotFoundException(messageProvider.get(SKD_ENDRINGSMELDING_NOT_FOUND, melding.getId()));
             }

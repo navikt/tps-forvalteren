@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
@@ -24,7 +24,7 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 @Service
 public class SkdEndringsmeldingService {
 
-    private static final int ANTALL_MELDINGER_PER_PAGE = 10;
+    protected static final int ANTALL_MELDINGER_PER_PAGE = 10;
     private static final int PARTITION_SIZE = 1000;
 
     @Autowired
@@ -77,8 +77,9 @@ public class SkdEndringsmeldingService {
     }
 
     public RsMeldingstype findEndringsmeldingById(Long id) throws JsonProcessingException {
-        SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
-        return skdEndringsmelding != null ? objectMapper.readValue(skdEndringsmelding.getEndringsmelding(), RsMeldingstype.class) : null;
+        Optional<SkdEndringsmelding> skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
+        return skdEndringsmelding.isPresent() ?
+                objectMapper.readValue(skdEndringsmelding.get().getEndringsmelding(), RsMeldingstype.class) : null;
     }
 
     public List<RsMeldingstype> findAllEndringsmeldingerByIds(List<Long> ids) throws JsonProcessingException {

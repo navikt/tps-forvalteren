@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RsSkdEndringsmeldingGruppe {
 
     private Long id;
@@ -26,6 +29,8 @@ public class RsSkdEndringsmeldingGruppe {
 
     @Size(min = 1, max = 200)
     private String beskrivelse;
+
+    private Long antallSider;
 
     private List<RsMeldingstype> meldinger;
 

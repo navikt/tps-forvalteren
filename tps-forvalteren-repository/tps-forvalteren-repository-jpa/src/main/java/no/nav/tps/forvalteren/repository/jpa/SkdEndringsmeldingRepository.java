@@ -1,19 +1,16 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 
-public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmelding, Long> {
-
-    SkdEndringsmelding findById(Long id);
+public interface SkdEndringsmeldingRepository extends JpaRepository<SkdEndringsmelding, Long> {
 
     List<SkdEndringsmelding> findByIdIn(List<Long> ids);
 
@@ -42,4 +39,17 @@ public interface SkdEndringsmeldingRepository extends Repository<SkdEndringsmeld
             @Param("aarsakskoder") List<String> aarsakskoder,
             @Param("transaksjonstype") String transaksjonstype,
             @Param("gruppe") SkdEndringsmeldingGruppe gruppe);
+
+    @Query(value = "SELECT COUNT(*) ANTALL, SKD_ENDRINGSMELDING_GRUPPE_ID GRUPPE "
+            + "FROM T_SKD_ENDRINGSMELDING "
+            + "GROUP BY SKD_ENDRINGSMELDING_GRUPPE_ID",
+            nativeQuery = true)
+    List<AntallForekomster> countAllBySkdEndringsmeldingGruppeId();
+
+    interface AntallForekomster {
+
+        Long getAntall();
+
+        Long getGruppe();
+    }
 }

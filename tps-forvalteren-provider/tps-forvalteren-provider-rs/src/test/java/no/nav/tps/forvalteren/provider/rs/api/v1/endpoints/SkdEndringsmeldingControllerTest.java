@@ -2,8 +2,8 @@ package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -80,7 +80,7 @@ public class SkdEndringsmeldingControllerTest {
     private GetLoggForGruppeService getLoggForGruppeService;
 
     @Mock
-    private List<SkdEndringsmeldingGruppe> grupper;
+    private List<RsSkdEndringsmeldingGruppe> grupper;
 
     @Mock
     private List<RsSkdEndringsmeldingGruppe> rsGrupper;
@@ -94,13 +94,11 @@ public class SkdEndringsmeldingControllerTest {
     @Test
     public void getGrupperReturnsAllGrupper() {
         when(rsGrupper.size()).thenReturn(1337);
-        when(skdEndringsmeldingsgruppeService.findAllGrupper()).thenReturn(grupper);
-        when(mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class)).thenReturn(rsGrupper);
+        when(skdEndringsmeldingsgruppeService.findAllGrupper()).thenReturn(rsGrupper);
 
         List<RsSkdEndringsmeldingGruppe> result = skdEndringsmeldingController.getGrupper();
 
         verify(skdEndringsmeldingsgruppeService).findAllGrupper();
-        verify(mapper).mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
         assertThat(result, hasSize(1337));
     }
 
