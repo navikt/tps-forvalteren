@@ -3,8 +3,10 @@ package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,9 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsSkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
+import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SkdEndringsmeldingsgruppeServiceTest {
@@ -27,15 +31,21 @@ public class SkdEndringsmeldingsgruppeServiceTest {
     private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
 
     @Mock
-    private SkdEndringsmeldingGruppeRepository repository;
+    private SkdEndringsmeldingGruppeRepository endringsmeldingGruppeRepository;
+
+    @Mock
+    private SkdEndringsmeldingRepository endringsmeldingRepository;
 
     @Mock
     private SkdEndringsmeldingGruppe gruppe;
 
+    @Mock
+    private MapperFacade mapperFacade;
+
     @Test
     public void checkThatGruppeGetsSaved() {
         skdEndringsmeldingsgruppeService.save(gruppe);
-        verify(repository).save(gruppe);
+        verify(endringsmeldingGruppeRepository).save(gruppe);
     }
 
     @Test
@@ -44,17 +54,17 @@ public class SkdEndringsmeldingsgruppeServiceTest {
 
         skdEndringsmeldingsgruppeService.deleteGruppeById(gruppeId);
 
-        verify(repository).deleteById(gruppeId);
+        verify(endringsmeldingGruppeRepository).deleteById(gruppeId);
     }
 
     @Test
     public void checkThatCorrectGruppeIsFound() {
         Long gruppeId = 1337L;
-        when(repository.findById(gruppeId)).thenReturn(gruppe);
+        when(endringsmeldingGruppeRepository.findById(gruppeId)).thenReturn(gruppe);
 
         SkdEndringsmeldingGruppe result = skdEndringsmeldingsgruppeService.findGruppeById(gruppeId);
 
-        verify(repository).findById(gruppeId);
+        verify(endringsmeldingGruppeRepository).findById(gruppeId);
         assertThat(result, is(gruppe));
     }
 
@@ -64,10 +74,12 @@ public class SkdEndringsmeldingsgruppeServiceTest {
         grupper.add(aSkdEndringsmeldingGruppe().build());
         grupper.add(aSkdEndringsmeldingGruppe().build());
 
-        when(repository.findAllByOrderByIdAsc()).thenReturn(grupper);
-        List<SkdEndringsmeldingGruppe> result = skdEndringsmeldingsgruppeService.findAllGrupper();
+        when(endringsmeldingGruppeRepository.findAllByOrderByIdAsc()).thenReturn(grupper);
+        when(mapperFacade.map(any(SkdEndringsmeldingGruppe.class), eq(RsSkdEndringsmeldingGruppe.class)))
+                .thenReturn(new RsSkdEndringsmeldingGruppe());
+        List<RsSkdEndringsmeldingGruppe> result = skdEndringsmeldingsgruppeService.findAllGrupper();
 
-        verify(repository).findAllByOrderByIdAsc();
+        verify(endringsmeldingGruppeRepository).findAllByOrderByIdAsc();
         assertThat(result, hasSize(2));
     }
 

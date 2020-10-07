@@ -97,8 +97,7 @@ public class SkdEndringsmeldingController {
     @LogExceptions
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
-        List<SkdEndringsmeldingGruppe> grupper = skdEndringsmeldingsgruppeService.findAllGrupper();
-        return mapper.mapAsList(grupper, RsSkdEndringsmeldingGruppe.class);
+        return skdEndringsmeldingsgruppeService.findAllGrupper();
     }
 
     @LogExceptions

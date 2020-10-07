@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -105,9 +106,9 @@ public class SendEndringsmeldingToTpsServiceTest {
         ids.add(100000001L);
         ids.add(100000002L);
 
-        when(skdEndringsmeldingRepository.findById(100000000L)).thenReturn(skdEndringsmelding);
-        when(skdEndringsmeldingRepository.findById(100000001L)).thenReturn(skdEndringsmelding);
-        when(skdEndringsmeldingRepository.findById(100000002L)).thenReturn(skdEndringsmelding);
+        when(skdEndringsmeldingRepository.findById(100000000L)).thenReturn(Optional.of(skdEndringsmelding));
+        when(skdEndringsmeldingRepository.findById(100000001L)).thenReturn(Optional.of(skdEndringsmelding));
+        when(skdEndringsmeldingRepository.findById(100000002L)).thenReturn(Optional.of(skdEndringsmelding));
 
         RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps = new RsSkdEndringsmeldingIdListToTps();
         skdEndringsmeldingIdListToTps.setEnvironment(environment);

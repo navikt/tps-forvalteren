@@ -56,7 +56,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
     public void findById() {
         SkdEndringsmelding storedSkdEndringsmelding = testRepository.save(skdEndringsmelding);
 
-        SkdEndringsmelding result = repository.findById(storedSkdEndringsmelding.getId());
+        SkdEndringsmelding result = repository.findById(storedSkdEndringsmelding.getId()).get();
 
         assertThat(result, is(storedSkdEndringsmelding));
     }

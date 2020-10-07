@@ -4,6 +4,7 @@ import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_EN
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,9 +67,9 @@ public class SendEndringsmeldingToTpsService {
             List<Long> idList = skdEndringsmeldingIdListToTps.getIds();
 
             for (Long id : idList) {
-                SkdEndringsmelding skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
-                if (skdEndringsmelding != null) {
-                    skdEndringsmeldinger.add(skdEndringsmelding);
+                Optional<SkdEndringsmelding> skdEndringsmelding = skdEndringsmeldingRepository.findById(id);
+                if (skdEndringsmelding.isPresent()) {
+                    skdEndringsmeldinger.add(skdEndringsmelding.get());
                 }
             }
 
