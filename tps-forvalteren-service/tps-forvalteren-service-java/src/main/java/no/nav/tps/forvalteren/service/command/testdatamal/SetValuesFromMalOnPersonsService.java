@@ -42,9 +42,9 @@ public class SetValuesFromMalOnPersonsService {
                                     .landkode(personmal.getInnvandretFraLand())
                                     .flyttedato(toLocalDateTime(personmal.getInnvandretFraLandFlyttedato()))
                                     .build()));
-                    person.setSikkerhetsTiltakDatoFom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoFom()));
-                    person.setSikkerhetsTiltakDatoTom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoTom()));
-                    person.setBeskrSikkerhetsTiltak(personmal.getBeskrSikkerhetsTiltak());
+                    person.setSikkerhetTiltakDatoFom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoFom()));
+                    person.setSikkerhetTiltakDatoTom(toLocalDateTime(personmal.getSikkerhetsTiltakDatoTom()));
+                    person.setBeskrSikkerhetTiltak(personmal.getBeskrSikkerhetsTiltak());
                 }
             }
         }

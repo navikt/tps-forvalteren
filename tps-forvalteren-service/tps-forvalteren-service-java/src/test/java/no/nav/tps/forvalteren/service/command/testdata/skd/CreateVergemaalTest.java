@@ -19,13 +19,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateVergemaalTest {
-
-    @Mock
-    private VergemaalRepository vergemaalRepository;
 
     @Mock
     private SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
@@ -41,7 +37,7 @@ public class CreateVergemaalTest {
 
     @Before
     public void setup() {
-        Vergemaal vergemaal = new Vergemaal();
+        Vergemaal vergemaal = Vergemaal.builder().build();
         Person person = new Person();
         person.setIdent(ident);
 
@@ -52,16 +48,14 @@ public class CreateVergemaalTest {
         listeMedVergemaal.add(vergemaal);
         listeMedPersoner.add(person);
 
-        when(vergemaalRepository.findAllByIdent(anyString())).thenReturn(listeMedVergemaal);
-        when(skdMessageCreatorTrans1.createVergemaalSkdMelding(anyList(), anyBoolean())).thenReturn(listeSkdMeldinger);
+        when(skdMessageCreatorTrans1.execute(anyString(), anyList(), anyBoolean())).thenReturn(listeSkdMeldinger);
     }
 
     @Test
     public void execute() {
         List<SkdMeldingTrans1> result = createVergemaal.execute(listeMedPersoner, false);
 
-        verify(vergemaalRepository).findAllByIdent(anyString());
-        verify(skdMessageCreatorTrans1).createVergemaalSkdMelding(anyList(), anyBoolean());
+        verify(skdMessageCreatorTrans1).execute(anyString(), anyList(), anyBoolean());
         assertThat(result, is(listeSkdMeldinger));
 
     }

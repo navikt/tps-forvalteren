@@ -1,6 +1,7 @@
-package no.nav.tps.forvalteren.domain.rs;
+package no.nav.tps.forvalteren.domain.rs.dolly;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,17 +12,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsVergemaal {
+public class RsVergemaalRequest {
 
-    private Long id;
-
+    @Size(min = 4, max = 4)
     private String embete;
 
+    @Size(min = 3, max = 3)
     private String sakstype;
 
     private LocalDateTime vedtaksdato;
 
-    private RsSimplePerson verge;
+    @Size(min = 3, max = 3)
+    private String identTypeVerge;
 
+    @Size(min = 3, max = 3)
     private String mandattype;
 }

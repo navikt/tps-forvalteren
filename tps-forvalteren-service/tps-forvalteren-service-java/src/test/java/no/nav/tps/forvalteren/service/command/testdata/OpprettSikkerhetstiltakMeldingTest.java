@@ -32,10 +32,10 @@ public class OpprettSikkerhetstiltakMeldingTest {
     public void setup() {
         person = Person.builder()
                 .ident("11111100000")
-                .sikkerhetsTiltakDatoFom(DATE_FOM)
-                .sikkerhetsTiltakDatoTom(DATE_TOM)
-                .typeSikkerhetsTiltak("ABCD")
-                .beskrSikkerhetsTiltak("en beskrivelse")
+                .sikkerhetTiltakDatoFom(DATE_FOM)
+                .sikkerhetTiltakDatoTom(DATE_TOM)
+                .typeSikkerhetTiltak("ABCD")
+                .beskrSikkerhetTiltak("en beskrivelse")
                 .build();
     }
 

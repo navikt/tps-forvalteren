@@ -60,6 +60,9 @@ public class PersonerBestillingService {
     @Autowired
     private EnforceForeldreKjoennService enforceForeldreKjoennService;
 
+    @Autowired
+    private VergemaalService vergemaalService;
+
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
         enforceForeldreKjoennService.setDefaultKjoenn(request);
@@ -91,6 +94,7 @@ public class PersonerBestillingService {
         setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
         setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
         setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
+        vergemaalService.opprettVerge(request, hovedPersoner);
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 
@@ -202,7 +206,7 @@ public class PersonerBestillingService {
             for (int j = 0; j < antallPartnere; j++) {
 
                 int startIndexPartner = i * antallPartnere;
-                if (partnere.get(startIndexPartner +j).isNyPerson()) {
+                if (partnere.get(startIndexPartner + j).isNyPerson()) {
                     minePartnere.put(nullcheckSetDefaultValue(request.getRelasjoner().getPartnere().get(j).getPartnerNr(), j),
                             partnere.get(startIndexPartner + j));
                 }

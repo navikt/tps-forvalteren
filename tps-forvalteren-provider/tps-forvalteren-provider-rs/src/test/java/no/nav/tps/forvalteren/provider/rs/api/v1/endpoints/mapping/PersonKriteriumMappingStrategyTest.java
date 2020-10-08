@@ -59,8 +59,8 @@ public class PersonKriteriumMappingStrategyTest {
         when(hentDatoFraIdentService.extract(any())).thenReturn(LocalDateTime.now().minusYears(3));
 
         RsPersonBestillingKriteriumRequest bestilling = new RsPersonBestillingKriteriumRequest();
-        bestilling.setTypeSikkerhetsTiltak(TYPESIKKERHET);
-        bestilling.setBeskrSikkerhetsTiltak(SIKKERHETSTILTAK);
+        bestilling.setTypeSikkerhetTiltak(TYPESIKKERHET);
+        bestilling.setBeskrSikkerhetTiltak(SIKKERHETSTILTAK);
         bestilling.setDatoSprak(TIMENOW);
         bestilling.setSprakKode(SPRAK);
         bestilling.setStatsborgerskap(STATSBORGERSKAP);
@@ -77,8 +77,8 @@ public class PersonKriteriumMappingStrategyTest {
         assertThat(person.getStatsborgerskap().get(0).getStatsborgerskapRegdato(), is(equalTo(TIMENOW)));
         assertThat(person.getSprakKode(), is(equalTo(SPRAK)));
         assertThat(person.getDatoSprak(), is(equalTo(TIMENOW)));
-        assertThat(person.getBeskrSikkerhetsTiltak(), is(equalTo(SIKKERHETSTILTAK)));
-        assertThat(person.getTypeSikkerhetsTiltak(), is(equalTo(TYPESIKKERHET)));
+        assertThat(person.getBeskrSikkerhetTiltak(), is(equalTo(SIKKERHETSTILTAK)));
+        assertThat(person.getTypeSikkerhetTiltak(), is(equalTo(TYPESIKKERHET)));
         assertThat(person.getSpesreg(), is(equalTo(SPESREG)));
         assertThat(person.getSpesregDato(), is(equalTo(TIMENOW)));
         assertThat(person.getEgenAnsattDatoFom(), is(equalTo(TIMENOW)));

@@ -31,6 +31,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.PeripheralPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 
@@ -68,6 +69,9 @@ public class LagreTilTpsServiceTest {
 
     @Mock
     private PersonStatusFraMiljoService personStatusFraMiljoService;
+
+    @Mock
+    private PeripheralPersonService peripheralPersonService;
 
     @InjectMocks
     private LagreTilTpsService lagreTilTpsService;

@@ -20,6 +20,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.PeripheralPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
@@ -46,6 +47,9 @@ public class LagreTilTpsService {
     @Autowired
     private PersonStatusFraMiljoService personStatusFraMiljoService;
 
+    @Autowired
+    private PeripheralPersonService peripheralPersonService;
+
     public RsSkdMeldingResponse execute(Long gruppeId, Set<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
         List<Person> personerIGruppen = gruppe.getPersoner();
@@ -59,6 +63,7 @@ public class LagreTilTpsService {
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
 
         environments = environments.stream().map(String::toLowerCase).collect(toSet());
+        personerIGruppen.addAll(peripheralPersonService.getPersoner(personerIGruppen));
         personerIGruppen.forEach(Person::toUppercase);
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();

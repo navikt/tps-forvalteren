@@ -1,10 +1,9 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static org.assertj.core.util.Lists.newArrayList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +23,6 @@ import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.test.provider.GruppeProvider;
 import no.nav.tps.forvalteren.domain.test.provider.PersonProvider;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FindPersonsNotInEnvironmentsTest {
@@ -33,13 +31,7 @@ public class FindPersonsNotInEnvironmentsTest {
     private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
 
     @Mock
-    private FindGruppeById findGruppeById;
-
-    @Mock
     private FiltrerPaaIdenterTilgjengeligIMiljo filtrerPaaIdenterTilgjengeligIMiljo;
-
-    @Mock
-    private PersonRepository personRepository;
 
     private final Long GRUPPE_ID = 1337L;
     private Gruppe gruppe = GruppeProvider.aGruppe().id(GRUPPE_ID).build();
@@ -59,7 +51,6 @@ public class FindPersonsNotInEnvironmentsTest {
         identerSomIkkeFinnesiTPSiMiljoe.add(person2.getIdent());
 
         when(filtrerPaaIdenterTilgjengeligIMiljo.filtrer(anySet(), anySet())).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
-        when(personRepository.findByIdentIn(anySet())).thenReturn(newArrayList(person, person2));
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
 
@@ -69,7 +60,6 @@ public class FindPersonsNotInEnvironmentsTest {
 
     @Test
     public void allPersonsAreInEnvironments() {
-        Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(0));
@@ -80,7 +70,6 @@ public class FindPersonsNotInEnvironmentsTest {
         Set<String> identerSomIkkeFinnesiTPSiMiljoe = new HashSet<>();
         identerSomIkkeFinnesiTPSiMiljoe.add(person.getIdent());
         when(filtrerPaaIdenterTilgjengeligIMiljo.filtrer(anySet(), anySet())).thenReturn(identerSomIkkeFinnesiTPSiMiljoe);
-        when(personRepository.findByIdentIn(anySet())).thenReturn(newArrayList(person));
 
         List<Person> result = findPersonsNotInEnvironments.execute(Arrays.asList(person, person2), environments);
         assertThat(result, hasSize(1));

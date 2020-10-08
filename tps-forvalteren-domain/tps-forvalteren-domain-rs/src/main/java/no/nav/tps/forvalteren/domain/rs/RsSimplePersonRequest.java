@@ -9,6 +9,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -105,22 +107,27 @@ public class RsSimplePersonRequest {
         return identHistorikk;
     }
 
+    @JsonIgnore
     public boolean isKode6() {
         return "SPSF".equals(getSpesreg());
     }
 
+    @JsonIgnore
     public boolean isMann() {
         return KjoennType.M == getKjonn();
     }
 
+    @JsonIgnore
     public boolean isKvinne() {
         return KjoennType.K == getKjonn();
     }
 
+    @JsonIgnore
     public boolean hasSpesificKjoenn() {
         return isKvinne() || isMann();
     }
 
+    @JsonIgnore
     public boolean hasMellomnavn() {
         return isTrue(getHarMellomnavn());
     }

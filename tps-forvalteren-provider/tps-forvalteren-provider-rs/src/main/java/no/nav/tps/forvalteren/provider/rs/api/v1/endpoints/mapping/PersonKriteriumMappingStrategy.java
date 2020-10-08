@@ -62,9 +62,10 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
                             @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
-                                person.setSikkerhetsTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetsTiltakDatoFom(), now()));
+                                person.setSikkerhetTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetTiltakDatoFom(), now()));
                             }
                         })
+                .exclude("regdato")
                 .exclude("spesreg")
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
@@ -74,6 +75,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 .exclude("identtype")
                 .exclude(KJONN)
                 .exclude("relasjoner")
+                .exclude("vergemaal")
                 .byDefault()
                 .register();
 
