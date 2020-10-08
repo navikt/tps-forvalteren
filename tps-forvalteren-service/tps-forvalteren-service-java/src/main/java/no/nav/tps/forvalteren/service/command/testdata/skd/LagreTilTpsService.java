@@ -10,10 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -27,28 +27,16 @@ import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.Serv
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LagreTilTpsService {
 
-    @Autowired
-    private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
-
-    @Autowired
-    private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
-
-    @Autowired
-    private FindGruppeById findGruppeById;
-
-    @Autowired
-    private SendNavEndringsmeldinger sendNavEndringsmeldinger;
-
-    @Autowired
-    private SkdMeldingSender skdMeldingSender;
-
-    @Autowired
-    private PersonStatusFraMiljoService personStatusFraMiljoService;
-
-    @Autowired
-    private PeripheralPersonService peripheralPersonService;
+    private final FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+    private final FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+    private final FindGruppeById findGruppeById;
+    private final SendNavEndringsmeldinger sendNavEndringsmeldinger;
+    private final SkdMeldingSender skdMeldingSender;
+    private final PersonStatusFraMiljoService personStatusFraMiljoService;
+    private final PeripheralPersonService peripheralPersonService;
 
     public RsSkdMeldingResponse execute(Long gruppeId, Set<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);

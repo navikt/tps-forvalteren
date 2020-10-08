@@ -21,7 +21,7 @@ public class PeripheralPersonService {
 
     public List<Person> getPersoner(List<Person> personerIGruppen) {
 
-        Set<String> identer = new HashSet();
+        Set<String> identer = new HashSet<>();
         identer.addAll(personerIGruppen.stream()
                 .map(Person::getIdentHistorikk)
                 .flatMap(Collection::stream)
