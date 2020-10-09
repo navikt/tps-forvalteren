@@ -52,12 +52,12 @@ public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setSaksid(person.getIdent().substring(4));
         skdMeldingTrans1.setEmbete(person.getVergemaal().get(0).getEmbete());
-        skdMeldingTrans1.setSakstype(person.getVergemaal().get(0).getSakstype());
-        skdMeldingTrans1.setVedtaksdato(ConvertDateToString.yyyyMMdd(person.getVergemaal().get(0).getVedtaksdato()));
+        skdMeldingTrans1.setSakstype(person.getVergemaal().get(0).getSakType());
+        skdMeldingTrans1.setVedtaksdato(ConvertDateToString.yyyyMMdd(person.getVergemaal().get(0).getVedtakDato()));
         skdMeldingTrans1.setInternVergeid(person.getVergemaal().get(0).getVerge().getIdent().substring(4));
         skdMeldingTrans1.setVergeFnrDnr(person.getVergemaal().get(0).getVerge().getIdent());
         skdMeldingTrans1.setVergetype(ALMINNELIG);
-        skdMeldingTrans1.setMandattype(person.getVergemaal().get(0).getMandattype());
+        skdMeldingTrans1.setMandattype(person.getVergemaal().get(0).getMandatType());
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {

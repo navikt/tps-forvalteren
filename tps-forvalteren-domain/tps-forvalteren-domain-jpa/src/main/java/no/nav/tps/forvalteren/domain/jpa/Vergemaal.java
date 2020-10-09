@@ -40,16 +40,16 @@ public class Vergemaal {
     @Column(name = "EMBETE", length = 4)
     private String embete;
 
-    @Column(name = "SAKSTYPE", length = 3)
-    private String sakstype;
+    @Column(name = "SAK_TYPE", length = 3)
+    private String sakType;
 
-    @Column(name = "VEDTAKSDATO")
-    private LocalDateTime vedtaksdato;
+    @Column(name = "VEDTAK_DATO")
+    private LocalDateTime vedtakDato;
 
     @ManyToOne
     @JoinColumn(name = "VERGE_PERSON_ID")
     private Person verge;
 
-    @Column(name = "MANDATTYPE", length = 3)
-    private String mandattype;
+    @Column(name = "MANDAT_TYPE", length = 3)
+    private String mandatType;
 }

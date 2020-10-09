@@ -26,7 +26,8 @@ public class VergemaalService {
         if (nonNull(request.getVergemaal())) {
 
             RsPersonBestillingKriteriumRequest vergeRequest = new RsPersonBestillingKriteriumRequest();
-            vergeRequest.setIdenttype(request.getVergemaal().getIdentTypeVerge());
+            vergeRequest.setIdenttype(request.getVergemaal().getIdentType());
+            vergeRequest.setHarMellomnavn(request.getVergemaal().getHarMellomnavn());
             vergeRequest.setAntall(hovedPersoner.size());
             Iterator<Person> vergeIterator =
                     opprettPersonerOgSjekkMiljoeService.createNyeIdenter(extractMainPerson(vergeRequest)).iterator();

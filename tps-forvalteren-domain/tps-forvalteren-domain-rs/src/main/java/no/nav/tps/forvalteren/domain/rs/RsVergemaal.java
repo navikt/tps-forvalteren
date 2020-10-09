@@ -17,11 +17,11 @@ public class RsVergemaal {
 
     private String embete;
 
-    private String sakstype;
+    private String sakType;
 
-    private LocalDateTime vedtaksdato;
+    private LocalDateTime vedtakDato;
 
     private RsSimplePerson verge;
 
-    private String mandattype;
+    private String mandatType;
 }
