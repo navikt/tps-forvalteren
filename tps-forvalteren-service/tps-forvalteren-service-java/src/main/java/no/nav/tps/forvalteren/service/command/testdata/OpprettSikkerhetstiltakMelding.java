@@ -25,10 +25,10 @@ public class OpprettSikkerhetstiltakMelding {
                 navMeldinger.add(new TpsNavEndringsMelding(TpsEndreSikkerhetstiltakRequest.builder()
                         .serviceRutinenavn(SIKKERHETSTILTAK_MLD_NAVN)
                         .offentligIdent(person.getIdent())
-                        .typeSikkerhetsTiltak(person.getTypeSikkerhetsTiltak())
-                        .fom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoFom()))
-                        .tom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetsTiltakDatoTom()))
-                        .beskrSikkerhetsTiltak(person.getBeskrSikkerhetsTiltak())
+                        .typeSikkerhetsTiltak(person.getTypeSikkerhetTiltak())
+                        .fom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetTiltakDatoFom()))
+                        .tom(ConvertDateToString.yyyysMMsdd(person.getSikkerhetTiltakDatoTom()))
+                        .beskrSikkerhetsTiltak(person.getBeskrSikkerhetTiltak())
                         .build(), environment))
             );
         }
@@ -37,8 +37,8 @@ public class OpprettSikkerhetstiltakMelding {
     }
 
     private boolean sjekkForSikkerhetstiltak(Person person) {
-        return isNotBlank(person.getTypeSikkerhetsTiltak()) &&
-                isNotBlank(person.getBeskrSikkerhetsTiltak()) &&
-                nonNull(person.getSikkerhetsTiltakDatoFom());
+        return isNotBlank(person.getTypeSikkerhetTiltak()) &&
+                isNotBlank(person.getBeskrSikkerhetTiltak()) &&
+                nonNull(person.getSikkerhetTiltakDatoFom());
     }
 }

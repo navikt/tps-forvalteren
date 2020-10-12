@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.GetSkdMeldingByName;
 
@@ -42,17 +41,4 @@ public class SkdMessageCreatorTrans1 {
         }
         return skdMeldinger;
     }
-
-    public List<SkdMeldingTrans1> createVergemaalSkdMelding(List<Vergemaal> vergemaalListe, boolean addHeader) {
-        Optional<TpsSkdRequestMeldingDefinition> skdRequestMeldingDefinitionOptional = getSkdMeldingByName.execute("Vergemaal");
-        List<SkdMeldingTrans1> skdMeldinger = new ArrayList();
-        if (skdRequestMeldingDefinitionOptional.isPresent()) {
-            for (Vergemaal vergemaal : vergemaalListe) {
-                SkdMeldingTrans1 skdMelding = generateSkdMelding.execute(vergemaal, addHeader);
-                skdMeldinger.add(skdMelding);
-            }
-        }
-        return skdMeldinger;
-    }
-
 }

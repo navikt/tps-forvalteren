@@ -84,10 +84,10 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                         person.setTelefonnummer_2(getTelefonnr(tpsPerson.getBruker().getTelefoner(), HJEM));
                         fixTelefonnr(person);
                         person.setPersonStatus(tpsPerson.getPersonstatusDetalj().getKodePersonstatus().name());
-                        person.setBeskrSikkerhetsTiltak(tpsPerson.getBruker().getSikkerhetsTiltak().getBeskrSikkerhetsTiltak());
-                        person.setTypeSikkerhetsTiltak(tpsPerson.getBruker().getSikkerhetsTiltak().getTypeSikkerhetsTiltak());
-                        person.setSikkerhetsTiltakDatoFom(getTimestamp(tpsPerson.getBruker().getSikkerhetsTiltak().getSikrFom()));
-                        person.setSikkerhetsTiltakDatoTom(getTimestamp(tpsPerson.getBruker().getSikkerhetsTiltak().getSikrTom()));
+                        person.setBeskrSikkerhetTiltak(tpsPerson.getBruker().getSikkerhetsTiltak().getBeskrSikkerhetsTiltak());
+                        person.setTypeSikkerhetTiltak(tpsPerson.getBruker().getSikkerhetsTiltak().getTypeSikkerhetsTiltak());
+                        person.setSikkerhetTiltakDatoFom(getTimestamp(tpsPerson.getBruker().getSikkerhetsTiltak().getSikrFom()));
+                        person.setSikkerhetTiltakDatoTom(getTimestamp(tpsPerson.getBruker().getSikkerhetsTiltak().getSikrTom()));
                         mapBoadresse(tpsPerson, person);
                         mapPostadresse(tpsPerson, person);
                         mapUtadAdresse(tpsPerson, person);

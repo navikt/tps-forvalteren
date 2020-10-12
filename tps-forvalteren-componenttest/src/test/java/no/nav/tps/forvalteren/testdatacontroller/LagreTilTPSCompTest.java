@@ -49,8 +49,8 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
 
     private static final List<String> EXPECTED_SKD_INNVANDRING_CREATE_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr04121656499.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_10050552565.txt",
-            "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt",
-            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt");
+            "testdatacontroller/lagretiltps/skdmelding_request_InnvandringCreate_fnr_12017500617.txt",
+            "testdatacontroller/lagretiltps/skdmelding_request_innvandringCreate_fnr_11031250155.txt");
     private static final List<String> EXPECTED_SKD_UPDATE_INNVANDRING_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_updateInnvandring_fnr_02020403694.txt");
     private static final List<String> EXPECTED_SKD_RELASJONSMELDING_ER_REQUESTS_URL = asList("testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_ektemann.txt",
             "testdatacontroller/lagretiltps/skdmelding_request_Vigselsmelding_kone.txt");

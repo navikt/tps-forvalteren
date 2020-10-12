@@ -15,6 +15,7 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.MeldingOmStatsborgerskap.ENDRING_AV_STATSBORGERSKAP;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.NavneEndringsmeldingAarsakskode06.NAVN_ENDRING_MLD;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_INNVANDRING_MLD_NAVN;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VergemaalAarsakskode37.VERGEMAAL_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class SkdMeldingSender {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
         List<SkdMeldingTrans1> vergemaalsMeldinger = createVergemaal.execute(personerIGruppen, true);
         vergemaalsMeldinger.forEach(skdMelding ->
-                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer("Vergemaal", skdMelding, environmentsSet))
+                listTpsResponsene.add(sendSkdMeldingTilGitteMiljoer(VERGEMAAL_MLD_NAVN, skdMelding, environmentsSet))
         );
         return listTpsResponsene;
     }

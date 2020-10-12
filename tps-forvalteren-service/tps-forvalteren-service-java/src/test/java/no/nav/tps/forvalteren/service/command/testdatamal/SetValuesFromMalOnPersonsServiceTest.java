@@ -46,9 +46,9 @@ public class SetValuesFromMalOnPersonsServiceTest {
         assertThat(toLocalDate(personer.get(0).getEgenAnsattDatoTom()), is(equalTo(personmalListe.get(0).getEgenAnsattDatoTom())));
         assertThat(personer.get(0).getInnvandretUtvandret().get(0).getLandkode(), is(equalTo(personmalListe.get(0).getInnvandretFraLand())));
         assertThat(personer.get(0).getInnvandretUtvandret().get(0).getFlyttedato(), is(equalTo(personmalListe.get(0).getInnvandretFraLandFlyttedato().atStartOfDay())));
-        assertThat(toLocalDate(personer.get(0).getSikkerhetsTiltakDatoFom()), is(equalTo(personmalListe.get(0).getSikkerhetsTiltakDatoFom())));
-        assertThat(toLocalDate(personer.get(0).getSikkerhetsTiltakDatoTom()), is(equalTo(personmalListe.get(0).getSikkerhetsTiltakDatoTom())));
-        assertThat(personer.get(0).getBeskrSikkerhetsTiltak(), is(equalTo(personmalListe.get(0).getBeskrSikkerhetsTiltak())));
+        assertThat(toLocalDate(personer.get(0).getSikkerhetTiltakDatoFom()), is(equalTo(personmalListe.get(0).getSikkerhetsTiltakDatoFom())));
+        assertThat(toLocalDate(personer.get(0).getSikkerhetTiltakDatoTom()), is(equalTo(personmalListe.get(0).getSikkerhetsTiltakDatoTom())));
+        assertThat(personer.get(0).getBeskrSikkerhetTiltak(), is(equalTo(personmalListe.get(0).getBeskrSikkerhetsTiltak())));
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {

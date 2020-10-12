@@ -103,16 +103,16 @@ public class Person extends ChangeStamp {
     private LocalDateTime egenAnsattDatoTom;
 
     @Column(name = "TYPE_SIKKERHETSTILTAK", length = 4)
-    private String typeSikkerhetsTiltak;
+    private String typeSikkerhetTiltak;
 
     @Column(name = "SIKKERHETSTILTAK_DATO_FOM")
-    private LocalDateTime sikkerhetsTiltakDatoFom;
+    private LocalDateTime sikkerhetTiltakDatoFom;
 
     @Column(name = "SIKKERHETSTILTAK_DATO_TOM")
-    private LocalDateTime sikkerhetsTiltakDatoTom;
+    private LocalDateTime sikkerhetTiltakDatoTom;
 
     @Column(name = "BESKR_SIKKERHETSTILTAK", length = 50)
-    private String beskrSikkerhetsTiltak;
+    private String beskrSikkerhetTiltak;
 
     @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
@@ -140,6 +140,10 @@ public class Person extends ChangeStamp {
     @OrderBy("id desc")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<MidlertidigAdresse> midlertidigAdresse;
+
+    @OrderBy("id desc")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    private List<Vergemaal> vergemaal;
 
     @Column(name = "OPPRETTET_DATO")
     private LocalDateTime opprettetDato;
@@ -262,6 +266,13 @@ public class Person extends ChangeStamp {
             midlertidigAdresse = new ArrayList<>();
         }
         return midlertidigAdresse;
+    }
+
+    public List<Vergemaal> getVergemaal() {
+        if (isNull(vergemaal)) {
+            vergemaal = new ArrayList<>();
+        }
+        return vergemaal;
     }
 
     public String getLandkodeOfFirstInnvandret() {

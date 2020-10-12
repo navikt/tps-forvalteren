@@ -10,41 +10,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.service.command.testdata.FindGruppeById;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonerSomSkalHaFoedselsmelding;
 import no.nav.tps.forvalteren.service.command.testdata.FindPersonsNotInEnvironments;
+import no.nav.tps.forvalteren.service.command.testdata.PeripheralPersonService;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.RsSkdMeldingResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
 import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.ServiceRoutineResponseStatus;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LagreTilTpsService {
 
-    @Autowired
-    private FindPersonsNotInEnvironments findPersonsNotInEnvironments;
-
-    @Autowired
-    private FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
-
-    @Autowired
-    private FindGruppeById findGruppeById;
-
-    @Autowired
-    private SendNavEndringsmeldinger sendNavEndringsmeldinger;
-
-    @Autowired
-    private SkdMeldingSender skdMeldingSender;
-
-    @Autowired
-    private PersonStatusFraMiljoService personStatusFraMiljoService;
+    private final FindPersonsNotInEnvironments findPersonsNotInEnvironments;
+    private final FindPersonerSomSkalHaFoedselsmelding findPersonerSomSkalHaFoedselsmelding;
+    private final FindGruppeById findGruppeById;
+    private final SendNavEndringsmeldinger sendNavEndringsmeldinger;
+    private final SkdMeldingSender skdMeldingSender;
+    private final PersonStatusFraMiljoService personStatusFraMiljoService;
+    private final PeripheralPersonService peripheralPersonService;
 
     public RsSkdMeldingResponse execute(Long gruppeId, Set<String> environments) {
         Gruppe gruppe = findGruppeById.execute(gruppeId);
@@ -59,6 +51,7 @@ public class LagreTilTpsService {
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
 
         environments = environments.stream().map(String::toLowerCase).collect(toSet());
+        personerIGruppen.addAll(peripheralPersonService.getPersoner(personerIGruppen));
         personerIGruppen.forEach(Person::toUppercase);
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();

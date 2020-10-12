@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.rs;
+package no.nav.tps.forvalteren.domain.rs.dolly;
 
 import java.time.LocalDateTime;
 
@@ -11,9 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RsVergemaal {
-
-    private Long id;
+public class RsVergemaalRequest {
 
     private String embete;
 
@@ -21,7 +19,9 @@ public class RsVergemaal {
 
     private LocalDateTime vedtakDato;
 
-    private RsSimplePerson verge;
-
     private String mandatType;
+
+    private String identType;
+
+    private Boolean harMellomnavn;
 }

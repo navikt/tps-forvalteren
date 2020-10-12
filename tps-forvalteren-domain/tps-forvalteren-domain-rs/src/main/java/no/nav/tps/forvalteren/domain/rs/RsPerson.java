@@ -137,26 +137,35 @@ public class RsPerson {
 
     private List<RsSivilstand> sivilstander;
 
+    private List<RsVergemaal> vergemaal;
+
     private String importFra;
 
     public List<RsRelasjon> getRelasjoner() {
         if (isNull(relasjoner)) {
-            relasjoner = new ArrayList();
+            relasjoner = new ArrayList<>();
         }
         return relasjoner;
     }
 
     public List<RsIdenthistorikk> getIdentHistorikk() {
         if (isNull(identHistorikk)) {
-            identHistorikk = new ArrayList();
+            identHistorikk = new ArrayList<>();
         }
         return identHistorikk;
     }
 
     public List<Statsborgerskap> getStatsborgerskap() {
         if (isNull(statsborgerskap)) {
-            statsborgerskap = new ArrayList();
+            statsborgerskap = new ArrayList<>();
         }
         return statsborgerskap;
+    }
+
+    public List<RsVergemaal> getVergemaal() {
+        if (isNull(vergemaal)) {
+            vergemaal = new ArrayList<>();
+        }
+        return vergemaal;
     }
 }

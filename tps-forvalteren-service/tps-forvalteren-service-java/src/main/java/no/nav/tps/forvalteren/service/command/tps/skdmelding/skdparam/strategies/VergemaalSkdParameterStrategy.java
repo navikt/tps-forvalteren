@@ -1,39 +1,39 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
+import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.VergemaalSkdParametere;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 
 @Service
-public class VergemaalSkdParameterStrategy {
+public class VergemaalSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKS_KO_DE_FOR_VERGEMAAL = "37";
     private static final String TRANSTYPE_FOR_VERGEMAAL = "1";
     private static final String TILDELINGS_KO_DE_VERGEMAAL = "0";
+    private static final String ALMINNELIG = "ALM";
 
-    @Autowired
-    private PersonRepository personRepository;
+    @Override public String hentTildelingskode() {
+        return TILDELINGS_KO_DE_VERGEMAAL;
+    }
 
-    public SkdMeldingTrans1 execute(Vergemaal vergemaal) {
+    @Override public boolean isSupported(SkdParametersCreator creator) {
+        return creator instanceof VergemaalSkdParametere;
+    }
+
+    public SkdMeldingTrans1 execute(Person person) {
 
         SkdMeldingTrans1 skdMeldingTrans1 = new SkdMeldingTrans1();
-        skdMeldingTrans1.setTildelingskode(TILDELINGS_KO_DE_VERGEMAAL);
-        Person person = personRepository.findByIdent(vergemaal.getIdent());
+        skdMeldingTrans1.setTildelingskode(hentTildelingskode());
 
-        if (vergemaal.getVergeFnr() == null) {
-            skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(getYesterday()));
-        } else {
-            skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(person.getRegdato()));
-        }
+        skdMeldingTrans1.setRegDato(ConvertDateToString.yyyyMMdd(person.getRegdato()));
 
         addSkdParameterExtractedFromPerson(skdMeldingTrans1, person);
-        addSkdParameterExtractedFromVergemaal(skdMeldingTrans1, vergemaal);
+        addSkdParameterExtractedFromVergemaal(skdMeldingTrans1, person);
         addDefaultParam(skdMeldingTrans1);
 
         return skdMeldingTrans1;
@@ -48,27 +48,20 @@ public class VergemaalSkdParameterStrategy {
         skdMeldingTrans1.setMaskintid(ConvertDateToString.hhMMss(person.getRegdato()));
     }
 
-    private void addSkdParameterExtractedFromVergemaal(SkdMeldingTrans1 skdMeldingTrans1, Vergemaal vergemaal) {
+    private void addSkdParameterExtractedFromVergemaal(SkdMeldingTrans1 skdMeldingTrans1, Person person) {
 
-        skdMeldingTrans1.setSaksid(vergemaal.getSaksid());
-        skdMeldingTrans1.setEmbete(vergemaal.getEmbete());
-        skdMeldingTrans1.setSakstype(vergemaal.getSakstype());
-        skdMeldingTrans1.setVedtaksdato(ConvertDateToString.yyyyMMdd(vergemaal.getVedtaksdato()));
-        skdMeldingTrans1.setInternVergeid(vergemaal.getInternVergeId());
-        skdMeldingTrans1.setVergeFnrDnr(vergemaal.getVergeFnr());
-        skdMeldingTrans1.setVergetype(vergemaal.getVergetype());
-        skdMeldingTrans1.setMandattype(vergemaal.getMandattype());
-        skdMeldingTrans1.setMandatTekst(vergemaal.getMandattekst());
+        skdMeldingTrans1.setSaksid(person.getIdent().substring(4));
+        skdMeldingTrans1.setEmbete(person.getVergemaal().get(0).getEmbete());
+        skdMeldingTrans1.setSakstype(person.getVergemaal().get(0).getSakType());
+        skdMeldingTrans1.setVedtaksdato(ConvertDateToString.yyyyMMdd(person.getVergemaal().get(0).getVedtakDato()));
+        skdMeldingTrans1.setInternVergeid(person.getVergemaal().get(0).getVerge().getIdent().substring(4));
+        skdMeldingTrans1.setVergeFnrDnr(person.getVergemaal().get(0).getVerge().getIdent());
+        skdMeldingTrans1.setVergetype(ALMINNELIG);
+        skdMeldingTrans1.setMandattype(person.getVergemaal().get(0).getMandatType());
     }
 
     private void addDefaultParam(SkdMeldingTrans1 skdMeldingTrans1) {
         skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VERGEMAAL);
         skdMeldingTrans1.setTranstype(TRANSTYPE_FOR_VERGEMAAL);
-    }
-
-    private LocalDateTime getYesterday() {
-
-        LocalDateTime today = LocalDateTime.now();
-        return today.minusDays(1);
     }
 }

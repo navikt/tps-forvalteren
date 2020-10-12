@@ -41,14 +41,16 @@ public class RsPersonBestillingKriteriumRequest extends RsSimplePersonRequest {
     private LocalDateTime regdato;
 
     @Size(min = 4, max = 4)
-    private String typeSikkerhetsTiltak;
+    private String typeSikkerhetTiltak;
 
-    private LocalDateTime sikkerhetsTiltakDatoFom;
+    private LocalDateTime sikkerhetTiltakDatoFom;
 
-    private LocalDateTime sikkerhetsTiltakDatoTom;
+    private LocalDateTime sikkerhetTiltakDatoTom;
 
     @Size(min = 1, max = 50)
-    private String beskrSikkerhetsTiltak;
+    private String beskrSikkerhetTiltak;
+
+    private RsVergemaalRequest vergemaal;
 
     private AdresseNrInfo adresseNrInfo;
 

@@ -1,36 +1,24 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import java.util.ArrayList;
-import java.util.List;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VergemaalAarsakskode37.VERGEMAAL_MLD_NAVN;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+
 @Service
+@RequiredArgsConstructor
 public class CreateVergemaal {
 
-    @Autowired
-    VergemaalRepository vergemaalRepository;
-
-    @Autowired
-    SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
+    private final SkdMessageCreatorTrans1 skdMessageCreatorTrans1;
 
     public List<SkdMeldingTrans1> execute(List<Person> personerIGruppen, boolean addHeader) {
 
-        List<Vergemaal> vergemaalIGruppen = new ArrayList<>();
-        List<SkdMeldingTrans1> skdMeldinger = new ArrayList<>();
-
-        for (Person person : personerIGruppen) {
-            List<Vergemaal> personerVergemaal = vergemaalRepository.findAllByIdent(person.getIdent());
-            if (!personerVergemaal.isEmpty()) {
-                vergemaalIGruppen.addAll(personerVergemaal);
-            }
-        }
-        skdMeldinger.addAll(skdMessageCreatorTrans1.createVergemaalSkdMelding(vergemaalIGruppen, addHeader));
-
-        return skdMeldinger;
+        return skdMessageCreatorTrans1.execute(VERGEMAAL_MLD_NAVN, personerIGruppen.stream()
+                .filter(person -> !person.getVergemaal().isEmpty())
+                .collect(Collectors.toList()), addHeader);
     }
 }
