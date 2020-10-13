@@ -90,7 +90,7 @@ public class SkdEndringsmeldingRepositoryComponentTest {
         SkdEndringsmelding storedSkdEndringsmelding2 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
         SkdEndringsmelding storedSkdEndringsmelding3 = testRepository.save(aSkdEndringsmelding().gruppe(gruppe).build());
 
-        Page<SkdEndringsmelding> result = repository.findAllByGruppe(skdEndringsmelding.getGruppe(), PageRequest.of(0, 10));
+        Page<SkdEndringsmelding> result = repository.findAllByGruppeId(skdEndringsmelding.getGruppe().getId(), PageRequest.of(0, 10));
 
         assertThat(result.getTotalElements(), equalTo(3L));
         assertThat(result.getContent(), hasItems(storedSkdEndringsmelding1, storedSkdEndringsmelding2, storedSkdEndringsmelding3));
