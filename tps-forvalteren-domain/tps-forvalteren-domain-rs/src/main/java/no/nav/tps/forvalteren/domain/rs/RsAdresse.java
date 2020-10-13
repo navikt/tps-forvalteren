@@ -35,5 +35,7 @@ public abstract class RsAdresse {
 
     private String tilleggsadresse;
 
+    private String bolignr;
+
     public abstract boolean isValidAdresse();
 }
