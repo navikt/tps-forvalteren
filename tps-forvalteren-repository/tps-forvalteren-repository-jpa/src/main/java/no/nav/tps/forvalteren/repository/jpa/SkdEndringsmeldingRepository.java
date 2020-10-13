@@ -3,14 +3,14 @@ package no.nav.tps.forvalteren.repository.jpa;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 
-public interface SkdEndringsmeldingRepository extends JpaRepository<SkdEndringsmelding, Long> {
+public interface SkdEndringsmeldingRepository extends PagingAndSortingRepository<SkdEndringsmelding, Long> {
 
     List<SkdEndringsmelding> findByIdIn(List<Long> ids);
 
@@ -18,7 +18,7 @@ public interface SkdEndringsmeldingRepository extends JpaRepository<SkdEndringsm
 
     void deleteByIdIn(List<Long> ids);
 
-    Page<SkdEndringsmelding> findAllByGruppe(SkdEndringsmeldingGruppe gruppe, Pageable pageable);
+    Page<SkdEndringsmelding> findAllByGruppeId(Long gruppeId, Pageable pageable);
 
     @Query(value = "SELECT count(*) FROM T_SKD_ENDRINGSMELDING WHERE SKD_ENDRINGSMELDING_GRUPPE_ID=:gruppeId", nativeQuery = true)
     int countMeldingerInGruppe(@Param("gruppeId") Long gruppeId);

@@ -1,11 +1,11 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -71,22 +71,16 @@ public class SkdEndringsmeldingServiceTest {
     public void shouldFindSkdEndringsmeldingOnPage() {
         long gruppeId = 123L;
 
-        SkdEndringsmeldingGruppe gruppe = SkdEndringsmeldingGruppe.builder().id(gruppeId).build();
-
         List<SkdEndringsmelding> skdEndringsmeldinger = Arrays.asList(
                 SkdEndringsmelding.builder().id(MELDINGS_ID_1).build(),
                 SkdEndringsmelding.builder().id(MELDINGS_ID_2).build());
 
         PageImpl<SkdEndringsmelding> page = new PageImpl<>(skdEndringsmeldinger);
-
-        when(gruppeRepository.findById(gruppeId)).thenReturn(gruppe);
-        when(skdEndringsmeldingRepository
-                .findAllByGruppe(eq(gruppe), any())).thenReturn(page);
+        when(skdEndringsmeldingRepository.findAllByGruppeId(eq(gruppeId), any())).thenReturn(page);
 
         List<SkdEndringsmelding> endringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, 0);
 
-        verify(gruppeRepository).findById(gruppeId);
-        verify(skdEndringsmeldingRepository).findAllByGruppe(eq(gruppe), ArgumentMatchers.any());
+        verify(skdEndringsmeldingRepository).findAllByGruppeId(eq(gruppeId), ArgumentMatchers.any());
         assertThat(endringsmeldinger.size(), is(equalTo(2)));
         assertThat(endringsmeldinger.get(0).getId(), is(equalTo(MELDINGS_ID_1)));
         assertThat(endringsmeldinger.get(1).getId(), is(equalTo(MELDINGS_ID_2)));
