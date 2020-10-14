@@ -11,7 +11,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -50,7 +49,7 @@ public abstract class Adresse {
     @Column(name ="TILLEGGSADRESSE")
     private String tilleggsadresse;
 
-    @Transient
+    @Column(name = "BOLIGNUMMER")
     private String bolignr;
 
     @Override

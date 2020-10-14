@@ -23,6 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
@@ -122,6 +123,7 @@ public class ExtractOpprettKriterier {
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
 
         List<Adresse> adresser = getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo());
+        ammendBolignr(adresser, req, hovedPersoner.size());
 
         hovedPersoner.forEach(person -> {
             if (isBlank(req.getInnvandretFraLand())) {
@@ -144,6 +146,13 @@ public class ExtractOpprettKriterier {
         List<Person> personer = new ArrayList<>();
         Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
         return personer;
+    }
+
+    private void ammendBolignr(List<Adresse> adresser, RsPersonBestillingKriteriumRequest req, int personer) {
+
+        if (nonNull(req.getBoadresse()) && nonNull(req.getBoadresse().getBolignr())) {
+            IntStream.range(0, personer).forEach(person -> adresser.get(person).setBolignr(req.getBoadresse().getBolignr()));
+        }
     }
 
     protected void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {

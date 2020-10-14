@@ -61,7 +61,6 @@ import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false")
 public class TestdataBestillingsController {
 
-    private static final String REST_SERVICE_NAME = "dolly_testdata";
     private static final String EXCEL_FEILMELDING = "Feil ved pakking av Excel-fil";
 
     private final PersonerBestillingService personerBestillingService;

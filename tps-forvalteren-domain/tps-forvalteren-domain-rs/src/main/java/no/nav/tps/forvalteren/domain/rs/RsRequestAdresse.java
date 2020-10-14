@@ -37,6 +37,8 @@ public abstract class RsRequestAdresse {
 
     private TilleggAdressetype tilleggsadresse;
 
+    private String bolignr;
+
     public abstract boolean isValidAdresse();
 
     @Getter
