@@ -3,9 +3,6 @@
 -------------------------------
 DROP TABLE T_VERGEMAAL;
 
------------------
--- T A B L E S --
------------------
 CREATE TABLE T_VERGEMAAL
 (
     ID              NUMBER(9) PRIMARY KEY,

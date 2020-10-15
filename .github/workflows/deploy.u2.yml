@@ -2,7 +2,7 @@ name: Deploy dev u2
 
 on:
   push:
-    branches: feature/vergemaal
+    branches: bugfix/import-fra-tps
 
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/tps-forvalteren:${{ github.sha }}
