@@ -97,6 +97,12 @@ public class ImporterPersonService {
                 .miljoe(Collections.singleton(request.getMiljoe()))
                 .build());
 
+        if (!personRepository.findByIdentIn(personMiljoe.values().stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toList())).isEmpty()) {
+            throw new TpsfFunctionalException(format("Ident %s har relasjon(er) som finnes allerede", request.getIdent()));
+        }
+
         if (!personMiljoe.isEmpty()) {
             Person person = personMiljoe.values().iterator().next();
 
