@@ -6,13 +6,13 @@ import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.BorHos;
 import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsBarnRelasjonRequest;
-import static no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,9 +28,11 @@ import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 
@@ -50,7 +52,7 @@ public class RelasjonEksisterendePersonerBestillingService {
 
     public List<String> makeRelasjon(String hovedperson, RsPersonBestillingRelasjonRequest request) {
 
-        List<String> idents = new ArrayList();
+        List<String> idents = new ArrayList<>();
         Stream.of(newArrayList(hovedperson),
                 request.getRelasjoner().getPartnere().stream()
                         .map(RsPartnerRelasjonRequest::getIdent).collect(toList()),
@@ -91,8 +93,7 @@ public class RelasjonEksisterendePersonerBestillingService {
                     !personer.get(barnet.getIdent()).getBoadresse().equals(personer.get(hovedperson).getBoadresse())) {
                 kopierAdresse(personer.get(hovedperson), personer.get(barnet.getIdent()));
 
-            } else if (nonNull(barnet.getBorHos()) && BorHos.DEG == barnet.getBorHos() &&
-                    !personer.get(barnet.getIdent()).getBoadresse().equals(personer.get(barnet.getPartnerIdent()).getBoadresse())) {
+            } else if (nonNull(barnet.getBorHos()) && BorHos.DEG == barnet.getBorHos() && isNotBlank(barnet.getPartnerIdent())) {
 
                 kopierAdresse(personer.get(barnet.getPartnerIdent()), personer.get(barnet.getIdent()));
             }
@@ -101,13 +102,24 @@ public class RelasjonEksisterendePersonerBestillingService {
 
     private void kopierAdresse(Person personAdresseFra, Person personAdresseTil) {
 
-        Adresse adresse = personAdresseFra.getBoadresse().get(personAdresseFra.getBoadresse().size() - 1);
-        adresse.setPerson(null);
-        Adresse kopiertAdresse = mapperFacade.map(adresse, Gateadresse.class);
-        kopiertAdresse.setPerson(personAdresseTil);
-        kopiertAdresse.setId(null);
-        adresse.setPerson(personAdresseFra);
-        personAdresseTil.getBoadresse().add(kopiertAdresse);
+        Adresse adresse = personAdresseFra.getBoadresse().stream().findFirst().orElse(null);
+        if (nonNull(adresse) && personAdresseTil.getBoadresse().stream().noneMatch(adr -> adr.equals(adresse))) {
+            adresse.setPerson(null);
+            Adresse kopiertAdresse = mapperFacade.map(adresse, Gateadresse.class);
+            kopiertAdresse.setPerson(personAdresseTil);
+            kopiertAdresse.setId(null);
+            adresse.setPerson(personAdresseFra);
+            personAdresseTil.getBoadresse().add(kopiertAdresse);
+        }
+        Postadresse postadresse = personAdresseFra.getPostadresse().stream().findFirst().orElse(null);
+        if (nonNull(postadresse) && personAdresseTil.getPostadresse().stream().noneMatch(adr -> adr.equals(postadresse))) {
+            postadresse.setPerson(null);
+            Postadresse kopiertAdresse = mapperFacade.map(postadresse, Postadresse.class);
+            kopiertAdresse.setPerson(personAdresseTil);
+            kopiertAdresse.setId(null);
+            postadresse.setPerson(personAdresseFra);
+            personAdresseTil.getPostadresse().add(kopiertAdresse);
+        }
     }
 
     private static void setSivilstandHistorikkPaaPersoner(String hovedperson,
