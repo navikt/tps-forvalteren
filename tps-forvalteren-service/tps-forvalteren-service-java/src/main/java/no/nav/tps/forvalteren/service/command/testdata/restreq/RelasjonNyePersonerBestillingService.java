@@ -35,6 +35,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
     private final RelasjonExtractOpprettKriterier relasjonExtractOpprettKriterier;
     private final MessageProvider messageProvider;
     private final PersonRepository personRepository;
+    private final VergemaalService vergemaalService;
 
     public List<Person> makeRelasjoner(RsPersonBestillingKriteriumRequest request, Person hovedperson) {
 
@@ -66,6 +67,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
         setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn);
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
         setSivilstandHistorikkPaaPersoner(request, hovedperson, partnere);
+        vergemaalService.opprettVerge(request, List.of(hovedperson));
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
                 .addExtendedKriterumValuesToPerson(request, singletonList(hovedperson), partnere, barn);
