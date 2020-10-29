@@ -92,6 +92,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                             }
                         })
                 .exclude("ident")
+                .exclude("identtype")
                 .exclude("spesreg")
                 .exclude("utenFastBopel")
                 .exclude("egenAnsattDatoFom")
@@ -162,7 +163,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
     private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
 
-        person.setMellomnavn(kriteriumRequest.hasMellomnavn() ? PersonNameService.getRandomMellomnavn() :null);
+        person.setMellomnavn(kriteriumRequest.hasMellomnavn() || isNotBlank(person.getMellomnavn()) ?
+                PersonNameService.getRandomMellomnavn() :null);
     }
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
