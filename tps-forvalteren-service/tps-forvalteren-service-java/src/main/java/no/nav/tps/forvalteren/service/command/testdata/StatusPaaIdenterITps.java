@@ -35,6 +35,8 @@ import no.nav.tps.forvalteren.service.user.UserContextHolder;
 @RequiredArgsConstructor
 public class StatusPaaIdenterITps {
 
+    private static final String EKSISTENS_SJEKK_FEILET = "Feilet å sjekke eksistensstatus for ident i miljoe {}";
+
     private final GetEnvironments getEnvironments;
     private final FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
     private final UserContextHolder userContextHolder;
@@ -63,8 +65,12 @@ public class StatusPaaIdenterITps {
                             identerPerMiljoe.put(ident, miljoer);
                         }
                 );
+
             } catch (HttpInternalServerErrorException e) {
-                log.warn("Feilet å sjekke eksistensstatus for ident i miljoe {}", env);
+                log.warn(EKSISTENS_SJEKK_FEILET, env);
+
+            } catch (Exception e) {
+                log.error(EKSISTENS_SJEKK_FEILET, env, e);
             }
         });
 
