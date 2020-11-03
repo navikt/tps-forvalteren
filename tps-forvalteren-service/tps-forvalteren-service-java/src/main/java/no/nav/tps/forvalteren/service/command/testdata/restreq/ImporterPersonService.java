@@ -62,6 +62,8 @@ import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 @RequiredArgsConstructor
 public class ImporterPersonService {
 
+    private static final String MILJOE_IKKE_FUNNET = "Feilet å lese fra miljoe {}";
+
     private static final String STATUS = "status";
     private static final String STATUS_OK = "00";
     private static final String STATUS_WARN = "04";
@@ -261,11 +263,18 @@ public class ImporterPersonService {
                         .miljoe(environment)
                         .build();
             }
+
         } catch (RuntimeException e) {
-            log.error(e.getMessage(), e);
+            log.error(MILJOE_IKKE_FUNNET, environment, e);
             return TpsPersonMiljoe.builder()
-                    .errorMsg(e.getMessage().contains("Unable to find environment") ?
-                            format("Unable to find environment %s", environment) : e.getMessage())
+                    .errorMsg(e.getMessage())
+                    .miljoe(environment)
+                    .build();
+
+        } catch (Exception e) {
+            log.error(MILJOE_IKKE_FUNNET, environment, e);
+            return TpsPersonMiljoe.builder()
+                    .errorMsg(e.getMessage())
                     .miljoe(environment)
                     .build();
         }
