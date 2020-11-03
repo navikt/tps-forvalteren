@@ -264,13 +264,6 @@ public class ImporterPersonService {
                         .build();
             }
 
-        } catch (RuntimeException e) {
-            log.error(MILJOE_IKKE_FUNNET, environment, e);
-            return TpsPersonMiljoe.builder()
-                    .errorMsg(e.getMessage())
-                    .miljoe(environment)
-                    .build();
-
         } catch (Exception e) {
             log.error(MILJOE_IKKE_FUNNET, environment, e);
             return TpsPersonMiljoe.builder()
