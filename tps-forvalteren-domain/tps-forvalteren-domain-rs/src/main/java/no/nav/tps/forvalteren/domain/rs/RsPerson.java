@@ -1,21 +1,21 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import static java.util.Objects.isNull;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Getter
 @Setter
@@ -139,6 +139,8 @@ public class RsPerson {
 
     private List<RsVergemaal> vergemaal;
 
+    private List<RsFullmakt> fullmakt;
+
     private String importFra;
 
     public List<RsRelasjon> getRelasjoner() {
@@ -167,5 +169,12 @@ public class RsPerson {
             vergemaal = new ArrayList<>();
         }
         return vergemaal;
+    }
+
+    public List<RsFullmakt> getFullmakt() {
+        if (isNull(fullmakt)) {
+            fullmakt = new ArrayList<>();
+        }
+        return fullmakt;
     }
 }
