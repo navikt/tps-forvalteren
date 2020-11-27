@@ -1,6 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
@@ -10,6 +9,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,17 +40,31 @@ import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.uti
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
-@RequiredArgsConstructor
 public class PersonerBestillingService {
 
-    private final SavePersonBulk savePersonBulk;
-    private final ExtractOpprettKriterier extractOpprettKriterier;
-    private final ValidateOpprettRequest validateOpprettRequest;
-    private final OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
-    private final PersonIdenthistorikkService personIdenthistorikkService;
-    private final EnforceForeldreKjoennService enforceForeldreKjoennService;
-    private final VergemaalService vergemaalService;
-    private final FullmaktService fullmaktService;
+    @Autowired
+    private SavePersonBulk savePersonBulk;
+
+    @Autowired
+    private ExtractOpprettKriterier extractOpprettKriterier;
+
+    @Autowired
+    private ValidateOpprettRequest validateOpprettRequest;
+
+    @Autowired
+    private OpprettPersonerOgSjekkMiljoeService opprettPersonerOgSjekkMiljoeService;
+
+    @Autowired
+    private PersonIdenthistorikkService personIdenthistorikkService;
+
+    @Autowired
+    private EnforceForeldreKjoennService enforceForeldreKjoennService;
+
+    @Autowired
+    private VergemaalService vergemaalService;
+
+    @Autowired
+    private FullmaktService fullmaktService;
 
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
