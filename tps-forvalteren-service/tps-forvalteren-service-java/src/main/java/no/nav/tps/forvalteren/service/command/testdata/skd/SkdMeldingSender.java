@@ -141,8 +141,6 @@ public class SkdMeldingSender {
         return listTpsResponsene;
     }
 
-    //TODO: Lage sendFullmaktMeldinger?
-
     public List<SendSkdMeldingTilTpsResponse> sendFoedselsMeldinger(List<Person> personerSomSkalFoedes, Set<String> environmentsSet) {
         List<SendSkdMeldingTilTpsResponse> listTpsResponsene = new ArrayList<>();
 
