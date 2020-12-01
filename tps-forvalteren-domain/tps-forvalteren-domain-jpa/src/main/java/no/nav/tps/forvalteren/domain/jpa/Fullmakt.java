@@ -3,10 +3,11 @@ package no.nav.tps.forvalteren.domain.jpa;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -38,11 +37,12 @@ public class Fullmakt {
 
     @ManyToOne
     @JoinColumn(name = "PERSON_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Person person;
 
-    @ElementCollection(targetClass = String.class)
     @Column(name = "OMRAADER")
-    private List<String> omraader;
+    private String omraader;
 
     @Column(name = "KILDE")
     private String kilde;
@@ -55,12 +55,8 @@ public class Fullmakt {
 
     @ManyToOne
     @JoinColumn(name = "FULLMEKTIG_PERSON_ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Person fullmektig;
 
-    public List<String> getOmraader() {
-        if (omraader.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return omraader;
-    }
 }

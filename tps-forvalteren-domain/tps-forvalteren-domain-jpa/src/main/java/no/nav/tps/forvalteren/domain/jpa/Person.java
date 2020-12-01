@@ -279,6 +279,13 @@ public class Person extends ChangeStamp {
         return vergemaal;
     }
 
+    public List<Fullmakt> getFullmakt() {
+        if (isNull(fullmakt)) {
+            fullmakt = new ArrayList<>();
+        }
+        return fullmakt;
+    }
+
     public String getLandkodeOfFirstInnvandret() {
 
         return getInnvandretUtvandret().stream()

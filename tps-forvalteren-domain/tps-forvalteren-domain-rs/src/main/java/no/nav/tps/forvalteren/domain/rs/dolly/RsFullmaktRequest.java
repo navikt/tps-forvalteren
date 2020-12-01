@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,9 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class RsFullmaktRequest {
 
-    private LocalDate gyldigFom;
+    private LocalDateTime gyldigFom;
 
-    private LocalDate gyldigTom;
+    private LocalDateTime gyldigTom;
 
     private String kilde;
 

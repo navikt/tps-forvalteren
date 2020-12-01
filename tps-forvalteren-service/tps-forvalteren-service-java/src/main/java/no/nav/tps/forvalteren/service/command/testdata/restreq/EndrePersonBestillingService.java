@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
@@ -36,7 +35,6 @@ public class EndrePersonBestillingService {
     private final RandomAdresseService randomAdresseService;
     private final RelasjonNyePersonerBestillingService relasjonNyePersonerBestillingService;
     private final HentDatoFraIdentService hentDatoFraIdentService;
-    private final FullmaktService fullmaktService;
     private final MapperFacade mapperFacade;
     private final MessageProvider messageProvider;
 
@@ -54,7 +52,6 @@ public class EndrePersonBestillingService {
 
         updateAdresse(request, person);
         updateStatsborgerskap(request, person);
-        updateFullmakt(request, person);
 
         relasjonNyePersonerBestillingService.makeRelasjoner(request, person)
                 .stream().map(Person::getIdent).collect(Collectors.toList());
@@ -72,15 +69,6 @@ public class EndrePersonBestillingService {
         identer.add(0, RsOppdaterPersonResponse.IdentTuple.builder().ident(person.getIdent()).build());
 
         return RsOppdaterPersonResponse.builder().identTupler(identer).build();
-    }
-
-    private void updateFullmakt(RsPersonBestillingKriteriumRequest request, Person person) {
-
-        if (nonNull(request.getFullmakt()) &&
-                person.getFullmakt().stream().map(Fullmakt::getFullmektig).map(Person::getIdent)
-                        .anyMatch(fullmakt -> fullmakt.equals(request.getFullmakt().getIdentType()))) {
-            fullmaktService.opprettFullmakt(request, List.of(person));
-        }
     }
 
     private void validateUpdateRequest(RsPersonBestillingKriteriumRequest request, Person person) {
