@@ -1,21 +1,18 @@
 package no.nav.tps.forvalteren.domain.rs;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RsFullmakt {
 
-    private Person person;
+    private Long id;
 
     private List<String> omraader;
 
@@ -25,6 +22,5 @@ public class RsFullmakt {
 
     private LocalDateTime gyldigTom;
 
-    private Person fullmektig;
-
+    private RsSimplePerson fullmektig;
 }

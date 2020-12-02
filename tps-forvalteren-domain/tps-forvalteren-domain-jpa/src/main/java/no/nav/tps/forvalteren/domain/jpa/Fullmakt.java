@@ -1,12 +1,8 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import static javax.persistence.GenerationType.SEQUENCE;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,13 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
-import static javax.persistence.GenerationType.SEQUENCE;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
 @Table(name = "T_FULLMAKT")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,8 +33,6 @@ public class Fullmakt {
 
     @ManyToOne
     @JoinColumn(name = "PERSON_ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Person person;
 
     @Column(name = "OMRAADER")
@@ -55,8 +49,5 @@ public class Fullmakt {
 
     @ManyToOne
     @JoinColumn(name = "FULLMEKTIG_PERSON_ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Person fullmektig;
-
 }
