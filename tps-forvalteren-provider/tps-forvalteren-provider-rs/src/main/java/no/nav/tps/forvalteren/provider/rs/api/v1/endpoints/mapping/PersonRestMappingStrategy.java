@@ -47,9 +47,9 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                                         .gyldigTom(fullmakt.getGyldigTom())
                                         .kilde(fullmakt.getKilde())
                                         .omraader(Arrays.stream(fullmakt.getOmraader().split(",")).distinct().collect(Collectors.toList()))
-                                        .person(fullmakt.getPerson())
+                                        .person(person)
                                         .build())
-                                        .collect(Collectors.toSet()));
+                                        .collect(Collectors.toList()));
                         if (!person.getSivilstander().isEmpty()) {
                             rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
                         }
