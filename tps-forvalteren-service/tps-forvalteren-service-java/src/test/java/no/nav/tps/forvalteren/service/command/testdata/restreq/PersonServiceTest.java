@@ -1,5 +1,29 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
+import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
+import no.nav.tps.forvalteren.repository.jpa.FullmaktRepository;
+import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
+import no.nav.tps.forvalteren.service.IdentpoolService;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.singletonList;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,28 +31,6 @@ import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Optional;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
-import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
-import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
-import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
-import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
-import no.nav.tps.forvalteren.service.IdentpoolService;
-import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceTest {
@@ -50,6 +52,12 @@ public class PersonServiceTest {
 
     @Mock
     private IdenthistorikkRepository identhistorikkRepository;
+
+    @Mock
+    private VergemaalRepository vergemaalRepository;
+
+    @Mock
+    private FullmaktRepository fullmaktRepository;
 
     @Mock
     private SivilstandRepository sivilstandRepository;
