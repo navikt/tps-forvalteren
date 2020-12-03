@@ -1,15 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Collections.singletonList;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -20,6 +10,16 @@ import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
+import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.singletonList;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * Denne klasse benyttes for å legge til nye personer <br>
@@ -36,6 +36,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
     private final MessageProvider messageProvider;
     private final PersonRepository personRepository;
     private final VergemaalService vergemaalService;
+    private final FullmaktService fullmaktService;
 
     public List<Person> makeRelasjoner(RsPersonBestillingKriteriumRequest request, Person hovedperson) {
 
@@ -68,6 +69,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
         setSivilstandHistorikkPaaPersoner(request, hovedperson, partnere);
         vergemaalService.opprettVerge(request, List.of(hovedperson));
+        fullmaktService.opprettFullmakt(request, List.of(hovedperson));
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
                 .addExtendedKriterumValuesToPerson(request, singletonList(hovedperson), partnere, barn);

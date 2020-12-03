@@ -1,18 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.lang.String.format;
-import static java.time.LocalDateTime.now;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
@@ -26,6 +13,19 @@ import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 @RequiredArgsConstructor
@@ -107,16 +107,6 @@ public class EndrePersonBestillingService {
         }
     }
 
-    private static void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
-
-        if (isNotBlank(request.getStatsborgerskap()) && isNull(request.getStatsborgerskapRegdato())) {
-
-            person.getStatsborgerskap().stream()
-                    .reduce(((statsborgerskap, statsborgerskap2) -> statsborgerskap2)).get()
-                    .setStatsborgerskapRegdato(now());
-        }
-    }
-
     private void updateAdresse(RsPersonBestillingKriteriumRequest request, Person person) {
 
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
@@ -147,5 +137,15 @@ public class EndrePersonBestillingService {
     private void setAdressePaaPerson(Person person, Adresse adresse) {
         adresse.setPerson(person);
         person.getBoadresse().add(adresse);
+    }
+
+    private static void updateStatsborgerskap(RsPersonBestillingKriteriumRequest request, Person person) {
+
+        if (isNotBlank(request.getStatsborgerskap()) && isNull(request.getStatsborgerskapRegdato())) {
+
+            person.getStatsborgerskap().stream()
+                    .reduce(((statsborgerskap, statsborgerskap2) -> statsborgerskap2)).get()
+                    .setStatsborgerskapRegdato(now());
+        }
     }
 }

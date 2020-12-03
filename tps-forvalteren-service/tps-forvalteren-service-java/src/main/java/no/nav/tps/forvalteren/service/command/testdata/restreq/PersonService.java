@@ -25,10 +25,12 @@ import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
 import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
+import no.nav.tps.forvalteren.repository.jpa.FullmaktRepository;
 import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
@@ -45,6 +47,8 @@ public class PersonService {
     private final SivilstandRepository sivilstandRepository;
     private final IdentpoolService identpoolService;
     private final TpsPersonService tpsPersonService;
+    private final VergemaalRepository vergemaalRepository;
+    private final FullmaktRepository fullmaktRepository;
 
     public List<Person> getPersonerByIdenter(List<String> identer) {
 
@@ -96,6 +100,10 @@ public class PersonService {
         }
 
         deleteIdenthistorikk(persons);
+
+        fullmaktRepository.deleteByIdIn(personIds.stream().collect(toList()));
+
+        fullmaktRepository.deleteByIdIn(personIds.stream().collect(toList()));
 
         doedsmeldingRepository.deleteByPersonIdIn(personIds);
 

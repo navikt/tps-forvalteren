@@ -1,5 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
@@ -20,24 +38,6 @@ import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpp
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
-import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
 @Service
 public class PersonerBestillingService {
@@ -62,6 +62,9 @@ public class PersonerBestillingService {
 
     @Autowired
     private VergemaalService vergemaalService;
+
+    @Autowired
+    private FullmaktService fullmaktService;
 
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
         validateOpprettRequest.validate(request);
@@ -95,6 +98,7 @@ public class PersonerBestillingService {
         setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
         setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
         vergemaalService.opprettVerge(request, hovedPersoner);
+        fullmaktService.opprettFullmakt(request, hovedPersoner);
 
         List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
 
@@ -167,18 +171,6 @@ public class PersonerBestillingService {
                         .build());
     }
 
-    protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
-
-        hovedPersoner.forEach(hovedperson ->
-                personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
-        for (int i = 0; i < partnere.size(); i++) {
-            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i), request.getRelasjoner().getPartnere().get(i).getIdentHistorikk());
-        }
-        for (int i = 0; i < barna.size(); i++) {
-            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
-        }
-    }
-
     protected static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
 
         List<Person> sorted = new ArrayList<>();
@@ -224,6 +216,18 @@ public class PersonerBestillingService {
                             request.getRelasjoner().getBarn().get(j));
                 }
             }
+        }
+    }
+
+    protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
+
+        hovedPersoner.forEach(hovedperson ->
+                personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
+        for (int i = 0; i < partnere.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i), request.getRelasjoner().getPartnere().get(i).getIdentHistorikk());
+        }
+        for (int i = 0; i < barna.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
         }
     }
 

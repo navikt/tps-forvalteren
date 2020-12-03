@@ -1,5 +1,20 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
+import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
+import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
+import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import static java.lang.String.format;
 import static java.util.Collections.singleton;
 import static java.util.Objects.nonNull;
@@ -17,21 +32,6 @@ import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definitio
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.UtvandringAarsakskode32.UTVANDRING_INNVANDRING_MLD_NAVN;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.VergemaalAarsakskode37.VERGEMAAL_MLD_NAVN;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.skdmeldinger.SkdMeldingResolver;
-import no.nav.tps.forvalteren.service.command.testdata.response.lagretiltps.SendSkdMeldingTilTpsResponse;
-import no.nav.tps.forvalteren.service.command.testdata.utils.ExtractErrorStatus;
 
 @Service
 @RequiredArgsConstructor

@@ -8,6 +8,7 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.rs.RsFullmakt;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
 import no.nav.tps.forvalteren.domain.rs.RsPersonUtenIdenthistorikk;
 import no.nav.tps.forvalteren.domain.rs.RsPersonUtenRelasjon;
@@ -32,10 +33,11 @@ public class PersonRestMappingStrategy implements MappingStrategy {
     public void register(MapperFactory factory) {
         factory.classMap(Person.class, RsPerson.class)
                 .field(ID, PERSON_ID)
-                .customize(new CustomMapper<Person, RsPerson>() {
-                    @Override public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
+                .customize(new CustomMapper<>() {
+                    @Override
+                    public void mapAtoB(Person person, RsPerson rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
-                        rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
+                        rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));                        rsPerson.setFullmakt(mapperFacade.mapAsList(person.getFullmakt(), RsFullmakt.class));
                         if (!person.getSivilstander().isEmpty()) {
                             rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
                         }
@@ -47,7 +49,8 @@ public class PersonRestMappingStrategy implements MappingStrategy {
         factory.classMap(Person.class, RsPersonUtenIdenthistorikk.class)
                 .field(ID, PERSON_ID)
                 .customize(new CustomMapper<Person, RsPersonUtenIdenthistorikk>() {
-                    @Override public void mapAtoB(Person person, RsPersonUtenIdenthistorikk rsPerson, MappingContext context) {
+                    @Override
+                    public void mapAtoB(Person person, RsPersonUtenIdenthistorikk rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
                         if (!person.getSivilstander().isEmpty()) {
@@ -66,7 +69,8 @@ public class PersonRestMappingStrategy implements MappingStrategy {
         factory.classMap(Person.class, RsPersonUtenRelasjon.class)
                 .field(ID, PERSON_ID)
                 .customize(new CustomMapper<Person, RsPersonUtenRelasjon>() {
-                    @Override public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
+                    @Override
+                    public void mapAtoB(Person person, RsPersonUtenRelasjon rsPerson, MappingContext context) {
                         rsPerson.setFoedselsdato(hentDatoFraIdentService.extract(person.getIdent()));
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));
                         if (!person.getSivilstander().isEmpty()) {
