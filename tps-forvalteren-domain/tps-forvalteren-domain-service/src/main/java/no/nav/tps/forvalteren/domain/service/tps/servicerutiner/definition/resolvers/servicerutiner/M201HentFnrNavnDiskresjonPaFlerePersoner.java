@@ -1,8 +1,9 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
+import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsServiceRoutineDefinitionRequest;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsHentFnrHistMultiServiceRoutineRequest;
@@ -38,7 +39,7 @@ public class M201HentFnrNavnDiskresjonPaFlerePersoner implements ServiceRoutineR
                 .name("aksjonsKode")
                 .required()
                 .type(TpsParameterType.STRING)
-                .values("A0", "B0", "A1", "B1")
+                .values("A0", "B0", "A1", "B1", "A2", "A3")
 
                 .and()
                 .transformer()

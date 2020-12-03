@@ -54,7 +54,7 @@ public class StatusPaaIdenterITps {
         Map<String, Set<String>> identerPerMiljoe = new HashMap();
         identer.forEach(ident -> identerPerMiljoe.put(ident, new TreeSet<>()));
 
-        environmentsToCheck.forEach(env -> {
+        environmentsToCheck.parallelStream().map(env -> {
 
             try {
                 TpsServiceRoutineResponse tpsResponse = tpsRequestSender.sendTpsRequest(tpsServiceRoutineRequest,
@@ -72,7 +72,8 @@ public class StatusPaaIdenterITps {
             } catch (Exception e) {
                 log.error(EKSISTENS_SJEKK_FEILET, env, e);
             }
-        });
+            return true;
+        }).collect(Collectors.toList());
 
         return RsTpsStatusPaaIdenterResponse.builder()
                 .statusPaaIdenter(
