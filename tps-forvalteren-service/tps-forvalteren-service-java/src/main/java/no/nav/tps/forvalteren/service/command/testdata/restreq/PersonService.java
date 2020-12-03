@@ -1,23 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static com.google.common.collect.Lists.partition;
-import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.transaction.Transactional;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -34,6 +16,24 @@ import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.google.common.collect.Lists.partition;
+import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
 @Service
 @RequiredArgsConstructor
@@ -101,7 +101,7 @@ public class PersonService {
 
         deleteIdenthistorikk(persons);
 
-        fullmaktRepository.deleteByIdIn(personIds.stream().collect(toList()));
+        vergemaalRepository.deleteByIdIn(personIds.stream().collect(toList()));
 
         fullmaktRepository.deleteByIdIn(personIds.stream().collect(toList()));
 
