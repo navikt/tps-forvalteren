@@ -213,8 +213,9 @@ public class TestdataController {
     @LogExceptions
     @Transactional
     @GetMapping(value = "/tpsStatus")
-    public RsTpsStatusPaaIdenterResponse getTestdataStatusFromTpsInAllEnvironments(@RequestParam("identer") List<String> identer) {
-        return statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(identer);
+    public RsTpsStatusPaaIdenterResponse getTestdataStatusFromTpsInAllEnvironments(@RequestParam("identer") List<String> identer,
+            @RequestParam(value = "includeProd", required = false) Boolean includeProd) {
+        return statusPaaIdenterITps.hentStatusPaaIdenterIAlleMiljoer(identer, includeProd);
     }
 
     @LogExceptions
