@@ -14,12 +14,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpCantSatisfyRequestException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpInternalServerErrorException;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpUnauthorisedException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 
+@Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class HttpExceptionAdvice {
@@ -60,7 +62,7 @@ public class HttpExceptionAdvice {
                 .error(status.getReasonPhrase())
                 .status(status.value())
                 .message(exception.getMessage())
-                .path(urlPathHelper.getPathWithinApplication(httpServletRequest))
+                .path(getPath())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
@@ -76,5 +78,15 @@ public class HttpExceptionAdvice {
         private String path;
         private Integer status;
         private LocalDateTime timestamp;
+    }
+
+    private String getPath() {
+
+        try {
+            return urlPathHelper.getPathWithinApplication(httpServletRequest);
+        } catch (RuntimeException e) {
+            log.error("Feilet å hente path: ", e);
+            return null;
+        }
     }
 }
