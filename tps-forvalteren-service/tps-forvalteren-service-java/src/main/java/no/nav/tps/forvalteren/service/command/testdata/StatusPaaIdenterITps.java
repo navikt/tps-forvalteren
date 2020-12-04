@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
 import static java.lang.String.valueOf;
+import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.ExtractDataFromTpsServiceRoutineResponse.trekkUtIdenterMedStatusFunnetFraResponse;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestParameterCreator.opprettParametereForM201TpsRequest;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
@@ -66,8 +67,10 @@ public class StatusPaaIdenterITps {
                 TpsServiceRoutineResponse tpsResponse = getTpsStatus(tpsNonProdRequest, tpsProdRequest, env);
                 trekkUtIdenterMedStatusFunnetFraResponse(tpsResponse).forEach(ident -> {
                             Set<String> miljoer = identerPerMiljoe.get(ident);
-                            miljoer.add(env);
-                            identerPerMiljoe.put(ident, miljoer);
+                            if (nonNull(miljoer)) {
+                                miljoer.add(env);
+                                identerPerMiljoe.put(ident, miljoer);
+                            }
                         }
                 );
 
