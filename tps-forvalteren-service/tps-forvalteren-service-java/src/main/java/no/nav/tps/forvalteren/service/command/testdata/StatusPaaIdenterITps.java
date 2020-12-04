@@ -6,11 +6,11 @@ import static no.nav.tps.forvalteren.service.command.testdata.utils.TpsRequestPa
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +57,7 @@ public class StatusPaaIdenterITps {
         TpsServiceRoutineRequest tpsNonProdRequest = getTpsServiceRoutineRequest(identer, "A0");
         TpsServiceRoutineRequest tpsProdRequest = getTpsServiceRoutineRequest(identer, "A2");
 
-        Map<String, Set<String>> identerPerMiljoe = new HashMap();
+        Map<String, Set<String>> identerPerMiljoe = new ConcurrentHashMap<>();
         identer.forEach(ident -> identerPerMiljoe.put(ident, new TreeSet<>()));
 
         environmentsToCheck.parallelStream().map(env -> {
@@ -65,7 +65,7 @@ public class StatusPaaIdenterITps {
             try {
                 TpsServiceRoutineResponse tpsResponse = getTpsStatus(tpsNonProdRequest, tpsProdRequest, env);
                 trekkUtIdenterMedStatusFunnetFraResponse(tpsResponse).forEach(ident -> {
-                            Set miljoer = identerPerMiljoe.get(ident);
+                            Set<String> miljoer = identerPerMiljoe.get(ident);
                             miljoer.add(env);
                             identerPerMiljoe.put(ident, miljoer);
                         }
@@ -85,7 +85,7 @@ public class StatusPaaIdenterITps {
                         identerPerMiljoe.entrySet().stream().map(entry ->
                                 TpsStatusPaaIdent.builder()
                                         .ident(entry.getKey())
-                                        .env(new ArrayList(entry.getValue()))
+                                        .env(new ArrayList<>(entry.getValue()))
                                         .build()).collect(Collectors.toList()))
                 .build();
     }
@@ -102,9 +102,8 @@ public class StatusPaaIdenterITps {
 
     private TpsServiceRoutineRequest getTpsServiceRoutineRequest(List<String> identer, String aksjonskode) {
         Map<String, Object> tpsRequestParameters = opprettParametereForM201TpsRequest(identer, aksjonskode);
-        TpsServiceRoutineRequest tpsServiceRoutineRequest =
-                mappingUtils.convertToTpsServiceRoutineRequest(valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
-        return tpsServiceRoutineRequest;
+        return mappingUtils.convertToTpsServiceRoutineRequest(
+                valueOf(tpsRequestParameters.get("serviceRutinenavn")), tpsRequestParameters);
     }
 }
 
