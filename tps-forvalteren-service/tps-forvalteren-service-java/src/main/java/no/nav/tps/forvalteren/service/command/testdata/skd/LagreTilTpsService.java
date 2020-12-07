@@ -51,8 +51,9 @@ public class LagreTilTpsService {
     private RsSkdMeldingResponse sendMeldinger(List<Person> personerIGruppen, Set<String> environments) {
 
         environments = environments.stream().map(String::toLowerCase).collect(toSet());
-        personerIGruppen.addAll(peripheralPersonService.getPersoner(personerIGruppen));
-        personerIGruppen.forEach(Person::toUppercase);
+        List<Person> personerSomSkalOpprettes = new ArrayList<>(personerIGruppen);
+        personerSomSkalOpprettes.addAll(peripheralPersonService.getPersoner(personerIGruppen));
+        personerSomSkalOpprettes.forEach(Person::toUppercase);
 
         Map<String, SendSkdMeldingTilTpsResponse> innvandringCreateResponse = newHashMap();
         Map<String, SendSkdMeldingTilTpsResponse> innvandringUpdateResponse = newHashMap();
@@ -67,10 +68,9 @@ public class LagreTilTpsService {
 
             String environment = it.next();
             try {
-                List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerIGruppen, singleton(environment));
-                personerSomIkkeEksitererITpsMiljoe.forEach(Person::toUppercase);
-                List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerIGruppen, personerSomIkkeEksitererITpsMiljoe);
-                List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerIGruppen);
+                List<Person> personerSomIkkeEksitererITpsMiljoe = findPersonsNotInEnvironments.execute(personerSomSkalOpprettes, singleton(environment));
+                List<Person> personerSomAlleredeEksitererITpsMiljoe = createListPersonerSomAlleredeEksiterer(personerSomSkalOpprettes, personerSomIkkeEksitererITpsMiljoe);
+                List<Person> personerSomSkalFoedes = findPersonerSomSkalHaFoedselsmelding.execute(personerSomSkalOpprettes);
 
                 personerSomIkkeEksitererITpsMiljoe.removeAll(personerSomSkalFoedes);
                 personerSomSkalFoedes.removeAll(personerSomAlleredeEksitererITpsMiljoe);
@@ -91,8 +91,8 @@ public class LagreTilTpsService {
         }
 
         if (!envNotFoundMap.isEmpty()) {
-            envNotFound.put(personerIGruppen.get(0).getIdent(), SendSkdMeldingTilTpsResponse.builder()
-                    .personId(personerIGruppen.get(0).getIdent())
+            envNotFound.put(personerSomSkalOpprettes.get(0).getIdent(), SendSkdMeldingTilTpsResponse.builder()
+                    .personId(personerSomSkalOpprettes.get(0).getIdent())
                     .skdmeldingstype("TPS")
                     .status(envNotFoundMap)
                     .build());
