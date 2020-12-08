@@ -27,15 +27,18 @@ public class SjekkOmGyldigeIdenter {
     }
 
     private boolean isBost(int day, int month) {
-        return day > 0 && day < 32 && month > 20 && month < 33;
+        return day > 0 && day < 32 &&
+                (month > 20 && month < 33 || month > 60 && month < 73);
     }
 
     private boolean isDnr(int day, int month) {
-        return day > 40 && day < 72 && month > 0 && month < 13;
+        return day > 40 && day < 72 &&
+                (month > 0 && month < 13 || month > 40 && month < 53 || month > 80 && month < 93);
     }
 
     private boolean isFnr(int day, int month) {
-        return day > 0 && day < 32 && month > 0 && month < 13;
+        return day > 0 && day < 32 &&
+                (month > 0 && month < 13 || month > 40 && month < 53 || month > 80 && month < 93);
     }
 
     private boolean isKontrollsifferValid(String ident) {
