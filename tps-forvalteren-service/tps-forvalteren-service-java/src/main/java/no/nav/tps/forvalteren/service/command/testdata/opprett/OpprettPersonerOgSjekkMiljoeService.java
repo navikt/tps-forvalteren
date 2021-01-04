@@ -5,6 +5,9 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -15,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Person;
@@ -27,6 +31,7 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OpprettPersonerOgSjekkMiljoeService {
@@ -64,12 +69,17 @@ public class OpprettPersonerOgSjekkMiljoeService {
 
         List<IdentKjonnTuple> nyeIdenter = new ArrayList<>();
 
+        AtomicReference<String> uuid = new AtomicReference<>();
+        AtomicLong startTime = new AtomicLong();
         personKriterierListe.getPersonKriterierListe().forEach(kriterium -> {
             Set<String> identpoolIdents;
             Set<String> filteredDbIdents;
             int count = 5;
             try {
                 do {
+                    uuid.set(UUID.randomUUID().toString());
+                    startTime.set(System.currentTimeMillis());
+                    log.info("Identpool kalles med id {} og detaljer {}", uuid.get(), kriterium.toString());
                     identpoolIdents = identpoolService.getAvailableIdents(mapperFacade.map(kriterium, IdentpoolNewIdentsRequest.class));
                     filteredDbIdents = findIdenterNotUsedInDB.filtrer(identpoolIdents);
                 } while (identpoolIdents.size() - filteredDbIdents.size() > 0 && --count > 0);
@@ -83,6 +93,7 @@ public class OpprettPersonerOgSjekkMiljoeService {
                     throw new TpsfTechnicalException("Ingen ledige identer funnet i miljø.");
                 }
             } catch (ResourceAccessException e) {
+                log.info("Kall til identpool med id {} feilet etter {} ms", uuid.get(), System.currentTimeMillis() - startTime.get());
                 throw new TpsfTechnicalException("Identpool besvarte ikke forespørselen i tide", e);
             }
         });

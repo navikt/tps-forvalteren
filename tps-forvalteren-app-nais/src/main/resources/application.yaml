@@ -5,6 +5,9 @@ application:
 
 spring:
   datasource:
+    hikari:
+      maximum-pool-size: 20
+      leak-detection-threshold: 10000
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     url: ${SPRING_DATASOURCE_URL}

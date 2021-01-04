@@ -38,4 +38,14 @@ public class RsPersonKriterier {
     private Integer antall;
 
     private Boolean harMellomnavn;
+
+    @Override public String toString() {
+        return "RsPersonKriterier{" +
+                "identtype='" + identtype + '\'' +
+                ", kjonn=" + kjonn +
+                ", foedtEtter=" + foedtEtter +
+                ", foedtFoer=" + foedtFoer +
+                ", antall=" + antall +
+                '}';
+    }
 }

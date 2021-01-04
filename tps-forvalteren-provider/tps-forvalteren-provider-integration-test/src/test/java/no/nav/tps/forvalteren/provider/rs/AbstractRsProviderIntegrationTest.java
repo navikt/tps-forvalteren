@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -59,7 +60,7 @@ public abstract class AbstractRsProviderIntegrationTest {
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
 
         when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
-        when(fasitApiConsumer.getEnvironments(anyString())).thenReturn(Set.of("q1"));
+        when(fasitApiConsumer.getEnvironments(anyString())).thenReturn(new HashSet(Set.of("q1")));
     }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {
