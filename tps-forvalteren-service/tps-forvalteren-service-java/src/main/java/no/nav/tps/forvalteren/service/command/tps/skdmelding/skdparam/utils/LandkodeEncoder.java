@@ -31,7 +31,6 @@ public class LandkodeEncoder {
         landkoderMap.put("AFG", new LandDetails("404", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("AGO", new LandDetails("204", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("AIA", new LandDetails("660", START_OF_ERA, FORESEEABLE_FUTURE));
-        landkoderMap.put("ALA", new LandDetails("860", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("ALB", new LandDetails("111", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("AND", new LandDetails("114", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("ANT", new LandDetails("656", START_OF_ERA, FORESEEABLE_FUTURE));
@@ -235,7 +234,7 @@ public class LandkodeEncoder {
         landkoderMap.put("SOM", new LandDetails("346", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("SPM", new LandDetails("676", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("SRB", new LandDetails("159", of(2006, 11, 1, 0, 0), FORESEEABLE_FUTURE));
-        landkoderMap.put("SSD", new LandDetails("355", START_OF_ERA, FORESEEABLE_FUTURE));
+        landkoderMap.put("SSD", new LandDetails("355", of(2011,12,1,0,0), FORESEEABLE_FUTURE));
         landkoderMap.put("STP", new LandDetails("333", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("SUN", new LandDetails("135", START_OF_ERA, FORESEEABLE_FUTURE));
         landkoderMap.put("SUR", new LandDetails("765", START_OF_ERA, FORESEEABLE_FUTURE));
