@@ -1,6 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static java.lang.String.format;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +29,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.testdata.FiltrerPaaIdenterTilgjengeligIMiljo;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -94,7 +97,10 @@ public class OpprettPersonerOgSjekkMiljoeService {
                 }
             } catch (ResourceAccessException e) {
                 log.info("Kall til identpool med id {} feilet etter {} ms", uuid.get(), System.currentTimeMillis() - startTime.get());
-                throw new TpsfTechnicalException("Identpool besvarte ikke forespørselen i tide", e);
+                throw new TpsfTechnicalException(format("Identpool besvarte ikke forespørselen etter %d ms",
+                        System.currentTimeMillis() - startTime.get()), e);
+            } catch (HttpClientErrorException e) {
+                throw new TpsfFunctionalException(e.getMessage(), e);
             }
         });
 
