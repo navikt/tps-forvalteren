@@ -10,7 +10,8 @@ public enum DiskresjonskoderType {
     UFB("5", "Uten fast bobel"),
     SPSF("6", "Sperret adresse, strengt fortrolig"),  //kode 6
     SPFO("7", "Sperret adresse, fortrolig"),          //kode 7
-    PEND("8", "Pendler");
+    PEND("8", "Pendler"),
+    SFU("6", "Streng fortrolig utland");
 
     private String navn;
     private String kodeverdi;
