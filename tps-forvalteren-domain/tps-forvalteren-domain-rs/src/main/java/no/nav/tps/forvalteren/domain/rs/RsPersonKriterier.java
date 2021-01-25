@@ -26,6 +26,8 @@ public class RsPersonKriterier {
     @Size(min = 3, max = 3)
     private String identtype;
 
+    private Boolean navSyntetiskIdent;
+
     private KjoennType kjonn;
 
     private LocalDateTime foedtEtter;

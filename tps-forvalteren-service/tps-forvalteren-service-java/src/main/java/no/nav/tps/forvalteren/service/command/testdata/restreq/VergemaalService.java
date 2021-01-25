@@ -29,6 +29,7 @@ public class VergemaalService {
             vergeRequest.setIdenttype(request.getVergemaal().getIdentType());
             vergeRequest.setHarMellomnavn(request.getVergemaal().getHarMellomnavn());
             vergeRequest.setAntall(hovedPersoner.size());
+            vergeRequest.setNavSyntetiskIdent(request.getNavSyntetiskIdent());
             Iterator<Person> vergeIterator =
                     opprettPersonerOgSjekkMiljoeService.createNyeIdenter(extractMainPerson(vergeRequest)).iterator();
 

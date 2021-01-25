@@ -1,23 +1,5 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
-import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
-import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
 import static java.util.Objects.isNull;
@@ -38,6 +20,24 @@ import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpp
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
+import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
+import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import no.nav.tps.forvalteren.service.command.testdata.SavePersonBulk;
+import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
 
 @Service
 public class PersonerBestillingService {
@@ -84,13 +84,15 @@ public class PersonerBestillingService {
         }
         List<Person> partnere = new ArrayList<>();
         if (!request.getRelasjoner().getPartnere().isEmpty()) {
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(request.getRelasjoner().getPartnere(), request.getHarMellomnavn());
+            RsPersonKriteriumRequest kriteriePartner = extractPartner(request.getRelasjoner().getPartnere(),
+                    request.getHarMellomnavn(), request.getNavSyntetiskIdent());
             partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
         }
 
         List<Person> barn = new ArrayList<>();
         if (!request.getRelasjoner().getBarn().isEmpty()) {
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(request.getRelasjoner().getBarn(), request.getHarMellomnavn());
+            RsPersonKriteriumRequest kriterieBarn = extractBarn(request.getRelasjoner().getBarn(),
+                    request.getHarMellomnavn(), request.getNavSyntetiskIdent());
             barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
         }
 
@@ -219,15 +221,18 @@ public class PersonerBestillingService {
         }
     }
 
-    protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner, List<Person> partnere, List<Person> barna) {
+    protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner,
+            List<Person> partnere, List<Person> barna) {
 
         hovedPersoner.forEach(hovedperson ->
-                personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk()));
+                personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk(), request.getNavSyntetiskIdent()));
         for (int i = 0; i < partnere.size(); i++) {
-            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i), request.getRelasjoner().getPartnere().get(i).getIdentHistorikk());
+            personIdenthistorikkService.prepareIdenthistorikk(partnere.get(i),
+                    request.getRelasjoner().getPartnere().get(i).getIdentHistorikk(), request.getNavSyntetiskIdent());
         }
         for (int i = 0; i < barna.size(); i++) {
-            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i), request.getRelasjoner().getBarn().get(i).getIdentHistorikk());
+            personIdenthistorikkService.prepareIdenthistorikk(barna.get(i),
+                    request.getRelasjoner().getBarn().get(i).getIdentHistorikk(), request.getNavSyntetiskIdent());
         }
     }
 

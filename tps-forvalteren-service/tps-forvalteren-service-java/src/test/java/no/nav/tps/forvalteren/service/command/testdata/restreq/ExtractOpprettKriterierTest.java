@@ -102,7 +102,8 @@ public class ExtractOpprettKriterierTest {
                 .partnere(singletonList(partnerRequest))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(), false);
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(),
+                false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -119,7 +120,8 @@ public class ExtractOpprettKriterierTest {
                 .partnere(singletonList(new RsPartnerRequest()))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(), false);
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(),
+                false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));
@@ -144,7 +146,8 @@ public class ExtractOpprettKriterierTest {
                 .barn(singletonList(barnRequest))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(), false);
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(),
+                false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
@@ -161,7 +164,8 @@ public class ExtractOpprettKriterierTest {
                 .barn(singletonList(new RsBarnRequest()))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(), false);
+        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(),
+                false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));

@@ -22,4 +22,5 @@ public class IdentpoolNewIdentsRequest {
     private IdentType identtype;
     private IdentpoolKjoenn kjoenn;
     private String rekvirertAv;
+    private Boolean syntetisk;
 }

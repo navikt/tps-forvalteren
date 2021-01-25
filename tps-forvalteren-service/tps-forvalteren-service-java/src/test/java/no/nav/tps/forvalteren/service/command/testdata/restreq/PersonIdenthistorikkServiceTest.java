@@ -101,7 +101,7 @@ public class PersonIdenthistorikkServiceTest {
         personIdenthistorikkService.prepareIdenthistorikk(Person.builder().ident(IDENT).build(),
                 singletonList(RsIdenthistorikkKriterium.builder()
                         .identtype("FNR")
-                        .build()));
+                        .build()), false);
 
         verify(opprettPersonerOgSjekkMiljoeService).createNyeIdenter(any(RsPersonKriteriumRequest.class));
         verify(personRepository).saveAll(anyList());

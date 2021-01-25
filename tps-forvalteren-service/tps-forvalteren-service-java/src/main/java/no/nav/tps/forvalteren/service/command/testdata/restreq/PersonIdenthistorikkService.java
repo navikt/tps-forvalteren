@@ -95,10 +95,11 @@ public class PersonIdenthistorikkService {
         return response;
     }
 
-    public void prepareIdenthistorikk(Person person, List<RsIdenthistorikkKriterium> identhistorikk) {
+    public void prepareIdenthistorikk(Person person, List<RsIdenthistorikkKriterium> identhistorikk, Boolean navSyntetiskIdent) {
 
         if (!identhistorikk.isEmpty()) {
-            List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(prepareRequest(person, identhistorikk));
+            List<Person> dubletter = opprettPersonerOgSjekkMiljoeService.createNyeIdenter(
+                    prepareRequest(person, identhistorikk, navSyntetiskIdent));
 
             personRepository.saveAll(dubletter);
             identhistorikkService.save(person.getIdent(), dubletter, identhistorikk);
@@ -113,7 +114,8 @@ public class PersonIdenthistorikkService {
                 .build());
     }
 
-    private RsPersonKriteriumRequest prepareRequest(Person person, List<RsIdenthistorikkKriterium> identhistorikk) {
+    private RsPersonKriteriumRequest prepareRequest(Person person, List<RsIdenthistorikkKriterium> identhistorikk,
+            Boolean navSyntetiskIdent) {
 
         List<RsPersonKriterier> personkriterier = new ArrayList();
 
@@ -132,6 +134,7 @@ public class PersonIdenthistorikkService {
                             .foedtFoer(foedtFoer)
                             .kjonn(nullcheckSetDefaultValue(historikk.getKjonn(), hentKjoennFraIdentService.execute(person.getIdent())))
                             .harMellomnavn(true)
+                            .navSyntetiskIdent(navSyntetiskIdent)
                             .build());
                 });
 
