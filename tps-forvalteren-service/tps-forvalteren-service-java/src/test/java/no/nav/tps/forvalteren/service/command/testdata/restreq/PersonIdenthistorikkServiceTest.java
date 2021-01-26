@@ -67,7 +67,7 @@ public class PersonIdenthistorikkServiceTest {
     @Test
     public void prepareAliases_OK() {
 
-        when(personRepository.findByIdent(eq(IDENT))).thenReturn(Person.builder().ident(IDENT).build());
+        when(personRepository.findByIdent(IDENT)).thenReturn(Person.builder().ident(IDENT).build());
         when(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(any(RsPersonKriteriumRequest.class))).thenReturn(singletonList(Person.builder().ident(IDENT_2).build()));
         when(hentDatoFraIdentService.extract(anyString())).thenReturn(FODSELSDAG);
         when(mapperFacade.map(any(Person.class), eq(RsAliasResponse.Personnavn.class))).thenReturn(
@@ -101,7 +101,7 @@ public class PersonIdenthistorikkServiceTest {
         personIdenthistorikkService.prepareIdenthistorikk(Person.builder().ident(IDENT).build(),
                 singletonList(RsIdenthistorikkKriterium.builder()
                         .identtype("FNR")
-                        .build()));
+                        .build()), false);
 
         verify(opprettPersonerOgSjekkMiljoeService).createNyeIdenter(any(RsPersonKriteriumRequest.class));
         verify(personRepository).saveAll(anyList());

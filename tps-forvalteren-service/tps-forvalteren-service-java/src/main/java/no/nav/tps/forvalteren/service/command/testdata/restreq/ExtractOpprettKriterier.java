@@ -74,11 +74,14 @@ public class ExtractOpprettKriterier {
                         .foedtEtter(getProcessedFoedtEtter(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
                         .foedtFoer(getProcessedFoedtFoer(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
                         .harMellomnavn(request.getHarMellomnavn())
+                        .navSyntetiskIdent(request.getNavSyntetiskIdent())
                         .build()))
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractPartner(List<RsPartnerRequest> partnerRequests, Boolean hovedpersonHarMellomnavn) {
+    public static RsPersonKriteriumRequest extractPartner(List<RsPartnerRequest> partnerRequests,
+            Boolean hovedpersonHarMellomnavn,
+            Boolean navSyntetiskIdent) {
 
         List<RsPersonKriterier> kriterier = new ArrayList<>(partnerRequests.size());
         partnerRequests.forEach(partnerReq -> {
@@ -86,6 +89,7 @@ public class ExtractOpprettKriterier {
             kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
             kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
+            kriterium.setNavSyntetiskIdent(navSyntetiskIdent);
             kriterier.add(kriterium);
         });
 
@@ -94,7 +98,9 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public static RsPersonKriteriumRequest extractBarn(List<RsBarnRequest> barnRequests, Boolean hovedpersonHarMellomnavn) {
+    public static RsPersonKriteriumRequest extractBarn(List<RsBarnRequest> barnRequests,
+            Boolean hovedpersonHarMellomnavn,
+            Boolean navSyntetiskIdent) {
 
         List<RsPersonKriterier> kriterier = new ArrayList<>(barnRequests.size());
         barnRequests.forEach(barnReq -> {
@@ -102,6 +108,7 @@ public class ExtractOpprettKriterier {
             kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
             kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
             kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
+            kriterium.setNavSyntetiskIdent(navSyntetiskIdent);
             kriterier.add(kriterium);
         });
 

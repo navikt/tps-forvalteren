@@ -1,5 +1,24 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.stereotype.Component;
+
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
@@ -23,25 +42,6 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.time.LocalDateTime.now;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @RequiredArgsConstructor
@@ -109,12 +109,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         factory.classMap(RsPersonKriterier.class, IdentpoolNewIdentsRequest.class)
                 .customize(
-                        new CustomMapper<RsPersonKriterier, IdentpoolNewIdentsRequest>() {
+                        new CustomMapper<>() {
                             @Override public void mapAtoB(RsPersonKriterier personKriterier, IdentpoolNewIdentsRequest newIdentsRequest, MappingContext context) {
 
                                 newIdentsRequest.setFoedtEtter(convert2LocalDate(personKriterier.getFoedtEtter()));
                                 newIdentsRequest.setFoedtFoer(convert2LocalDate(personKriterier.getFoedtFoer()));
                                 newIdentsRequest.setKjoenn(extractKjoenn(personKriterier.getKjonn()));
+                                newIdentsRequest.setSyntetisk(personKriterier.getNavSyntetiskIdent());
                                 newIdentsRequest.setRekvirertAv("TPSF");
                             }
                         })
@@ -165,7 +166,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
 
         person.setMellomnavn(kriteriumRequest.hasMellomnavn() || isNotBlank(person.getMellomnavn()) ?
-                PersonNameService.getRandomMellomnavn() :null);
+                PersonNameService.getRandomMellomnavn() : null);
     }
 
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {

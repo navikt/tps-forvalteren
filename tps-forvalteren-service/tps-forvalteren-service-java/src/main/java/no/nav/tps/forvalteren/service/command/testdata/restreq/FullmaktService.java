@@ -1,18 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
+
+import java.util.Iterator;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.OpprettPersonerOgSjekkMiljoeService;
-import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
-import java.util.List;
-
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class FullmaktService {
             fullmaktRequest.setIdenttype(request.getFullmakt().getIdentType());
             fullmaktRequest.setHarMellomnavn(request.getFullmakt().getHarMellomnavn());
             fullmaktRequest.setAntall(hovedPersoner.size());
+            fullmaktRequest.setNavSyntetiskIdent(request.getNavSyntetiskIdent());
             Iterator<Person> fullmektigIterator =
                     opprettPersonerOgSjekkMiljoeService.createNyeIdenter(extractMainPerson(fullmaktRequest)).iterator();
 
