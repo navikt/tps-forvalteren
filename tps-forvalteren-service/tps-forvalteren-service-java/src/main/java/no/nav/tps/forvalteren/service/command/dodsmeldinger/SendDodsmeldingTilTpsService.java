@@ -14,6 +14,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import no.nav.tps.xjc.ctg.domain.s018.PersonStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,6 +100,7 @@ public class SendDodsmeldingTilTpsService {
             }
 
             person.setDoedsdato(doedsdato);
+            person.setPersonStatus(PersonStatus.DØD.value());
 
             return sendMelding(person, DOEDSMELDING_MLD_NAVN, doedsmelding, miljoe);
         }
