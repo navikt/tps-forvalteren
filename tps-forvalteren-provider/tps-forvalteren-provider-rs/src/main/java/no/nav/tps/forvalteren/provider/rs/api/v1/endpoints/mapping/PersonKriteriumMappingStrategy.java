@@ -176,6 +176,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
             person.getStatsborgerskap().add(Statsborgerskap.builder()
                     .statsborgerskap(kriteriumRequest.getStatsborgerskap())
                     .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                    .statsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato())
                     .person(person)
                     .build());
 

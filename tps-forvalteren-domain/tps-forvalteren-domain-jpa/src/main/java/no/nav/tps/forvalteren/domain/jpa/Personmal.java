@@ -56,6 +56,9 @@ public class Personmal extends ChangeStamp {
     @Column(name = "STATSBORGERSKAP_REGDATO")
     private LocalDate statsborgerskapRegdato;
 
+    @Column(name = "STATSBORGERSKAP_TILDATO")
+    private LocalDate statsborgerskapTildato;
+
     @Column(name = "SPESREG")
     private String spesreg;
 

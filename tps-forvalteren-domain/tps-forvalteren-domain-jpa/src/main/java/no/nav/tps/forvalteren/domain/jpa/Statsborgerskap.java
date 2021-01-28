@@ -53,6 +53,9 @@ public class Statsborgerskap {
     @Column(name = "STATSBORGERSKAP_REGDATO", nullable = false)
     private LocalDateTime statsborgerskapRegdato;
 
+    @Column(name = "STATSBORGERSKAP_TILDATO")
+    private LocalDateTime statsborgerskapTildato;
+
     @Override public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -67,6 +70,7 @@ public class Statsborgerskap {
         return new EqualsBuilder()
                 .append(getStatsborgerskap(), that.getStatsborgerskap())
                 .append(getStatsborgerskapRegdato(), that.getStatsborgerskapRegdato())
+                .append(getStatsborgerskapTildato(), that.getStatsborgerskapTildato())
                 .isEquals();
     }
 
@@ -74,6 +78,7 @@ public class Statsborgerskap {
         return new HashCodeBuilder(17, 37)
                 .append(getStatsborgerskap())
                 .append(getStatsborgerskapRegdato())
+                .append(getStatsborgerskapTildato())
                 .toHashCode();
     }
 }
