@@ -235,8 +235,6 @@ public class RsMeldingstype1Felter extends RsMeldingstype {
     private String statsborgerskap;
     @Size(max = 8)
     private String statsborgerskapRegdato;
-    @Size(max = 8)
-    private String statsborgerskapTildato;
     @Size(max = 3)
     private String statsborgerskap2;
     @Size(max = 8)
