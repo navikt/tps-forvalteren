@@ -1,20 +1,22 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static java.util.Collections.emptyList;
-import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
+import static no.nav.tps.forvalteren.domain.service.tps.config.SkdConstants.TRANSTYPE_1;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,10 @@ public class StatsborgerskapOgBibeholdSkdParameterStrategy {
             List<SkdMeldingTrans1> messages = new ArrayList(person.getStatsborgerskap().size() - 1);
 
             for (int i = 1; i < person.getStatsborgerskap().size(); i++) {
-                messages.add(buildSkdTrans1Statsborger(person, person.getStatsborgerskap().get(i)));
+                if (isNull(person.getStatsborgerskap().get(i).getStatsborgerskapTildato())
+                        || person.getStatsborgerskap().get(i).getStatsborgerskapTildato().isBefore(LocalDateTime.now())) {
+                    messages.add(buildSkdTrans1Statsborger(person, person.getStatsborgerskap().get(i)));
+                }
             }
             return messages;
 

@@ -1,0 +1,8 @@
+-------------------------------
+-- A L T E R     T A B L E S --
+-------------------------------
+ALTER TABLE T_STATSBORGERSKAP
+ADD STATSBORGERSKAP_TILDATO DATE;
+
+ALTER TABLE T_PERSONMAL
+ADD STATSBORGERSKAP_TILDATO DATE;

@@ -47,6 +47,8 @@ public class RsSimplePersonRequest {
 
     protected LocalDateTime statsborgerskapRegdato;
 
+    protected LocalDateTime statsborgerskapTildato;
+
     protected String spesreg;
 
     protected LocalDateTime spesregDato;
