@@ -2,7 +2,7 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   name: tps-forvalteren
-  namespace: dolly
+  namespace: default
   labels:
     team: dolly
 spec:
@@ -36,7 +36,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /kv/prod/fss/tps-forvalteren/dolly
+      - kvPath: /kv/prod/fss/tps-forvalteren/default
         mountPath: /var/run/secrets/nais.io/vault
       - kvPath: /oracle/data/prod/config/tpsforvalteren
         mountPath: /var/run/secrets/nais.io/dbPath
