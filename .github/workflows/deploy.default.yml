@@ -51,6 +51,6 @@ jobs:
         timeout-minutes: 5
         uses: nais/deploy/actions/deploy@v1
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          APIKEY: ${{ secrets.NAIS_DOLLY_DEPLOY_API_KEY }}
           CLUSTER: dev-fss
           RESOURCE: nais_dev-fss_default_template.yaml
