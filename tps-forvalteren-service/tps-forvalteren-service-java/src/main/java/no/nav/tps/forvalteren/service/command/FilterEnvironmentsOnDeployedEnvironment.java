@@ -11,23 +11,17 @@ public class FilterEnvironmentsOnDeployedEnvironment {
     private String deployedEnvironment;
 
     public Set<String> execute(Set<String> environments) {
-        char env = deployedEnvironment.charAt(0);
-        switch (env) {
-        case 'u':
-        case 't':
-        case 'q':
+        switch (deployedEnvironment) {
+        case "prod":
+            return EnvironmentsFilter.create()
+                    .include("p*")
+                    .filter(environments);
+        case "dev":
+        default:
             return EnvironmentsFilter.create()
                     .include("u*")
                     .include("t*")
                     .include("q*")
-                    .filter(environments);
-        case 'p':
-            return EnvironmentsFilter.create()
-                    .include("p*")
-                    .filter(environments);
-        default:
-            return EnvironmentsFilter.create()
-                    .include("u*")
                     .filter(environments);
         }
     }

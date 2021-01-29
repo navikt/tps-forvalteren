@@ -30,7 +30,7 @@ spring:
 
 tps.forvalteren.production.mode: false
 
-tpsf.environment.name: u2
+tpsf.environment.name: dev-dev
 
 fasit:
   url: nada

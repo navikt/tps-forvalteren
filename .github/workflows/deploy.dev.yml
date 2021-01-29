@@ -1,4 +1,4 @@
-name: Deploy dev t1
+name: Deploy dev u2
 
 on:
   push:
@@ -53,4 +53,4 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-fss
-          RESOURCE: nais_dev-fss_t1_template.yaml
+          RESOURCE: nais_dev-fss_dev_template.yaml
