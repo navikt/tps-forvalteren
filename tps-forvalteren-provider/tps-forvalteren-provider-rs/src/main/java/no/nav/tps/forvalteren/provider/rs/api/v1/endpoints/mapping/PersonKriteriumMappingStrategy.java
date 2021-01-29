@@ -1,24 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.springframework.stereotype.Component;
-
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
@@ -42,6 +23,25 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @RequiredArgsConstructor
@@ -60,7 +60,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         factory.classMap(RsPersonBestillingKriteriumRequest.class, Person.class)
                 .customize(
                         new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
-                            @Override public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
+                            @Override
+                            public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
                                 person.setSikkerhetTiltakDatoFom(nullcheckSetDefaultValue(kriteriumRequest.getSikkerhetTiltakDatoFom(), now()));
                             }
@@ -83,7 +84,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         factory.classMap(RsSimplePersonRequest.class, Person.class)
                 .customize(
                         new CustomMapper<RsSimplePersonRequest, Person>() {
-                            @Override public void mapAtoB(RsSimplePersonRequest kriteriumRequest, Person person, MappingContext context) {
+                            @Override
+                            public void mapAtoB(RsSimplePersonRequest kriteriumRequest, Person person, MappingContext context) {
 
                                 if (!person.isDoedFoedt()) {
                                     mapBasicProperties(kriteriumRequest, person);
@@ -110,7 +112,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         factory.classMap(RsPersonKriterier.class, IdentpoolNewIdentsRequest.class)
                 .customize(
                         new CustomMapper<>() {
-                            @Override public void mapAtoB(RsPersonKriterier personKriterier, IdentpoolNewIdentsRequest newIdentsRequest, MappingContext context) {
+                            @Override
+                            public void mapAtoB(RsPersonKriterier personKriterier, IdentpoolNewIdentsRequest newIdentsRequest, MappingContext context) {
 
                                 newIdentsRequest.setFoedtEtter(convert2LocalDate(personKriterier.getFoedtEtter()));
                                 newIdentsRequest.setFoedtFoer(convert2LocalDate(personKriterier.getFoedtFoer()));
@@ -163,22 +166,23 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         }
     }
 
-    private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
-
-        person.setMellomnavn(kriteriumRequest.hasMellomnavn() || isNotBlank(person.getMellomnavn()) ?
-                PersonNameService.getRandomMellomnavn() : null);
-    }
-
     private void mapStatsborgerskap(RsSimplePersonRequest kriteriumRequest, Person person) {
 
         if (isNotBlank(kriteriumRequest.getStatsborgerskap())) {
 
-            person.getStatsborgerskap().add(Statsborgerskap.builder()
-                    .statsborgerskap(kriteriumRequest.getStatsborgerskap())
-                    .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
-                    .statsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato())
-                    .person(person)
-                    .build());
+            if (person.getStatsborgerskap().stream().noneMatch(statsborgerskap -> statsborgerskap.getStatsborgerskap().equals(kriteriumRequest.getStatsborgerskap()))) {
+                person.getStatsborgerskap().add(Statsborgerskap.builder()
+                        .statsborgerskap(kriteriumRequest.getStatsborgerskap())
+                        .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
+                        .statsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato())
+                        .person(person)
+                        .build());
+            } else {
+                person.getStatsborgerskap().stream().filter(statsborgerskap -> statsborgerskap.getStatsborgerskap().equals(kriteriumRequest.getStatsborgerskap())).forEach(statsborgerskap -> {
+                    statsborgerskap.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())));
+                    statsborgerskap.setStatsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato());
+                });
+            }
 
         } else if (person.getStatsborgerskap().isEmpty()) {
 
@@ -255,6 +259,12 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setGtVerdi(null);
     }
 
+    private static void mapMellomnavn(RsSimplePersonRequest kriteriumRequest, Person person) {
+
+        person.setMellomnavn(kriteriumRequest.hasMellomnavn() || isNotBlank(person.getMellomnavn()) ?
+                PersonNameService.getRandomMellomnavn() : null);
+    }
+
     private static boolean isUtenFastBopel(RsSimplePersonRequest request) {
         return "UFB".equals(request.getSpesreg()) || request.isUtenFastBopel();
     }
@@ -262,13 +272,13 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     private static IdentpoolKjoenn extractKjoenn(KjoennType kjoenn) {
 
         switch (kjoenn) {
-        case K:
-            return KVINNE;
-        case M:
-            return MANN;
-        case U:
-        default:
-            return null;
+            case K:
+                return KVINNE;
+            case M:
+                return MANN;
+            case U:
+            default:
+                return null;
         }
     }
 

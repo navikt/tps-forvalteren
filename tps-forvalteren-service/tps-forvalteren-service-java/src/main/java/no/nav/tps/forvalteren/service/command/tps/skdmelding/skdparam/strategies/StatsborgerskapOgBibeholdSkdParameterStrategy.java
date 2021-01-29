@@ -22,7 +22,7 @@ import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraI
 @RequiredArgsConstructor
 public class StatsborgerskapOgBibeholdSkdParameterStrategy {
 
-    private static final String AARSAK_KO_DE_FOR_STATSBORGERSKAP = "35";
+    private static final String AARSAK_KODE_FOR_STATSBORGERSKAP = "35";
 
     private final LandkodeEncoder landkodeEncoder;
 
@@ -51,7 +51,7 @@ public class StatsborgerskapOgBibeholdSkdParameterStrategy {
         String hhMMss = ConvertDateToString.hhMMss(person.getRegdato());
 
         return SkdMeldingTrans1.builder()
-                .aarsakskode(AARSAK_KO_DE_FOR_STATSBORGERSKAP)
+                .aarsakskode(AARSAK_KODE_FOR_STATSBORGERSKAP)
                 .transtype(TRANSTYPE_1)
                 .fodselsdato(person.getIdent().substring(0, 6))
                 .personnummer(person.getIdent().substring(6, 11))
