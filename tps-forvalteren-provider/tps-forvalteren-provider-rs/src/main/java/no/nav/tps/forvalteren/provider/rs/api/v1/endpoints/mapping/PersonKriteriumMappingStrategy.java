@@ -170,23 +170,18 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         if (isNotBlank(kriteriumRequest.getStatsborgerskap())) {
 
-            boolean eksistererAllerede = false;
-
-            for (Statsborgerskap statsborgerskap : person.getStatsborgerskap()) {
-                if (statsborgerskap.getStatsborgerskap().equals(kriteriumRequest.getStatsborgerskap())) {
-                    statsborgerskap.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())));
-                    statsborgerskap.setStatsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato());
-                    eksistererAllerede = true;
-                }
-            }
-
-            if (!eksistererAllerede) {
+            if (person.getStatsborgerskap().stream().noneMatch(statsborgerskap -> statsborgerskap.getStatsborgerskap().equals(kriteriumRequest.getStatsborgerskap()))) {
                 person.getStatsborgerskap().add(Statsborgerskap.builder()
                         .statsborgerskap(kriteriumRequest.getStatsborgerskap())
                         .statsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())))
                         .statsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato())
                         .person(person)
                         .build());
+            } else {
+                person.getStatsborgerskap().stream().filter(statsborgerskap -> statsborgerskap.getStatsborgerskap().equals(kriteriumRequest.getStatsborgerskap())).forEach(statsborgerskap -> {
+                    statsborgerskap.setStatsborgerskapRegdato(nullcheckSetDefaultValue(kriteriumRequest.getStatsborgerskapRegdato(), hentDatoFraIdentService.extract(person.getIdent())));
+                    statsborgerskap.setStatsborgerskapTildato(kriteriumRequest.getStatsborgerskapTildato());
+                });
             }
 
         } else if (person.getStatsborgerskap().isEmpty()) {
