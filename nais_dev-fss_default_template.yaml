@@ -2,9 +2,9 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   name: tps-forvalteren
-  namespace: default
+  namespace: dolly
   labels:
-    team: registre
+    team: dolly
 spec:
   image: {{ image }}
   replicas:
@@ -12,7 +12,6 @@ spec:
     max: 4
   port: 8080
   ingresses:
-    - https://tps-forvalteren.nais.preprod.local
     - https://tps-forvalteren.dev.adeo.no
   liveness:
     path: /internal/isAlive
@@ -37,7 +36,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /kv/preprod/fss/tps-forvalteren/default
+      - kvPath: /kv/preprod/fss/tps-forvalteren/dolly
         mountPath: /var/run/secrets/nais.io/vault
       - kvPath: /oracle/data/dev/config/tpsforvalteren_q1
         mountPath: /var/run/secrets/nais.io/dbPath

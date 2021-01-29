@@ -72,10 +72,10 @@ public class HentGyldigeAdresserService {
     private TpsRequestContext createContext() {
         TpsRequestContext context = new TpsRequestContext();
         context.setUser(userContextHolder.getUser());
-        if (env.toLowerCase().contains("u")) {
+        if (env.toLowerCase().contains("dev-dev")) {
             context.setEnvironment("t0");
         } else {
-            context.setEnvironment(env);
+            context.setEnvironment("q1");
         }
         return context;
     }
