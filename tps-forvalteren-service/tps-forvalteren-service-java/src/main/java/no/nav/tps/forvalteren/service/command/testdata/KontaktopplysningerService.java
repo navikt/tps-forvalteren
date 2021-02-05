@@ -131,7 +131,8 @@ public class KontaktopplysningerService {
                 .adresse2(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLinje2())
                 .adresse3(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLinje3())
                 .kodeLand(((MidlertidigAdresse.MidlertidigUtadAdresse) person.getMidlertidigAdresse().get(0)).getPostLand())
-                .datoTom(person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString())
+                .datoTom(nonNull(person.getMidlertidigAdresse().get(0).getGyldigTom()) ?
+                        person.getMidlertidigAdresse().get(0).getGyldigTom().toLocalDate().toString() : null)
                 .build();
     }
 
