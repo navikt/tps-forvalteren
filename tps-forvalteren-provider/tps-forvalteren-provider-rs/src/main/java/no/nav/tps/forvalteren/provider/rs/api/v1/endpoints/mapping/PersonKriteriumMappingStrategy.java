@@ -59,7 +59,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
     public void register(MapperFactory factory) {
         factory.classMap(RsPersonBestillingKriteriumRequest.class, Person.class)
                 .customize(
-                        new CustomMapper<RsPersonBestillingKriteriumRequest, Person>() {
+                        new CustomMapper<>() {
                             @Override
                             public void mapAtoB(RsPersonBestillingKriteriumRequest kriteriumRequest, Person person, MappingContext context) {
 
@@ -83,7 +83,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
 
         factory.classMap(RsSimplePersonRequest.class, Person.class)
                 .customize(
-                        new CustomMapper<RsSimplePersonRequest, Person>() {
+                        new CustomMapper<>() {
                             @Override
                             public void mapAtoB(RsSimplePersonRequest kriteriumRequest, Person person, MappingContext context) {
 
@@ -236,10 +236,8 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
                 person.getPostadresse().add(dummyAdresseService.createDummyPostAdresseUtland(person));
             }
 
-        } else if (person.isUtvandret()) {
-            person.setBoadresse(null);
-            if (kriteriumRequest.getPostadresse().isEmpty() || "NOR".equals(kriteriumRequest.getPostadresse().get(0).getPostLand())) {
-                person.getPostadresse().clear();
+        } else if (isNotBlank(kriteriumRequest.getUtvandretTilLand())) {
+            if (person.getPostadresse().isEmpty() || "NOR".equals(person.getPostadresse().get(0).getPostLand())) {
                 person.getPostadresse().add(dummyAdresseService.createPostAdresseUtvandret(person));
             }
 

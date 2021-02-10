@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.util.Collections.emptyList;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +43,10 @@ public class PersonRestMappingStrategy implements MappingStrategy {
                         rsPerson.setAlder(hentAlderFraIdent.extract(person.getIdent(), person.getDoedsdato()));                        rsPerson.setFullmakt(mapperFacade.mapAsList(person.getFullmakt(), RsFullmakt.class));
                         if (!person.getSivilstander().isEmpty()) {
                             rsPerson.setSivilstand(person.getSivilstander().get(0).getSivilstand());
+                        }
+                        if (!person.getInnvandretUtvandret().isEmpty() &&
+                                person.getInnvandretUtvandret().get(0).getInnutvandret() == UTVANDRET) {
+                            rsPerson.setBoadresse(emptyList());
                         }
                     }
                 })

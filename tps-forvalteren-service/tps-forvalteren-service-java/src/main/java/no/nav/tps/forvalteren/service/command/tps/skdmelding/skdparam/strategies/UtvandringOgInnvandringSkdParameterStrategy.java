@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.service.DiskresjonskoderType;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
@@ -37,7 +38,7 @@ public class UtvandringOgInnvandringSkdParameterStrategy {
         if (person.getInnvandretUtvandret().size() > 1) {
             person.getInnvandretUtvandret().sort(Comparator.comparing(InnvandretUtvandret::getFlyttedato));
             person.getStatsborgerskap().sort(Comparator.comparing(Statsborgerskap::getId));
-            List<SkdMeldingTrans1> messages = new ArrayList(person.getInnvandretUtvandret().size() - 1);
+            List<SkdMeldingTrans1> messages = new ArrayList<>(person.getInnvandretUtvandret().size() - 1);
 
             for (int i = 1; i < person.getInnvandretUtvandret().size(); i++) {
                 messages.add(buildSkdTrans1InnvandringUtvandring(person, person.getInnvandretUtvandret().get(i)));
@@ -90,6 +91,13 @@ public class UtvandringOgInnvandringSkdParameterStrategy {
             skdMeldingTrans1.setAarsakskode(AARSAKSKODE_FOR_UTVANDRING);
             skdMeldingTrans1.setStatuskode("3");
             skdMeldingTrans1.setTildelingskode("0");
+            if (!person.getPostadresse().isEmpty()) {
+                Postadresse postAdresse = person.getPostadresse().get(0).toUppercase();
+                skdMeldingTrans1.setPostadresse1(postAdresse.getPostLinje1());
+                skdMeldingTrans1.setPostadresse2(postAdresse.getPostLinje2());
+                skdMeldingTrans1.setPostadresse3(postAdresse.getPostLinje3());
+                skdMeldingTrans1.setPostadresseLand(landkodeEncoder.encode(postAdresse.getPostLand()));
+            }
         }
 
         return skdMeldingTrans1;
