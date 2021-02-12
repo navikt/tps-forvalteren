@@ -36,10 +36,10 @@ public class MidlertidigAdresseMappingService {
     private final RandomAdresseService randomAdresseService;
 
     public void mapAdresse(RsPersonBestillingKriteriumRequest req,
-            List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
+            Person hovedPerson, List<Person> partnere, List<Person> barn) {
 
-        hovedPersoner.forEach(person ->
-                mapPersonMidlertidigAdresse(person, req.getMidlertidigAdresse()));
+        mapPersonMidlertidigAdresse(hovedPerson, req.getMidlertidigAdresse());
+
         for (int i = 0; i < partnere.size(); i++) {
             mapPersonMidlertidigAdresse(partnere.get(i), req.getRelasjoner().getPartnere()
                     .get(i % req.getRelasjoner().getPartnere().size()).getMidlertidigAdresse());

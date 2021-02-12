@@ -72,7 +72,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
         fullmaktService.opprettFullmakt(request, List.of(hovedperson));
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
-                .addExtendedKriterumValuesToPerson(request, singletonList(hovedperson), partnere, barn);
+                .addExtendedKriterumValuesToPerson(request, hovedperson, partnere, barn);
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 

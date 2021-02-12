@@ -102,7 +102,11 @@ public class PersonerBestillingService {
         vergemaalService.opprettVerge(request, hovedPersoner);
         fullmaktService.opprettFullmakt(request, hovedPersoner);
 
-        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner, partnere, barn);
+        /**
+         * Add extended criteria etc benyttes kun for Dolly bestillinger som alltid sendes inn en og en.
+         * Forenkler implementasjonen til kun å håndtere en hovedperson.
+         */
+        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner.get(0), partnere, barn);
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 

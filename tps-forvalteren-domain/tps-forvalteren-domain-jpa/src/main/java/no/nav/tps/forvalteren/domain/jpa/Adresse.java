@@ -52,6 +52,9 @@ public abstract class Adresse {
     @Column(name = "BOLIGNUMMER")
     private String bolignr;
 
+    @Column(name = "DELT_ADRESSE")
+    private Boolean deltAdresse;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
