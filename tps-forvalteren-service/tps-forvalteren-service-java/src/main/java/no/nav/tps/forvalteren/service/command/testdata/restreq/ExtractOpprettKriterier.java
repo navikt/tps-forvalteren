@@ -218,13 +218,17 @@ public class ExtractOpprettKriterier {
                 mapBoadresse(barn, hovedPerson.getBoadresse().get(0), extractFlyttedato(barnRequest.getBoadresse()),
                         extractTilleggsadresse(barnRequest.getBoadresse()), null);
             }
-            if (hasBoadresse(partner) && barnRequest.isAdresseMedPartner() &&
-                    !partner.getBoadresse().equals(hovedPerson.getBoadresse())) {
+            if (hasBoadresse(partner) && barnRequest.isAdresseMedPartner() && isAdresseDifferent(hovedPerson, partner)) {
                 mapBoadresse(barn, partner.getBoadresse().get(0),
                         extractFlyttedato(barnRequest.getBoadresse()),
                         extractTilleggsadresse(barnRequest.getBoadresse()), barnRequest.isDeltAdresse());
             }
         }
+    }
+
+    private static boolean isAdresseDifferent(Person hovedperson, Person partner) {
+        return hasBoadresse(hovedperson) && hasBoadresse(partner) &&
+                !partner.getBoadresse().equals(hovedperson.getBoadresse());
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
