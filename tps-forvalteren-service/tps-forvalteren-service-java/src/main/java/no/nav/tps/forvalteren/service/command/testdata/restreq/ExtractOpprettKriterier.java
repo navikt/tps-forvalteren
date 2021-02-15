@@ -206,8 +206,13 @@ public class ExtractOpprettKriterier {
     }
 
     private Person getPartner(List<Person> partnere, List<Person> barn, RsBarnRequest barnRequest) {
-        return partnere.get(nonNull(barnRequest.getPartnerNr()) ? barnRequest.getPartnerNr() - 1 :
-                barn.size() / partnere.size() % partnere.size());
+
+        if (partnere.isEmpty()) {
+            return null;
+        } else {
+            return partnere.get(nonNull(barnRequest.getPartnerNr()) ? barnRequest.getPartnerNr() - 1 :
+                    barn.size() / partnere.size() % partnere.size());
+        }
     }
 
     private void mapBarnAdresse(Person hovedPerson, Person partner, Person barn, RsBarnRequest barnRequest) {
