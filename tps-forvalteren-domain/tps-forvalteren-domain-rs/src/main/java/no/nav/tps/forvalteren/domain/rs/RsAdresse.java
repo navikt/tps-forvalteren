@@ -37,5 +37,7 @@ public abstract class RsAdresse {
 
     private String bolignr;
 
+    private Boolean deltAdresse;
+
     public abstract boolean isValidAdresse();
 }

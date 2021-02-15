@@ -1,29 +1,28 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.MEG;
-import static no.nav.tps.forvalteren.domain.rs.RsBarnRequest.BorHos.OSS;
 import static no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggType.CO_NAVN;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.SPSF;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomEtternavn;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomFornavn;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
 import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
@@ -127,148 +126,116 @@ public class ExtractOpprettKriterier {
                 .build();
     }
 
-    public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
+    public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, Person hovedPerson, List<Person> partnere, List<Person> barn) {
 
-        List<Adresse> adresser = getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo());
-        ammendBolignr(adresser, req, hovedPersoner.size());
+        List<Adresse> adresser = getAdresser(1 + partnere.size(), req.getAdresseNrInfo());
+        ammendBolignr(adresser, req);
 
-        hovedPersoner.forEach(person -> {
-            if (isBlank(req.getInnvandretFraLand())) {
-                req.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
-            }
-            mapperFacade.map(req, person);
-        });
+        if (isBlank(req.getInnvandretFraLand())) {
+            req.setInnvandretFraLand(landkodeEncoder.getRandomLandTla());
+        }
+        mapperFacade.map(req, hovedPerson);
 
         if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
-            for (int i = 0; i < hovedPersoner.size(); i++) {
-                mapBoadresse(hovedPersoner.get(i), getBoadresse(adresser, i), extractFlyttedato(req.getBoadresse()),
-                        extractTilleggsadresse(req.getBoadresse()));
-            }
+            mapBoadresse(hovedPerson, getBoadresse(adresser, 0), extractFlyttedato(req.getBoadresse()),
+                    extractTilleggsadresse(req.getBoadresse()), null);
         }
 
-        mapPartner(req, hovedPersoner, partnere, adresser);
-        mapBarn(req, hovedPersoner, partnere, barn);
-        midlertidigAdresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
+        mapPartner(req, hovedPerson, partnere, adresser);
+        mapBarn(req, hovedPerson, partnere, barn);
+        midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn);
 
-        List<Person> personer = new ArrayList<>();
-        Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
-        return personer;
+        return Stream.of(singletonList(hovedPerson), partnere, barn)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
-    private void ammendBolignr(List<Adresse> adresser, RsPersonBestillingKriteriumRequest req, int personer) {
+    private void ammendBolignr(List<Adresse> adresser, RsPersonBestillingKriteriumRequest req) {
 
-        if (nonNull(req.getBoadresse()) && nonNull(req.getBoadresse().getBolignr())) {
-            IntStream.range(0, personer).forEach(person -> adresser.get(person).setBolignr(req.getBoadresse().getBolignr()));
+        if (nonNull(req.getBoadresse()) && isNotBlank(req.getBoadresse().getBolignr())) {
+            adresser.get(0).setBolignr(req.getBoadresse().getBolignr());
         }
     }
 
-    protected void mapPartner(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Adresse> adresser) {
+    protected void mapPartner(RsPersonBestillingKriteriumRequest req, Person hovedPerson, List<Person> partnere, List<Adresse> adresser) {
 
-        if (!req.getRelasjoner().getPartnere().isEmpty()) {
-            int antallPartnere = partnere.size() / hovedPersoner.size();
-
-            for (int i = 0; i < hovedPersoner.size(); i++) {
-                int partnerStartIndex = antallPartnere * i;
-
-                for (int j = 0; j < antallPartnere; j++) {
-                    RsPartnerRequest partnerRequest = req.getRelasjoner().getPartnere().get(j);
-                    partnerRequest.setPostadresse(
-                            mapperFacade.mapAsList(
-                                    !partnerRequest.getPostadresse().isEmpty() ? partnerRequest.getPostadresse() : req.getPostadresse(),
-                                    RsPostadresse.class));
-                    mapperFacade.map(partnerRequest, partnere.get(partnerStartIndex + j));
-                    mapPartnerAdresse(hovedPersoner.get(i), partnere.get(partnerStartIndex + j), adresser,
-                            hovedPersoner.size() + partnerStartIndex + j, j, partnerRequest);
-                    alignStatsborgerskapAndInnvandretFraLand(partnere.get(partnerStartIndex + j), hovedPersoner.get(i));
-                }
-            }
+        for (int i = 0; i < partnere.size(); i++) {
+            RsPartnerRequest partnerRequest = req.getRelasjoner().getPartnere().get(i);
+            partnerRequest.setPostadresse(
+                    mapperFacade.mapAsList(
+                            !partnerRequest.getPostadresse().isEmpty() ? partnerRequest.getPostadresse() : req.getPostadresse(),
+                            RsPostadresse.class));
+            mapperFacade.map(partnerRequest, partnere.get(i));
+            mapPartnerAdresse(hovedPerson, partnere.get(i), getBoadresse(adresser, 1 + i), partnerRequest);
+            alignStatsborgerskapAndInnvandretFraLand(partnere.get(i), hovedPerson);
         }
     }
 
-    private void mapPartnerAdresse(Person hovedPerson, Person partner, List<Adresse> adresser,
-            int adrIdxPartner, int partnerIdx, RsPartnerRequest partnerRequest) {
+    private void mapPartnerAdresse(Person hovedPerson, Person partner, Adresse adresse, RsPartnerRequest partnerRequest) {
 
         if (partner.isNyPerson()) {
-            Adresse adresse;
-            if (nonNull(partnerRequest.getBoadresse())) {
-                adresse = mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class);
+            if (isTrue(partnerRequest.getHarFellesAdresse())) {
+                mapBoadresse(partner, hovedPerson.getBoadresse().get(0), extractFlyttedato(partnerRequest.getBoadresse()),
+                        extractTilleggsadresse(partnerRequest.getBoadresse()), null);
+
+            } else if (nonNull(partnerRequest.getBoadresse())) {
+                mapBoadresse(partner, mapperFacade.map(partnerRequest.getBoadresse(), Adresse.class), extractFlyttedato(partnerRequest.getBoadresse()),
+                        extractTilleggsadresse(partnerRequest.getBoadresse()), null);
+
             } else {
-                adresse = hasAdresseMedHovedperson(partnerRequest, partnerIdx) && !hovedPerson.getBoadresse().isEmpty() ?
-                        hovedPerson.getBoadresse().get(0) : getBoadresse(adresser, adrIdxPartner);
-            }
-            mapBoadresse(partner, adresse, extractFlyttedato(partnerRequest.getBoadresse()),
-                    extractTilleggsadresse(partnerRequest.getBoadresse()));
-        }
-    }
-
-    protected void mapBarn(RsPersonBestillingKriteriumRequest req, List<Person> hovedPersoner, List<Person> partnere, List<Person> barn) {
-
-        if (!req.getRelasjoner().getBarn().isEmpty()) {
-            int antallBarn = barn.size() / hovedPersoner.size();
-            int antallPartnere = partnere.isEmpty() ? 0 : partnere.size() / hovedPersoner.size();
-
-            for (int i = 0; i < hovedPersoner.size(); i++) {
-                int barnStartIndex = antallBarn * i;
-
-                for (int j = 0; j < antallBarn; j++) {
-                    RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(j);
-                    barnRequest.setPostadresse(mapperFacade.mapAsList(
-                            !barnRequest.getPostadresse().isEmpty() ? barnRequest.getPostadresse() : req.getPostadresse(),
-                            RsPostadresse.class));
-                    mapperFacade.map(barnRequest, barn.get(barnStartIndex + j));
-                    mapBarnAdresse(hovedPersoner.get(i), partnere, barn.get(barnStartIndex + j), antallPartnere, i, j, barnRequest);
-                    alignStatsborgerskapAndInnvandretFraLand(barn.get(barnStartIndex + j), hovedPersoner.get(i));
-                    barn.get(barnStartIndex + j).setSivilstand(null);
-                }
+                mapBoadresse(partner, adresse, extractFlyttedato(partnerRequest.getBoadresse()),
+                        extractTilleggsadresse(partnerRequest.getBoadresse()), null);
             }
         }
     }
 
-    private void mapBarnAdresse(Person hovedPerson, List<Person> partnere, Person barn, int antallPartnere, int partnerIdx, int barnIdx, RsBarnRequest barnRequest) {
+    protected void mapBarn(RsPersonBestillingKriteriumRequest req, Person hovedPerson, List<Person> partnere, List<Person> barn) {
 
-        if (hasAdresse(barnRequest) && barn.isNyPerson() && (
-                hasBoadresse(hovedPerson) || hasBoadressePartner(partnere, getPartnerNr(barnIdx, antallPartnere)))) {
-            mapBoadresse(barn,
-                    (hasAdresseMedHovedperson(barnRequest) || antallPartnere == 0) && !hovedPerson.getBoadresse().isEmpty() ?
-                            hovedPerson.getBoadresse().get(0) :
-                            getPartnerAdresse(partnere, antallPartnere * partnerIdx, barnRequest, getPartnerNr(barnIdx, antallPartnere)),
-                    extractFlyttedato(barnRequest.getBoadresse()),
-                    extractTilleggsadresse(barnRequest.getBoadresse()));
+        for (int i = 0; i < barn.size(); i++) {
+
+            RsBarnRequest barnRequest = req.getRelasjoner().getBarn().get(i);
+
+            barnRequest.setPostadresse(mapperFacade.mapAsList(
+                    !barnRequest.getPostadresse().isEmpty() ? barnRequest.getPostadresse() : req.getPostadresse(),
+                    RsPostadresse.class));
+            mapperFacade.map(barnRequest, barn.get(i));
+            mapBarnAdresse(hovedPerson, getPartner(partnere, barn, barnRequest), barn.get(i), barnRequest);
+            alignStatsborgerskapAndInnvandretFraLand(barn.get(i), hovedPerson);
+            barn.get(i).setSivilstand(null);
         }
     }
 
-    private static boolean hasAdresseMedHovedperson(RsBarnRequest barnRequest) {
-        return !SPSF.name().equals(barnRequest.getSpesreg()) &&
-                (isNull(barnRequest.getBorHos()) || OSS == barnRequest.getBorHos() || MEG == barnRequest.getBorHos());
+    private Person getPartner(List<Person> partnere, List<Person> barn, RsBarnRequest barnRequest) {
+        return partnere.get(nonNull(barnRequest.getPartnerNr()) ? barnRequest.getPartnerNr() - 1 :
+                barn.size() / partnere.size() % partnere.size());
     }
 
-    private static boolean hasAdresseMedHovedperson(RsPartnerRequest partnerRequest, int partnerNumber) {
-        return !SPSF.name().equals(partnerRequest.getSpesreg()) &&
-                (TRUE.equals(partnerRequest.getHarFellesAdresse()) || isNull(partnerRequest.getHarFellesAdresse()) && partnerNumber == 0);
+    private void mapBarnAdresse(Person hovedPerson, Person partner, Person barn, RsBarnRequest barnRequest) {
+
+        if (hasAdresse(barnRequest) && barn.isNyPerson()) {
+
+            if (hasBoadresse(hovedPerson) && barnRequest.isAdresseMedHovedPerson()) {
+                mapBoadresse(barn, hovedPerson.getBoadresse().get(0), extractFlyttedato(barnRequest.getBoadresse()),
+                        extractTilleggsadresse(barnRequest.getBoadresse()), null);
+            }
+            if (hasBoadresse(partner) && barnRequest.isAdresseMedPartner() && isAdresseDifferent(hovedPerson, partner)) {
+                mapBoadresse(barn, partner.getBoadresse().get(0),
+                        extractFlyttedato(barnRequest.getBoadresse()),
+                        extractTilleggsadresse(barnRequest.getBoadresse()), barnRequest.isDeltAdresse());
+            }
+        }
     }
 
-    private static int getPartnerNr(int barnIndex, int totalPartners) {
-        return totalPartners > 0 ? barnIndex % totalPartners : 0;
-    }
-
-    private static Adresse getPartnerAdresse(List<Person> partnere, int partnerStartIndex, RsBarnRequest barnRequest, int partnerNr) {
-        Person partner = nonNull(barnRequest.getPartnerNr()) ?
-                partnere.get(partnerStartIndex + barnRequest.getPartnerNr() - 1) :
-                partnere.get(partnerStartIndex + partnerNr);
-
-        return hasAdresse(partner) && !partner.getBoadresse().isEmpty() ? partner.getBoadresse().get(0) : null;
+    private static boolean isAdresseDifferent(Person hovedperson, Person partner) {
+        return hasBoadresse(hovedperson) && hasBoadresse(partner) &&
+                !partner.getBoadresse().equals(hovedperson.getBoadresse());
     }
 
     private static Adresse getBoadresse(List<Adresse> adresser, int index) {
         return !adresser.isEmpty() ? adresser.get(index % adresser.size()) : null;
     }
 
-    private static boolean hasBoadressePartner(List<Person> partnere, int partnerNr) {
-        return !partnere.isEmpty() && !partnere.get(partnerNr).getBoadresse().isEmpty();
-    }
-
     protected List<Adresse> getAdresser(int total, AdresseNrInfo adresseNrInfo) {
-
         return randomAdresseService.hentRandomAdresse(total, adresseNrInfo);
     }
 
@@ -312,13 +279,13 @@ public class ExtractOpprettKriterier {
     }
 
     private static boolean hasAdresse(RsBarnRequest request) {
-        return !SPSF.name().equals(request.getSpesreg()) &&
+        return !request.isKode6() &&
                 !request.isUtenFastBopel() &&
                 isNull(request.getForsvunnetDato()) &&
                 isNull(request.getUtvandretTilLand());
     }
 
-    private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato, TilleggAdressetype tilleggsadresse) {
+    private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato, TilleggAdressetype tilleggsadresse, Boolean isDelt) {
 
         if (!hasAdresse(person)) {
             return;
@@ -347,6 +314,7 @@ public class ExtractOpprettKriterier {
                     hentDatoFraIdentService.extract(person.getIdent())));
 
             adresse1.setTilleggsadresse(getTilleggAdresse(adresse.getTilleggsadresse(), tilleggsadresse));
+            adresse1.setDeltAdresse(isDelt);
             adresse1.setPerson(person);
 
             person.getBoadresse().add(adresse1);

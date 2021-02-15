@@ -1,9 +1,12 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +32,18 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
 
     @Override
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req,
-            List<Person> hovedPersoner,
+            Person hovedPerson,
             List<Person> partnere, List<Person> barn) {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
-                getAdresser(hovedPersoner.size() + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
+                getAdresser(1 + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
 
-        mapPartner(req, hovedPersoner, partnere, adresser);
-        mapBarn(req, hovedPersoner, partnere, barn);
-        this.midlertidigAdresseMappingService.mapAdresse(req, hovedPersoner, partnere, barn);
+        mapPartner(req, hovedPerson, partnere, adresser);
+        mapBarn(req, hovedPerson, partnere, barn);
+        this.midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn);
 
-        List<Person> personer = new ArrayList<>();
-        Stream.of(hovedPersoner, partnere, barn).forEach(personer::addAll);
-        return personer;
+        return Stream.of(singletonList(hovedPerson), partnere, barn)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }

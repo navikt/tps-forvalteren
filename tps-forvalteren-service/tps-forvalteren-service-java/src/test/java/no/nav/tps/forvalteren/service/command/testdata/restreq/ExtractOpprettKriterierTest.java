@@ -8,6 +8,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
+import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
@@ -27,6 +33,7 @@ import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest
 import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
+import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,6 +59,9 @@ public class ExtractOpprettKriterierTest {
 
     @Mock
     private MidlertidigAdresseMappingService midlertidigAdresseMappingService;
+
+    @Mock
+    private HentDatoFraIdentService hentDatoFraIdentService;
 
     @InjectMocks
     private ExtractOpprettKriterier extractOpprettKriterier;
@@ -179,9 +189,18 @@ public class ExtractOpprettKriterierTest {
     public void extractDollyParametere() {
 
         RsPersonBestillingKriteriumRequest kriterier = new RsPersonBestillingKriteriumRequest();
-        List<Person> hovedperson = singletonList(Person.builder().build());
+        kriterier.getRelasjoner().getPartnere().add(new RsPartnerRequest());
+        RsBarnRequest barnRequest = new RsBarnRequest();
+        barnRequest.setPartnerNr(1);
+        kriterier.getRelasjoner().getBarn().add(barnRequest);
+        kriterier.setAdresseNrInfo(new AdresseNrInfo());
+        Person hovedperson = Person.builder()
+                .statsborgerskap(singletonList(Statsborgerskap.builder().statsborgerskap("FRA").build()))
+                .build();
         List<Person> partner = singletonList(Person.builder().build());
         List<Person> barn = singletonList(Person.builder().build());
+
+        when(randomAdresseService.hentRandomAdresse(anyInt(), any(AdresseNrInfo.class))).thenReturn(singletonList(Gateadresse.builder().build()));
 
         List<Person> personer = extractOpprettKriterier.addExtendedKriterumValuesToPerson(kriterier, hovedperson, partner, barn);
         assertThat(personer, hasSize(3));
