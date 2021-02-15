@@ -2,7 +2,7 @@ name: Deploy dev u2
 
 on:
   push:
-    branches: feature/delt_foreldreansvar
+    branches: master
 
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/tps-forvalteren:${{ github.sha }}
