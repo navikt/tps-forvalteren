@@ -174,7 +174,7 @@ public class ExtractOpprettKriterier {
     private void mapPartnerAdresse(Person hovedPerson, Person partner, Adresse adresse, RsPartnerRequest partnerRequest) {
 
         if (partner.isNyPerson()) {
-            if (isTrue(partnerRequest.getHarFellesAdresse())) {
+            if (isTrue(partnerRequest.getHarFellesAdresse() && hasBoadresse(hovedPerson))) {
                 mapBoadresse(partner, hovedPerson.getBoadresse().get(0), extractFlyttedato(partnerRequest.getBoadresse()),
                         extractTilleggsadresse(partnerRequest.getBoadresse()), null);
 
