@@ -1,17 +1,5 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.response;
 
-import static java.lang.String.format;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.PBOX;
-import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.STED;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -35,6 +23,18 @@ import no.nav.tps.forvalteren.domain.jpa.MidlertidigAdresse.MidlertidigUtadAdres
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static java.lang.String.format;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.PBOX;
+import static no.nav.tps.forvalteren.domain.rs.MidlertidigAdressetype.STED;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 public class S610PersonMappingStrategy implements MappingStrategy {
@@ -50,11 +50,13 @@ public class S610PersonMappingStrategy implements MappingStrategy {
     private static final String TRUE = "J";
     private static final String TPS = "TPS";
 
-    @Override public void register(MapperFactory factory) {
+    @Override
+    public void register(MapperFactory factory) {
         factory.classMap(S610PersonType.class, Person.class)
                 .customize(new CustomMapper<S610PersonType, Person>() {
-                    @Override public void mapAtoB(S610PersonType tpsPerson,
-                            Person person, MappingContext context) {
+                    @Override
+                    public void mapAtoB(S610PersonType tpsPerson,
+                                        Person person, MappingContext context) {
 
                         person.setIdent(tpsPerson.getFodselsnummer());
                         person.setIdenttype(tpsPerson.getIdentType());
@@ -116,6 +118,19 @@ public class S610PersonMappingStrategy implements MappingStrategy {
 
         return nonNull(tpsPerson.getSivilstandDetalj()) && nonNull(tpsPerson.getSivilstandDetalj().getKodeSivilstand()) ?
                 tpsPerson.getSivilstandDetalj().getKodeSivilstand().name() : null;
+    }
+
+    private String getTelefonnr(S610BrukerType.Telefoner telefoner, String telefontype) {
+
+        return nonNull(telefoner) ? telefoner.getTelefon().stream()
+                .filter(telefon -> telefontype.equals(telefon.getTlfType()))
+                .map(TelefonType::getTlfNummer)
+                .findFirst().orElse(null) : null;
+    }
+
+    private String getTknavn(S610BrukerType.NAVenhetDetalj naVenhetDetalj) {
+
+        return nonNull(naVenhetDetalj) ? naVenhetDetalj.getKodeNAVenhetBeskr() : null;
     }
 
     private static void mapTiadAdresse(S610PersonType tpsPerson, Person person) {
@@ -279,19 +294,6 @@ public class S610PersonMappingStrategy implements MappingStrategy {
                                 telefon.getTlfLandkode() : "+47"
                 )
                 .findFirst().orElse(null) : null;
-    }
-
-    private String getTelefonnr(S610BrukerType.Telefoner telefoner, String telefontype) {
-
-        return nonNull(telefoner) ? telefoner.getTelefon().stream()
-                .filter(telefon -> telefontype.equals(telefon.getTlfType()))
-                .map(TelefonType::getTlfNummer)
-                .findFirst().orElse(null) : null;
-    }
-
-    private String getTknavn(S610BrukerType.NAVenhetDetalj naVenhetDetalj) {
-
-        return nonNull(naVenhetDetalj) ? naVenhetDetalj.getKodeNAVenhetBeskr() : null;
     }
 
     private static String getTknr(S610BrukerType.NAVenhetDetalj naVenhetDetalj) {
