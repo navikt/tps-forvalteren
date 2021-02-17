@@ -1,5 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
@@ -11,7 +12,6 @@ import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +20,15 @@ import java.util.Optional;
 import static java.util.Objects.isNull;
 
 @Service
+@RequiredArgsConstructor
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKS_KO_DE_FOR_VIGSEL = "11";
-    private static final String AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP = "61";
     private static final String TILDELINGS_KO_DE_PARTNERSKAP = "0";
 
-    @Autowired
-    private RelasjonRepository relasjonRepository;
+    private final RelasjonRepository relasjonRepository;
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     @Override
     public String hentTildelingskode() {
