@@ -1,16 +1,9 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static java.util.Objects.isNull;
-
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -18,6 +11,13 @@ import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
@@ -78,13 +78,8 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
             return;
         }
 
-        if (person.getKjonn().equals(ektefelle.get().getKjonn())) {
-            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
-            skdMeldingTrans1.setSivilstand(Sivilstatus.REGISTRERT_PARTNER.getRelasjonTypeKode());
-        } else {
-            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
-            skdMeldingTrans1.setSivilstand(Sivilstatus.GIFT.getRelasjonTypeKode());
-        }
+        skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
+        skdMeldingTrans1.setSivilstand(Sivilstatus.GIFT.getRelasjonTypeKode());
 
         skdMeldingTrans1.setFamilienummer(ektefelle.get().getIdent());
 
