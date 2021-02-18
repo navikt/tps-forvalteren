@@ -26,6 +26,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
     private static final String AARSAKS_KO_DE_FOR_VIGSEL = "11";
     private static final String AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP = "61";
     private static final String TILDELINGS_KO_DE_PARTNERSKAP = "0";
+    private static final LocalDateTime PARTNERSKAP_SKD = LocalDateTime.of(2009, Month.JANUARY, 1, 0, 0);
 
     private final RelasjonRepository relasjonRepository;
 
@@ -77,7 +78,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
             return;
         }
 
-        if (person.getKjonn().equals(ektefelle.get().getKjonn()) && person.getSivilstandRegdato().isBefore(LocalDateTime.of(2009, Month.JANUARY, 1, 0, 0))) {
+        if (person.getKjonn().equals(ektefelle.get().getKjonn()) && person.getSivilstandRegdato().isBefore(PARTNERSKAP_SKD)) {
             skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
             skdMeldingTrans1.setSivilstand(Sivilstatus.REGISTRERT_PARTNER.getRelasjonTypeKode());
         } else {
