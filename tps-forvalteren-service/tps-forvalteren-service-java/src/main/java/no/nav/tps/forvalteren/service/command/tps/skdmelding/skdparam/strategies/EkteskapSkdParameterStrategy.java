@@ -1,16 +1,10 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.strategies;
 
-import static java.util.Objects.isNull;
-
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
+import no.nav.tps.forvalteren.domain.service.RelasjonType;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.EkteskapSkdParametere;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.SkdParametersCreator;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
@@ -18,19 +12,25 @@ import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParametersStrategy;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKS_KO_DE_FOR_VIGSEL = "11";
     private static final String AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP = "61";
     private static final String TILDELINGS_KO_DE_PARTNERSKAP = "0";
+    private static final LocalDateTime PARTNERSKAP_SKD = LocalDateTime.of(2009, Month.JANUARY, 1, 0, 0);
 
-    @Autowired
-    private RelasjonRepository relasjonRepository;
+    private final RelasjonRepository relasjonRepository;
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     @Override
     public String hentTildelingskode() {
@@ -66,7 +66,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setRegDato(yyyyMMdd);
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        Optional<Person> ektefelle = null;
+        Optional<Person> ektefelle = Optional.empty();
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
         for (Relasjon relasjon : personRelasjoner) {
             if (RelasjonType.EKTEFELLE.getName().equals(relasjon.getRelasjonTypeNavn())) {
@@ -74,11 +74,11 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
                 break;
             }
         }
-        if (isNull(ektefelle) || !ektefelle.isPresent()) {
+        if (ektefelle.isEmpty()) {
             return;
         }
 
-        if (person.getKjonn().equals(ektefelle.get().getKjonn())) {
+        if (person.getKjonn().equals(ektefelle.get().getKjonn()) && person.getSivilstandRegdato().isBefore(PARTNERSKAP_SKD)) {
             skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
             skdMeldingTrans1.setSivilstand(Sivilstatus.REGISTRERT_PARTNER.getRelasjonTypeKode());
         } else {
@@ -100,5 +100,4 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setVigselskommune("0301"); // OSLO kommunenummer.
     }
-
 }
