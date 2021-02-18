@@ -1,16 +1,10 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import static java.util.Collections.singletonList;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
-import static org.assertj.core.util.Lists.newArrayList;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,11 +14,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
-import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import java.time.LocalDateTime;
+
+import static java.util.Collections.singletonList;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
+import static org.assertj.core.util.Lists.newArrayList;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidateSivilstatusServiceTest {
@@ -45,8 +45,6 @@ public class ValidateSivilstatusServiceTest {
 
         when(messageProvider.get("bestilling.input.validation.sivilstand.partnere"))
                 .thenReturn("Kun EN av relasjonene \"partner\" eller \"partnere\" benyttes ved bestilling");
-        when(messageProvider.get("bestilling.input.validation.sivilstand.partner"))
-                .thenReturn("Partner er ikke støttet etter 1. januar 2009.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.ugift"))
                 .thenReturn("Sivilstand kan ikke være UGIFT etter annen sivilstand.");
         when(messageProvider.get("bestilling.input.validation.sivilstand.separert"))
@@ -88,23 +86,6 @@ public class ValidateSivilstatusServiceTest {
         RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
         request.getRelasjoner().getPartnere().add(partnerRequest);
         request.getRelasjoner().setPartner(partnerRequest1);
-
-        validateSivilstandService.validateStatus(request);
-    }
-
-    @Test
-    public void validate_throwErrorWhenRegistretPartnerOccursAfterYear2009() {
-
-        expectedException.expect(TpsfFunctionalException.class);
-        expectedException.expectMessage("Partner er ikke støttet etter 1. januar 2009.");
-
-        RsPartnerRequest partnerRequest = new RsPartnerRequest();
-        partnerRequest.setSivilstander(singletonList(RsSivilstandRequest.builder().sivilstand(REGISTRERT_PARTNER.getKodeverkskode())
-                .sivilstandRegdato(LocalDateTime.of(2016, 1, 1, 0, 0))
-                .build()));
-
-        RsPersonBestillingKriteriumRequest request = new RsPersonBestillingKriteriumRequest();
-        request.getRelasjoner().getPartnere().add(partnerRequest);
 
         validateSivilstandService.validateStatus(request);
     }

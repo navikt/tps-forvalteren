@@ -14,16 +14,17 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.SkdParamet
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.ConvertDateToString;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
 public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
     private static final String AARSAKS_KO_DE_FOR_VIGSEL = "11";
+    private static final String AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP = "61";
     private static final String TILDELINGS_KO_DE_PARTNERSKAP = "0";
 
     private final RelasjonRepository relasjonRepository;
@@ -64,7 +65,7 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
         skdMeldingTrans1.setRegDato(yyyyMMdd);
         skdMeldingTrans1.setRegdatoFamnr(yyyyMMdd);
 
-        Optional<Person> ektefelle = null;
+        Optional<Person> ektefelle = Optional.empty();
         List<Relasjon> personRelasjoner = relasjonRepository.findByPersonId(person.getId());
         for (Relasjon relasjon : personRelasjoner) {
             if (RelasjonType.EKTEFELLE.getName().equals(relasjon.getRelasjonTypeNavn())) {
@@ -72,12 +73,17 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
                 break;
             }
         }
-        if (isNull(ektefelle) || !ektefelle.isPresent()) {
+        if (ektefelle.isEmpty()) {
             return;
         }
 
-        skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
-        skdMeldingTrans1.setSivilstand(Sivilstatus.GIFT.getRelasjonTypeKode());
+        if (person.getKjonn().equals(ektefelle.get().getKjonn()) && person.getSivilstandRegdato().isBefore(LocalDateTime.of(2009, Month.JANUARY, 1, 0, 0))) {
+            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_INNGAAELSE_PARTNERSKAP);
+            skdMeldingTrans1.setSivilstand(Sivilstatus.REGISTRERT_PARTNER.getRelasjonTypeKode());
+        } else {
+            skdMeldingTrans1.setAarsakskode(AARSAKS_KO_DE_FOR_VIGSEL);
+            skdMeldingTrans1.setSivilstand(Sivilstatus.GIFT.getRelasjonTypeKode());
+        }
 
         skdMeldingTrans1.setFamilienummer(ektefelle.get().getIdent());
 
@@ -93,5 +99,4 @@ public class EkteskapSkdParameterStrategy implements SkdParametersStrategy {
 
         skdMeldingTrans1.setVigselskommune("0301"); // OSLO kommunenummer.
     }
-
 }

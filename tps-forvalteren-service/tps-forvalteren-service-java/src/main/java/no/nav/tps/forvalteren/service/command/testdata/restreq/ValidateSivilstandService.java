@@ -1,5 +1,18 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
+import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
+import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
+import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
@@ -12,25 +25,11 @@ import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT_PARTNER;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
-import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-
 @Service
 @RequiredArgsConstructor
 public class ValidateSivilstandService {
 
     private static final LocalDateTime START_OF_ERA = LocalDateTime.of(1900,1,1,0,0);
-    private static final LocalDateTime PARTNERSKAP_SKD = LocalDateTime.of(2009, 1, 1, 0, 0);
 
     private final MessageProvider messageProvider;
 
@@ -43,7 +42,6 @@ public class ValidateSivilstandService {
         if (!request.getRelasjoner().getPartnere().isEmpty()) {
             validateInnhold(request);
             validateDatoer(request.getRelasjoner().getPartnere());
-            validatePartnerskapDato(request.getRelasjoner().getPartnere());
 
             AtomicBoolean harVaertGift = new AtomicBoolean(false);
             request.getRelasjoner().getPartnere().forEach(partnerRequest ->
@@ -89,27 +87,6 @@ public class ValidateSivilstandService {
                 }
             }
         }
-    }
-
-    private void validatePartnerskapDato(List<RsPartnerRequest> partnereRequest) {
-
-        partnereRequest.forEach(partnerRequest ->
-                partnerRequest.getSivilstander().forEach(sivilstand -> {
-                    if ((nonNull(sivilstand.getSivilstandRegdato()) && sivilstand.getSivilstandRegdato().isAfter(PARTNERSKAP_SKD)) &&
-                            (isRegistertOrSeparertPartner(sivilstand) || isGjenlevendeOrSkiltPartner(sivilstand))) {
-                        throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.partner"));
-                    }
-                }));
-    }
-
-    private boolean isGjenlevendeOrSkiltPartner(RsSivilstandRequest sivilstand) {
-        return GJENLEVENDE_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
-                SKILT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand());
-    }
-
-    private boolean isRegistertOrSeparertPartner(RsSivilstandRequest sivilstand) {
-        return REGISTRERT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
-                SEPARERT_PARTNER.getKodeverkskode().equals(sivilstand.getSivilstand());
     }
 
     private void validateHistoricIntegrity(List<RsPartnerRequest> partnereRequest, boolean harVaertGift) {
