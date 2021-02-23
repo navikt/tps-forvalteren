@@ -14,16 +14,16 @@ import java.util.Map;
 public class TpsResponseToJsonHandler {
 
     public Map execute(TpsServiceRoutineResponse tpsResponse) {
+
         ResponseStatus status = (ResponseStatus) ((LinkedHashMap) tpsResponse.getResponse()).get("status");
 
-        if ("00".equals(status.getKode())) {
+        if ("00".equals(status.getKode()) || "04".equals(status.getKode())) {
             return (Map) ((LinkedHashMap) tpsResponse.getResponse()).get("data1");
         }
 
-        if ("08".equals(status.getKode()) && status.getUtfyllendeMelding().contains("finnes ikke")) {
+        if (("08".equals(status.getKode()) || ("12".equals(status.getKode()))) && status.getUtfyllendeMelding().contains("finnes ikke")) {
             throw new NotFoundException(status.getUtfyllendeMelding());
         }
-
         throw new TpsServiceRutineException(ExceptionTpsServiceRutineMessageCreator.execute(status));
     }
 }
