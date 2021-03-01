@@ -23,6 +23,8 @@ public class GetEnvironments {
     public Set<String> getEnvironmentsFromFasit(String application) {
         Set<String> environments = fasitApiConsumer.getEnvironments(application);
         environments.remove("q6");
+        environments.remove("q0");
+        environments.add("qx");
 
         return filterEnvironmentsOnDeployedEnvironment.execute(environments);
     }
