@@ -14,7 +14,6 @@
 
     <modules>
         <module>tps-forvalteren-domain-service</module>
-        <module>tps-forvalteren-domain-ws</module>
         <module>tps-forvalteren-domain-rs</module>
         <module>tps-forvalteren-domain-jpa</module>
         <module>tps-forvalteren-domain-test</module>

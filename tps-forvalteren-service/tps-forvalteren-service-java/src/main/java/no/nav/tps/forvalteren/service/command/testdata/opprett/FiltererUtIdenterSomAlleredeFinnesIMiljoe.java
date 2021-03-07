@@ -36,7 +36,7 @@ public class FiltererUtIdenterSomAlleredeFinnesIMiljoe {
         Set<String> alleGenererteIdenter = getAlleGenererteIdenter(testdataRequests);
 
         Set<String> alleTilgjengeligIdenter = filtrerPaaIdenterTilgjengeligIMiljo.filtrer(alleGenererteIdenter,
-                nonNull(miljoer) && !miljoer.isEmpty() ? miljoer : getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws"));
+                nonNull(miljoer) && !miljoer.isEmpty() ? miljoer : getEnvironmentsCommand.getEnvironments());
         taBortOpptatteIdenterRequest(testdataRequests, alleTilgjengeligIdenter);
     }
 

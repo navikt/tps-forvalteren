@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.ws.fasit;
+package no.nav.tps.forvalteren.common.java.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

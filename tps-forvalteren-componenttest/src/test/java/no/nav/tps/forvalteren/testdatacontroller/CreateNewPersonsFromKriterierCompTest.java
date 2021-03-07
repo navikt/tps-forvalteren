@@ -83,7 +83,7 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
                         "{\"personKriterierListe\":[{\"identtype\":\"FNR\",\"kjonn\":\"K\",\"foedtEtter\":\"2016-02-16T00:00:00.000Z\",\"foedtFoer\":\"2018-04-20T00:00:00.000Z\",\"antall\":\"2\"}],\"withAdresse\":true}"))
                 .andExpect(status().isOk());
 
-        verify(messageQueueConsumer, times(ENV_SET.size())).sendMessage(
+        verify(messageQueueConsumer, times(14)).sendMessage(
                 removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_LES_TIMEOUT);
         verify(messageQueueConsumer).sendMessage(eq(
                 removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());

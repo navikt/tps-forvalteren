@@ -56,7 +56,7 @@ public class EnvironmentController {
     @LogExceptions
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Environment getEnvironments() {
-        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
+        Set<String> env = getEnvironmentsCommand.getEnvironments();
 
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));

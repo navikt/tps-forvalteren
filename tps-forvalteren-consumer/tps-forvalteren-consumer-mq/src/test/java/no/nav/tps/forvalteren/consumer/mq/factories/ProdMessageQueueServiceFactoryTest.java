@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
+import no.nav.tps.forvalteren.common.java.util.QueueManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProdMessageQueueServiceFactoryTest {
@@ -19,17 +19,14 @@ public class ProdMessageQueueServiceFactoryTest {
     private static final String SERVICE_RUTINE = "FS03-FDNUMMER-KONTINFO-O";
 
     @Mock
-    ConnectionFactoryFactory connectionFactoryFactoryMock;
+    private ConnectionFactoryFactory connectionFactoryFactoryMock;
 
     @InjectMocks
-    ProdMessageQueueServiceFactory serviceFactory;
-
+    private ProdMessageQueueServiceFactory serviceFactory;
 
     @Test
     public void retrievesAConnectionFactoryFromTheConnectionFactoryFactory() throws JMSException {
         serviceFactory.createMessageQueueConsumer(ENVIRONMENT, SERVICE_RUTINE, false);
-        verify(connectionFactoryFactoryMock).createConnectionFactory(isA(ConnectionFactoryFactoryStrategy.class));
+        verify(connectionFactoryFactoryMock).createConnectionFactory(isA(QueueManager.class));
     }
-
-
 }

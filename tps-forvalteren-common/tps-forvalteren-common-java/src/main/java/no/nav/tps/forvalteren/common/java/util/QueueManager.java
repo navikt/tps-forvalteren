@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.domain.ws.fasit;
+package no.nav.tps.forvalteren.common.java.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +15,6 @@ public class QueueManager {
 
     private String name;
     private String hostname;
-    private String port;
+    private Integer port;
     private String channel;
 }

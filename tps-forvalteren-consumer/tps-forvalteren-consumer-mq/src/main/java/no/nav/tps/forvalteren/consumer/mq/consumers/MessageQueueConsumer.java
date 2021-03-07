@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 import com.ibm.mq.jms.MQQueue;
 import com.ibm.msg.client.wmq.compat.jms.internal.JMSC;
 
+import lombok.Builder;
 import no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants;
 
+@Builder
 public class MessageQueueConsumer {
 
     public static final long DEFAULT_LES_TIMEOUT = 5000;
@@ -26,11 +28,6 @@ public class MessageQueueConsumer {
 
     private String requestQueueName;
     private ConnectionFactory connectionFactory;
-
-    public MessageQueueConsumer(String requestQueueName, ConnectionFactory connectionFactory) {
-        this.requestQueueName = requestQueueName;
-        this.connectionFactory = connectionFactory;
-    }
 
     public String sendMessage(String requestMessageContent) throws JMSException {
         return sendMessage(requestMessageContent, DEFAULT_SKRIV_TIMEOUT);

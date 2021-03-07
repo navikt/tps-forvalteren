@@ -38,8 +38,8 @@ public class GetQueuesFromEnvironmentTest {
 
     @Before
     public void setup() {
-        when(getEnvironments.getEnvironmentsFromFasit("tpsws")).thenReturn(new HashSet<>(Arrays.asList("q1", "u5", "u6", "t9")));
-        when(filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws")))
+        when(getEnvironments.getEnvironments()).thenReturn(new HashSet<>(Arrays.asList("q1", "u5", "u6", "t9")));
+        when(filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironments()))
                 .thenReturn(new HashSet<>(Arrays.asList("q1", "u5", "u6", "t9")));
         when(getQueueName.execute("U6", "411.TPS_FORESPORSEL_XML_O")).thenReturn("QA.D8_411.TPS_FORESPORSEL_XML_O");
         when(getQueueName.execute("U6", "412.SFE_ENDRINGSMELDING")).thenReturn("QA.D8_412.SFE_ENDRINGSMELDING");

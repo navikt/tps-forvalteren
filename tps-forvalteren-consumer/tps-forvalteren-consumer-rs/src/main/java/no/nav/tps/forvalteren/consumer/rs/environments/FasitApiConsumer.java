@@ -1,11 +1,13 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
-import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
-import static no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes.QUEUE_MANAGER;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
-import ma.glasnost.orika.MapperFacade;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,24 +16,13 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitApplication;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResource;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitResourceWithUnmappedProperties;
 import no.nav.tps.forvalteren.consumer.rs.environments.dao.FasitUsedResources;
-import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitMQManager;
 import no.nav.tps.forvalteren.consumer.rs.environments.resourcetypes.FasitPropertyTypes;
 import no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl;
-import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
-import no.nav.tps.forvalteren.domain.ws.fasit.Queue;
-import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
 @Service
 public class FasitApiConsumer {
@@ -55,18 +46,6 @@ public class FasitApiConsumer {
     public FasitApiConsumer(RestTemplate template) {
         restTemplate = template;
         restTemplate.setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter()));
-    }
-
-    public Set<String> getEnvironments(String application) {
-        return getEnvironments(application, true);
-    }
-
-    private Set<String> getEnvironments(String application, boolean usage) {
-        Collection<FasitApplication> applications = getApplicationInstances(application, usage);
-
-        return applications.stream()
-                .map(FasitApplication::getEnvironment)
-                .collect(toSet());
     }
 
     public List<FasitUsedResources> getUsedResourcesFromAppByTypes(FasitApplication app, FasitPropertyTypes... fasitProperties) {
@@ -138,30 +117,5 @@ public class FasitApiConsumer {
     public FasitResource getResourceFromRef(String refurl) {
         ResponseEntity<FasitResourceWithUnmappedProperties> resource = restTemplate.getForEntity(refurl, FasitResourceWithUnmappedProperties.class);
         return mapperFacade.map(resource.getBody(), FasitResource.class);
-    }
-
-    @Cacheable(CACHE_FASIT)
-    public QueueManager getQueueManager(String environment) {
-
-        FasitResource fasitResource = getScopedResource(QUEUE_MANAGER_ALIAS, QUEUE_MANAGER, environment);
-        FasitMQManager mqManager = (FasitMQManager) fasitResource.getProperties();
-        return QueueManager.builder()
-                .name(mqManager.getName())
-                .hostname(mqManager.getHostname())
-                .port(mqManager.getPort())
-                .build();
-    }
-
-    public Queue getQueue(String alias, String environment) {
-
-        return Queue.builder()
-                .name(new StringBuilder()
-                        .append(PREFIX_MQ_QUEUES)
-                        .append(environment.toLowerCase().contains("u") ? DEV_ENVIRONMENT : environment.toUpperCase())
-                        .append(TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS.equals(alias) ?
-                                MID_PREFIX_QUEUE_HENTING : MID_PREFIX_QUEUE_ENDRING)
-                        .append(alias)
-                        .toString())
-                .build();
     }
 }

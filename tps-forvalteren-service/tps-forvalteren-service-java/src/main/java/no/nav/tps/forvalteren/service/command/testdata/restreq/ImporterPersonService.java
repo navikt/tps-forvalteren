@@ -1,6 +1,40 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.EKTE;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.ENKE;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.GJPA;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.GLAD;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.REPA;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPA;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPR;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.SKIL;
+import static no.nav.tps.ctg.s610.domain.RelasjonType.SKPA;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
+import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getSivilstand;
+import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getTimestamp;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,40 +57,6 @@ import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfTechnicalException;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsServiceRoutineService;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.lang.String.format;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.EKTE;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.ENKE;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.GJPA;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.GLAD;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.REPA;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPA;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPR;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.SKIL;
-import static no.nav.tps.ctg.s610.domain.RelasjonType.SKPA;
-import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
-import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
-import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getSivilstand;
-import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getTimestamp;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Slf4j
 @Service
@@ -223,7 +223,7 @@ public class ImporterPersonService {
 
         Set<String> environments = nonNull(request.getMiljoe()) && !request.getMiljoe().isEmpty() ?
                 request.getMiljoe() :
-                getEnvironments.getEnvironmentsFromFasit(TPSWS);
+                getEnvironments.getEnvironments();
 
         return environments.parallelStream()
                 .map(env -> TpsPersonMiljoe.builder()

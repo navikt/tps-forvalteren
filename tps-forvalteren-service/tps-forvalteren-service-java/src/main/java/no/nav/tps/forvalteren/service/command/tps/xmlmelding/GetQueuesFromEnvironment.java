@@ -33,7 +33,7 @@ public class GetQueuesFromEnvironment {
     public List<RsTpsMeldingKo> execute(String appNavn) {
 
         RsTpsMeldingKo ko;
-        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit(appNavn));
+        Set<String> environments = filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironments());
         removeDuplicateTestEnvironments(environments);
 
         List<RsTpsMeldingKo> koListe = new ArrayList<>();

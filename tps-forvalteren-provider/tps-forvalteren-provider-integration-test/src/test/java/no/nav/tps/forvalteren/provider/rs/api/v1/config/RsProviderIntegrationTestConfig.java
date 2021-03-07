@@ -18,6 +18,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
+import no.nav.tps.forvalteren.common.java.config.TpsPropertiesConfig;
 import no.nav.tps.forvalteren.common.java.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
@@ -91,7 +92,10 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     @Primary
     public MessageQueueConsumer defaultMessageQueueConsumer() {
-        return Mockito.spy(new MessageQueueConsumer(TPS_TEST_REQUEST_QUEUE, connectionFactory()));
+        return Mockito.spy(MessageQueueConsumer.builder()
+                .requestQueueName(TPS_TEST_REQUEST_QUEUE)
+                .connectionFactory(connectionFactory())
+                .build());
     }
 
     @Bean
@@ -139,5 +143,10 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     public FasitApiConsumer fasitApiConsumer() {
         return mock(FasitApiConsumer.class);
+    }
+
+    @Bean
+    public TpsPropertiesConfig tpsPropertiesConfig() {
+        return mock(TpsPropertiesConfig.class);
     }
 }

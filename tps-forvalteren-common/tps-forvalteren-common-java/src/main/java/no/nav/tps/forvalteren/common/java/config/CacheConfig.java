@@ -12,9 +12,10 @@ public class CacheConfig {
 
     public static final String CACHE_FASIT = "Fasit";
     public static final String CACHE_AVSPILLER = "Avspiller";
+    public static final String CACHE_TPSCONFIG = "TpsConfig";
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager(CACHE_FASIT, CACHE_AVSPILLER);
+        return new ConcurrentMapCacheManager(CACHE_FASIT, CACHE_AVSPILLER, CACHE_TPSCONFIG);
     }
 }
