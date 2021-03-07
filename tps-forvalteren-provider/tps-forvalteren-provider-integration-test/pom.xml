@@ -44,12 +44,6 @@
 
         <dependency>
             <groupId>no.nav.tps.forvalteren</groupId>
-            <artifactId>tps-forvalteren-domain-ws</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>no.nav.tps.forvalteren</groupId>
             <artifactId>tps-forvalteren-consumer-ws</artifactId>
             <scope>test</scope>
         </dependency>
