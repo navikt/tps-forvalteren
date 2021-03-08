@@ -35,7 +35,7 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
             environment = "u6";
         }
 
-        QueueManager queueManager = tpsProperties.getQueueManagerFromEnv(environment);
+        QueueManager queueManager = tpsProperties.getQueueManagerByEnv(environment);
 
         return MessageQueueConsumer.builder()
                 .requestQueueName(fixedQueueName.toUpperCase())

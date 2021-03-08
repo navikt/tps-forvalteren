@@ -23,7 +23,7 @@ public class TpsPropsService {
     private Set<String> environments;
     private List<QueMgrIntern> queueManagers;
 
-    public QueueManager getQueueManagerFromEnv(String env) {
+    public QueueManager getQueueManagerByEnv(String env) {
         return queueManagers.stream()
                 .filter(entry -> entry.getEnvironment().equals(env.substring(0,1).replace('u','d')))
                 .map(entry -> QueueManager.builder()

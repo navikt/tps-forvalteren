@@ -30,7 +30,7 @@ public class DefaultMessageQueueServiceFactory implements MessageQueueServiceFac
     @Override
        public MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias, boolean isQueName) throws JMSException {
 
-        QueueManager queueManager = tpsProperties.getQueueManagerFromEnv(environment);
+        QueueManager queueManager = tpsProperties.getQueueManagerByEnv(environment);
 
         return MessageQueueConsumer.builder()
                 .connectionFactory(connectionFactoryFactory.createConnectionFactory(queueManager))
