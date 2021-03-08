@@ -59,7 +59,7 @@ angular.module('tps-forvalteren.rawxml-melding', ['ngMaterial'])
 
             $scope.sendTilTps = function () {
                 var objectToTps = {
-                    $scope.egenkoe.substring(3, $scope.egenkoe.indexOf('_')),
+                    miljoe: $scope.egenkoe.substring(3, $scope.egenkoe.indexOf('_')),
                     melding: $scope.melding,
                     ko: $scope.egenkoe,
                     timeout: $scope.timeout

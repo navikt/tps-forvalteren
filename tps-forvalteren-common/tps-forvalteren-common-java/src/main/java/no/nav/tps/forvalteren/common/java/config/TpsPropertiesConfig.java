@@ -31,12 +31,12 @@ public class TpsPropertiesConfig {
 
     public QueueManager getQueMgrFromEnv(String env) {
         return queueManagers.stream()
-                .filter(entry -> entry.getEnvironment().equals(env.substring(0,1)))
+                .filter(entry -> entry.getEnvironment().equals(env.substring(0,1).replace('u','d')))
                 .map(entry -> no.nav.tps.forvalteren.common.java.util.QueueManager.builder()
                         .name(entry.getQueMgrName())
                         .hostname(entry.getHostname())
                         .port(entry.getPort())
-                        .channel(env.toUpperCase() + TpsConstants.CHANNEL_POSTFIX)
+                        .channel((env.contains("u") ? DEV_ENVIRONMENT : env.toUpperCase()) + TpsConstants.CHANNEL_POSTFIX)
                         .build())
                 .findFirst().orElse(null);
     }
