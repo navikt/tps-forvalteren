@@ -4,7 +4,6 @@ import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +25,6 @@ import no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl;
 
 @Service
 public class FasitApiConsumer {
-
-    private static final String ZONE = "FSS";
-    private static final String FASIT_APP_NAME = "dummy";
 
     @Value(value = "${fasit.url}")
     private String fasitUrl;
@@ -56,36 +52,6 @@ public class FasitApiConsumer {
     }
 
     @Cacheable(CACHE_FASIT)
-    public List<FasitApplication> getApplications(String name) {
-        String urlPattern = FasitUrl.APPLICATIONS_V2_GET.getUrl() + createQueryPatternByParamName("name", "pr_page");
-        String url = String.format(urlPattern, fasitUrl, name, 1000);
-
-        ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
-
-        return Arrays.stream(applications.getBody()).collect(Collectors.toList());
-    }
-
-    @Cacheable(CACHE_FASIT)
-    public List<FasitApplication> getApplicationInstances(String application, boolean usage) {
-        String urlPattern = FasitUrl.APPLICATIONINSTANCES_V2_GET.getUrl() + createQueryPatternByParamName("application", "usage");
-        String url = String.format(urlPattern, fasitUrl, application, true);
-
-        ResponseEntity<FasitApplication[]> applications = restTemplate.getForEntity(url, FasitApplication[].class);
-
-        return Arrays.stream(applications.getBody()).collect(Collectors.toList());
-    }
-
-    @Cacheable(CACHE_FASIT)
-    public List<FasitResource> getResourcesByAliasAndType(String alias, FasitPropertyTypes propertyTypes) {
-        String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type");
-        String url = String.format(urlPattern, fasitUrl, alias, propertyTypes.getPropertyName());
-
-        ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
-
-        return mapperFacade.mapAsList(properties.getBody(), FasitResource.class);
-    }
-
-    @Cacheable(CACHE_FASIT)
     public List<FasitResource> getResourcesByAliasAndTypeAndEnvironment(String alias, FasitPropertyTypes propertyTypes, String environment) {
         String urlPattern = FasitUrl.RESOURCES_V2_GET.getUrl() + createQueryPatternByParamName("alias", "type", "environment" +
                 (environment.length() == 1 ? "class" : ""));
@@ -94,23 +60,5 @@ public class FasitApiConsumer {
         ResponseEntity<FasitResourceWithUnmappedProperties[]> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties[].class);
 
         return mapperFacade.mapAsList(properties.getBody(), FasitResource.class);
-    }
-
-    @Cacheable(CACHE_FASIT)
-    public FasitResource getScopedResource(String alias, FasitPropertyTypes propertyTypes, String environment) {
-        String urlPattern = FasitUrl.SCOPED_RESOURCE_V2_GET.getUrl() +
-                createQueryPatternByParamName("alias", "type", "environment", "application", "zone");
-
-        String url = String.format(urlPattern, fasitUrl, alias, propertyTypes.getPropertyName(), environment, FASIT_APP_NAME, ZONE);
-
-        ResponseEntity<FasitResourceWithUnmappedProperties> properties = restTemplate.getForEntity(url, FasitResourceWithUnmappedProperties.class);
-
-        return mapperFacade.map(properties.getBody(), FasitResource.class);
-    }
-
-    @Cacheable(CACHE_FASIT)
-    public FasitResource getResourceFromRef(String refurl) {
-        ResponseEntity<FasitResourceWithUnmappedProperties> resource = restTemplate.getForEntity(refurl, FasitResourceWithUnmappedProperties.class);
-        return mapperFacade.map(resource.getBody(), FasitResource.class);
     }
 }
