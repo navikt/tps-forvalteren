@@ -27,13 +27,8 @@ import no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl;
 @Service
 public class FasitApiConsumer {
 
-    private static final String DEV_ENVIRONMENT = "D8";
-    private static final String PREFIX_MQ_QUEUES = "QA.";
-    private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
-    private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
     private static final String ZONE = "FSS";
     private static final String FASIT_APP_NAME = "dummy";
-    private static final String QUEUE_MANAGER_ALIAS = "mqGateway";
 
     @Value(value = "${fasit.url}")
     private String fasitUrl;

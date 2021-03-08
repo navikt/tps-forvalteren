@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.forvalteren.common.java.util.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
+import static no.nav.tps.forvalteren.common.java.util.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.tps.xmlmelding;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.forvalteren.common.java.util.TpsConstants.XML_REQUEST_QUEUE_ENDRINGSMELDING_ALIAS;
+import static no.nav.tps.forvalteren.common.java.util.TpsConstants.XML_REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.rs.RsTpsMeldingKo;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
 
 @Service
+@RequiredArgsConstructor
 public class GetQueuesFromEnvironment {
 
     private static final String[] QUEUES = {

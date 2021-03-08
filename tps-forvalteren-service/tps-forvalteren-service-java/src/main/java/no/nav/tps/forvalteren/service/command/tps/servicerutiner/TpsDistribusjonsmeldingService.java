@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.common.java.util.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.xjc.ctg.domain.s302.SRnavnType.FS_04_HENDELSE_OVERSIKT_O;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 

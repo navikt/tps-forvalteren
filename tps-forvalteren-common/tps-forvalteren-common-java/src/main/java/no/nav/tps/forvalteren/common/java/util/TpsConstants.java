@@ -1,5 +1,8 @@
 package no.nav.tps.forvalteren.common.java.util;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class TpsConstants {
 
     public static final String REQUEST_QUEUE_SERVICE_RUTINE_ALIAS = "TPS_FORESPORSEL_XML_O";
