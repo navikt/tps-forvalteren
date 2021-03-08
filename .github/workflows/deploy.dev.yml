@@ -2,7 +2,7 @@ name: Deploy dev u2
 
 on:
   push:
-    branches: master
+    branches: feature/fjerne_fasit_runtime_avhengighet
 
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/tps-forvalteren:${{ github.sha }}
