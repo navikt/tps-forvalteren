@@ -12,14 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.config.TpsPropertiesConfig;
+import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetEnvironmentsTest {
 
     @Mock
-    private TpsPropertiesConfig tpsProperties;
+    private TpsPropsService tpsProperties;
 
     @Mock
     private FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
@@ -28,7 +28,7 @@ public class GetEnvironmentsTest {
     private GetEnvironments getEnvironments;
 
     @Before
-    public  void setup() {
+    public void setup() {
 
         when(tpsProperties.getEnvironments()).thenReturn(Collections.emptySet());
     }

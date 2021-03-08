@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.util;
+package no.nav.tps.forvalteren.common.java.tpsapi;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,8 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueueManager {
+public class Queue {
 
     private String name;
-    private String hostname;
-    private Integer port;
-    private String channel;
+    private String manager;
 }

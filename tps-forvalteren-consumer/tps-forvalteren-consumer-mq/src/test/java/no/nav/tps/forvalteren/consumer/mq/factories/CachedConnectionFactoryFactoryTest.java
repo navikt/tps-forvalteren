@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.ibm.mq.jms.MQConnectionFactory;
 
-import no.nav.tps.forvalteren.common.java.util.QueueManager;
+import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CachedConnectionFactoryFactoryTest {

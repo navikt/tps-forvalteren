@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 
 import org.springframework.stereotype.Service;
 
-import no.nav.tps.forvalteren.common.java.util.TpsConstants;
+import no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;

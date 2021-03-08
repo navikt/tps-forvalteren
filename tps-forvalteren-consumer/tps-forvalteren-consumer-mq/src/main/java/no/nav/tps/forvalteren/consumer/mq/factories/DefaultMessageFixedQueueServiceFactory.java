@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.config.TpsPropertiesConfig;
-import no.nav.tps.forvalteren.common.java.util.QueueManager;
+import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
+import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 
 /**
@@ -17,7 +17,7 @@ import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "false", matchIfMissing = true)
 public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueueServiceFactory {
 
-    private final TpsPropertiesConfig tpsProperties;
+    private final TpsPropsService tpsProperties;
     private final ConnectionFactoryFactory connectionFactoryFactory;
 
     /**
@@ -35,7 +35,7 @@ public class DefaultMessageFixedQueueServiceFactory implements MessageFixedQueue
             environment = "u6";
         }
 
-        QueueManager queueManager = tpsProperties.getQueMgrFromEnv(environment);
+        QueueManager queueManager = tpsProperties.getQueueManagerFromEnv(environment);
 
         return MessageQueueConsumer.builder()
                 .requestQueueName(fixedQueueName.toUpperCase())

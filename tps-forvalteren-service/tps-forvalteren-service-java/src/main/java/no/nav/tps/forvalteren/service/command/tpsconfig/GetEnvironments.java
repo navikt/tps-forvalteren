@@ -4,14 +4,14 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.config.TpsPropertiesConfig;
+import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 
 @Service
 @RequiredArgsConstructor
 public class GetEnvironments {
 
-    private final TpsPropertiesConfig tpsProperties;
+    private final TpsPropsService tpsProperties;
     private final FilterEnvironmentsOnDeployedEnvironment filterEnvironmentsOnDeployedEnvironment;
 
     public Set<String> getEnvironments() {

@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
-import no.nav.tps.forvalteren.common.java.config.TpsPropertiesConfig;
+import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
@@ -42,7 +42,7 @@ public abstract class AbstractRsProviderIntegrationTest {
     protected FasitApiConsumer fasitApiConsumer;
 
     @Autowired
-    protected TpsPropertiesConfig tpsPropertiesConfig;
+    protected TpsPropsService tpsProperties;
 
     protected MockMvc mvc;
 
@@ -63,7 +63,7 @@ public abstract class AbstractRsProviderIntegrationTest {
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
 
         when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
-        when(tpsPropertiesConfig.getEnvironments()).thenReturn(newHashSet("t1","t2","t3"));
+        when(tpsProperties.getEnvironments()).thenReturn(newHashSet("t1","t2","t3"));
     }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {

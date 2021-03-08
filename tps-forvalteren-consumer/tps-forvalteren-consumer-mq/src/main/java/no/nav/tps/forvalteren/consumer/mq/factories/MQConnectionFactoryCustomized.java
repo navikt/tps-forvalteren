@@ -4,7 +4,7 @@ import javax.jms.JMSException;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.util.QueueManager;
+import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 
 @Component

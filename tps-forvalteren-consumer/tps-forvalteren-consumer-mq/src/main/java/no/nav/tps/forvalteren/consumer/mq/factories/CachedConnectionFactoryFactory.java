@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tps.forvalteren.common.java.util.QueueManager;
+import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
 
 @Slf4j
 @Component

@@ -1,38 +1,32 @@
-package no.nav.tps.forvalteren.common.java.config;
+package no.nav.tps.forvalteren.common.java.tpsapi;
+
+import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.DEV_ENVIRONMENT;
+import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.MID_PREFIX_QUEUE_ENDRING;
+import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.MID_PREFIX_QUEUE_HENTING;
+import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.PREFIX_MQ_QUEUES;
 
 import java.util.List;
 import java.util.Set;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 
 import lombok.Data;
-import no.nav.tps.forvalteren.common.java.util.Queue;
-import no.nav.tps.forvalteren.common.java.util.QueueManager;
-import no.nav.tps.forvalteren.common.java.util.TpsConstants;
 import no.nav.tps.forvalteren.common.java.util.YamlPropertySourceFactory;
 
 @Data
-@Configuration
+@Service
 @ConfigurationProperties(prefix = "config")
 @PropertySource(value = "classpath:tpsprops.yml", factory = YamlPropertySourceFactory.class)
-public class TpsPropertiesConfig {
-
-    private static final String DEV_ENVIRONMENT = "D8";
-    private static final String PREFIX_MQ_QUEUES = "QA.";
-    private static final String MID_PREFIX_QUEUE_ENDRING = "_412.";
-    private static final String MID_PREFIX_QUEUE_HENTING = "_411.";
-    private static final String ZONE = "FSS";
-    private static final String FASIT_APP_NAME = "dummy";
-    private static final String QUEUE_MANAGER_ALIAS = "mqGateway";
+public class TpsPropsService {
 
     private Set<String> environments;
-    private List<QueueMgr> queueManagers;
+    private List<QueMgrIntern> queueManagers;
 
-    public QueueManager getQueMgrFromEnv(String env) {
+    public QueueManager getQueueManagerFromEnv(String env) {
         return queueManagers.stream()
                 .filter(entry -> entry.getEnvironment().equals(env.substring(0,1).replace('u','d')))
-                .map(entry -> no.nav.tps.forvalteren.common.java.util.QueueManager.builder()
+                .map(entry -> QueueManager.builder()
                         .name(entry.getQueMgrName())
                         .hostname(entry.getHostname())
                         .port(entry.getPort())
@@ -55,7 +49,7 @@ public class TpsPropertiesConfig {
     }
 
     @Data
-    public static class QueueMgr {
+    public static class QueMgrIntern {
 
         private String environment;
         private String hostname;
