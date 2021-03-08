@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.message;
+package no.nav.tps.forvalteren.common.message;
 
 public final class MessageConstants {
 

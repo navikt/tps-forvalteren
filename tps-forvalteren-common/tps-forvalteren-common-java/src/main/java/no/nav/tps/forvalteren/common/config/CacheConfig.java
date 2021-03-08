@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.config;
+package no.nav.tps.forvalteren.common.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

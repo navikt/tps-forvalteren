@@ -1,6 +1,6 @@
-package no.nav.tps.forvalteren.common.java.message;
+package no.nav.tps.forvalteren.common.message;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

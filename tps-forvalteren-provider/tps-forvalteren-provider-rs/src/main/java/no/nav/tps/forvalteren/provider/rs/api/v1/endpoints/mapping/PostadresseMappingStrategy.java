@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
-import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 

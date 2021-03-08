@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
-import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.DISTRIBUSJONSMELDING;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -25,7 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.xjc.ctg.domain.s302.TpsPersonData;

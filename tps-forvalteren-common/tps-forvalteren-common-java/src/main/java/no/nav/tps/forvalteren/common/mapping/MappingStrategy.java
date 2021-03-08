@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.mapping;
+package no.nav.tps.forvalteren.common.mapping;
 
 import ma.glasnost.orika.MapperFactory;
 

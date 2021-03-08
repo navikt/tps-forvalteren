@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.tpsapi;
+package no.nav.tps.forvalteren.common.tpsapi;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

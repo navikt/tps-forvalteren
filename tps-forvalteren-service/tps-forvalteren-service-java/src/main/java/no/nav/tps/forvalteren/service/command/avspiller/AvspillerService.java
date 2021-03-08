@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspiller;
 import no.nav.tps.forvalteren.domain.jpa.TpsAvspillerProgress;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;

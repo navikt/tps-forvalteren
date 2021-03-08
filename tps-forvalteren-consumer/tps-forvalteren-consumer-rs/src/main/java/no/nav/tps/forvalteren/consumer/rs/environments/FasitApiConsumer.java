@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.consumer.rs.environments;
 
-import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_FASIT;
+import static no.nav.tps.forvalteren.common.config.CacheConfig.CACHE_FASIT;
 import static no.nav.tps.forvalteren.consumer.rs.environments.url.FasitUrl.createQueryPatternByParamName;
 
 import java.util.ArrayList;

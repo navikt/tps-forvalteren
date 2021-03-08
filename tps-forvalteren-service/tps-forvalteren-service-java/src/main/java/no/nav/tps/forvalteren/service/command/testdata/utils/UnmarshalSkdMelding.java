@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.utils;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ILLEGAL_MELDINGSTYPE;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.SKD_ILLEGAL_MELDINGSTYPE;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.IllegalMeldingstypeException;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMelding;
 import no.nav.tps.forvalteren.service.command.testdata.skd.SkdMeldingTrans1;

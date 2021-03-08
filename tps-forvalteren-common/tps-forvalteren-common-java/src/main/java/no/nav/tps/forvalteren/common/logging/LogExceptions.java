@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.logging;
+package no.nav.tps.forvalteren.common.logging;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

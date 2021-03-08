@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.util;
+package no.nav.tps.forvalteren.common.util;
 
 import java.io.IOException;
 import java.util.Properties;

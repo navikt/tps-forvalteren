@@ -18,8 +18,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import no.nav.tjeneste.pip.diskresjonskode.DiskresjonskodePortType;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
-import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
+import no.nav.tps.forvalteren.common.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;

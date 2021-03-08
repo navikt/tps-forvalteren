@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.service.command.authorisation.strategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ServiceRutineAuthorisationStrategy;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.service.command.exceptions.HttpForbiddenException;

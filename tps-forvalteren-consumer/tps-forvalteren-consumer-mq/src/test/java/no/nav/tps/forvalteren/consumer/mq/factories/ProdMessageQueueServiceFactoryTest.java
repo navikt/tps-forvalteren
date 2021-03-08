@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
+import no.nav.tps.forvalteren.common.tpsapi.QueueManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProdMessageQueueServiceFactoryTest {

@@ -1,4 +1,4 @@
-package no.nav.tps.forvalteren.common.java.logging;
+package no.nav.tps.forvalteren.common.logging;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

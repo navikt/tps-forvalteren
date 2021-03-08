@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
-import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
+import no.nav.tps.forvalteren.common.tpsapi.QueueManager;
+import no.nav.tps.forvalteren.common.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 
 /**

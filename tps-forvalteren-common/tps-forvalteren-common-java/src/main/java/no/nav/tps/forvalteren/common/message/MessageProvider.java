@@ -1,6 +1,4 @@
-package no.nav.tps.forvalteren.common.java.message;
-
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.UNKNOWN_MESSAGE_KEY;
+package no.nav.tps.forvalteren.common.message;
 
 import java.util.Locale;
 import org.slf4j.Logger;
@@ -39,9 +37,9 @@ public class MessageProvider {
     private void writeToLog(String messageKey, Locale locale) {
         try {
             String[] messageKeyAsArray = { messageKey };
-            LOGGER.warn(messageSource.getMessage(UNKNOWN_MESSAGE_KEY, messageKeyAsArray, locale));
+            LOGGER.warn(messageSource.getMessage(MessageConstants.UNKNOWN_MESSAGE_KEY, messageKeyAsArray, locale));
         } catch (NoSuchMessageException exception) {
-            LOGGER.error("Unable find the standard message, '{}', in messages.properties", UNKNOWN_MESSAGE_KEY);
+            LOGGER.error("Unable find the standard message, '{}', in messages.properties", MessageConstants.UNKNOWN_MESSAGE_KEY);
         }
     }
 

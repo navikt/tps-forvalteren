@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.SKD_ENDRINGSMELDING_JSON_PROCESSING;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;

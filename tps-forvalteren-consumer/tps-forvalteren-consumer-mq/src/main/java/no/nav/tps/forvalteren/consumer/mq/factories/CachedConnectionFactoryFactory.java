@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import static no.nav.tps.forvalteren.common.java.config.CacheConfig.CACHE_TPSCONFIG;
+import static no.nav.tps.forvalteren.common.config.CacheConfig.CACHE_TPSCONFIG;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tps.forvalteren.common.java.tpsapi.QueueManager;
+import no.nav.tps.forvalteren.common.tpsapi.QueueManager;
 
 @Slf4j
 @Component

@@ -1,9 +1,9 @@
-package no.nav.tps.forvalteren.common.java.tpsapi;
+package no.nav.tps.forvalteren.common.tpsapi;
 
-import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.DEV_ENVIRONMENT;
-import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.MID_PREFIX_QUEUE_ENDRING;
-import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.MID_PREFIX_QUEUE_HENTING;
-import static no.nav.tps.forvalteren.common.java.tpsapi.TpsConstants.PREFIX_MQ_QUEUES;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.DEV_ENVIRONMENT;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.MID_PREFIX_QUEUE_ENDRING;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.MID_PREFIX_QUEUE_HENTING;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.PREFIX_MQ_QUEUES;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import lombok.Data;
-import no.nav.tps.forvalteren.common.java.util.YamlPropertySourceFactory;
+import no.nav.tps.forvalteren.common.util.YamlPropertySourceFactory;
 
 @Data
 @Service

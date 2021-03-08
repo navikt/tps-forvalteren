@@ -11,7 +11,7 @@ import no.nav.tps.ctg.s610.domain.S610BrukerType;
 import no.nav.tps.ctg.s610.domain.S610PersonType;
 import no.nav.tps.ctg.s610.domain.TelefonType;
 import no.nav.tps.ctg.s610.domain.UtlandsAdresseType;
-import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Matrikkeladresse;

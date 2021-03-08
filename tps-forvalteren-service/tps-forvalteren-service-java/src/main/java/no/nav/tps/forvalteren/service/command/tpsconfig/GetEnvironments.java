@@ -4,7 +4,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.tpsapi.TpsPropsService;
+import no.nav.tps.forvalteren.common.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 
 @Service
