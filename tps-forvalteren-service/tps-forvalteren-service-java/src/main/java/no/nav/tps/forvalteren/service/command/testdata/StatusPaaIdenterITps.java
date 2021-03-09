@@ -49,7 +49,7 @@ public class StatusPaaIdenterITps {
     public RsTpsStatusPaaIdenterResponse hentStatusPaaIdenterIAlleMiljoer(List<String> identer, Boolean prodIncluded) {
 
         Set<String> environmentsToCheck =
-                filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironmentsFromFasit("tpsws"));
+                filterEnvironmentsOnDeployedEnvironment.execute(getEnvironments.getEnvironments());
 
         if (isTrue(prodIncluded)) {
             environmentsToCheck.add(PROD_ENV);

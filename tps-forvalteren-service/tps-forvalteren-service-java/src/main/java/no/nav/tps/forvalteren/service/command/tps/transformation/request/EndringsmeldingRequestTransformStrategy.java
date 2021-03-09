@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.transformation.request;
 
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.TPSF_KILDE;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.TPSF_KILDE;
 
 import java.io.IOException;
 import org.slf4j.Logger;

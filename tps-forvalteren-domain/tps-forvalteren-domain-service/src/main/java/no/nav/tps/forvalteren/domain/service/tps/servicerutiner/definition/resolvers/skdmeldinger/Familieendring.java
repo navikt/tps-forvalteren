@@ -2,9 +2,9 @@ package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.reso
 
 import org.springframework.stereotype.Service;
 
+import no.nav.tps.forvalteren.common.tpsapi.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.ReadServiceRutineAuthorisation;
 import no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.WriteServiceRutineAuthorisation;
-import no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdMeldingDefinitionBuilder;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.TpsSkdRequestMeldingDefinition;
 import no.nav.tps.forvalteren.domain.service.tps.skdmelding.parameters.FamilieendringSkdParametre;

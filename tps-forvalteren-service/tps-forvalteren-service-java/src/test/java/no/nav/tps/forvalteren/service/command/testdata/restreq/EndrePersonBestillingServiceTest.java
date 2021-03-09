@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
 import no.nav.tps.forvalteren.domain.jpa.Person;

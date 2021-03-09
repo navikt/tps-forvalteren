@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;

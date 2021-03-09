@@ -24,7 +24,7 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
-import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn;
 import no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolNewIdentsRequest;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;

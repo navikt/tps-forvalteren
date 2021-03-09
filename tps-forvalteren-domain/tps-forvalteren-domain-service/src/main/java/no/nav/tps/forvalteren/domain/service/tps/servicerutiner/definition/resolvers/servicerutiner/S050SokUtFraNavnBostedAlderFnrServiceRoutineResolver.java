@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner;
 
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.DiskresjonskodeServiceRutineAuthorisation.diskresjonskodeAuthorisation;
 import static no.nav.tps.forvalteren.domain.service.tps.authorisation.strategies.EgenAnsattServiceRutineAuthorisation.egenAnsattAuthorisation;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.transformers.response.RemoveUnauthorizedPeopleFromResponseTransform.removeUnauthorizedFnrFromResponse;
 
 import no.nav.tps.forvalteren.domain.service.tps.TpsParameterType;
@@ -35,14 +35,14 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("navnFTE")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("F","T","E")
+                .values("F", "T", "E")
                 .and()
 
                 .parameter()
                 .name("navnehist")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("J","N")
+                .values("J", "N")
                 .and()
 
                 .parameter()
@@ -55,7 +55,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("etternavnFTE")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("F","T","E")
+                .values("F", "T", "E")
                 .and()
 
                 .parameter()
@@ -106,21 +106,21 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("kjonn")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("K","M")
+                .values("K", "M")
                 .and()
 
                 .parameter()
                 .name("identType")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("FNR","DNR")
+                .values("FNR", "DNR")
                 .and()
 
                 .parameter()
                 .name("personStatus")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("BOSA","UTVA", "DØD", "LEV")
+                .values("BOSA", "UTVA", "DØD", "LEV")
                 .and()
 
                 .parameter()
@@ -133,14 +133,14 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("adresseType")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("BOAD","POST", "TIAD", "UTAD")
+                .values("BOAD", "POST", "TIAD", "UTAD")
                 .and()
 
                 .parameter()
                 .name("adressehist")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("J","N")
+                .values("J", "N")
                 .and()
 
                 .parameter()
@@ -153,7 +153,7 @@ public class S050SokUtFraNavnBostedAlderFnrServiceRoutineResolver implements Ser
                 .name("adresseFTE")
                 .optional()
                 .type(TpsParameterType.STRING)
-                .values("F","T","E")
+                .values("F", "T", "E")
                 .and()
 
                 .parameter()

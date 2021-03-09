@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
 import ma.glasnost.orika.MapperFactory;
-import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
 import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.rs.RsGateadresse;
 import org.springframework.stereotype.Component;

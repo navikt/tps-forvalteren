@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.UNKNOWN_SKD_PARAMETER_STRATEGY;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.UNKNOWN_SKD_PARAMETER_STRATEGY;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

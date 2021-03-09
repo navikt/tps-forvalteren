@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.provider.config;
 
-import no.nav.tps.forvalteren.common.java.config.CommonConfig;
+import no.nav.tps.forvalteren.common.config.CommonConfig;
 import no.nav.tps.forvalteren.repository.jpa.config.RepositoryConfig;
 import no.nav.tps.forvalteren.service.config.ServiceConfig;
 

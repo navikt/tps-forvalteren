@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.GRUPPE_NOT_FOUND_KEY;
 import static no.nav.tps.forvalteren.domain.test.provider.GruppeProvider.aGruppe;
 import static no.nav.tps.forvalteren.domain.test.provider.SkdEndringsmeldingGruppeProvider.aSkdEndringsmeldingGruppe;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,7 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;

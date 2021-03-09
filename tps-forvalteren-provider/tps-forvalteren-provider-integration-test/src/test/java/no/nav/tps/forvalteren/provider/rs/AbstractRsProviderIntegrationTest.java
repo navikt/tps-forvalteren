@@ -1,12 +1,11 @@
 package no.nav.tps.forvalteren.provider.rs;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.tjeneste.pip.diskresjonskode.meldinger.HentDiskresjonskodeResponse;
+import no.nav.tps.forvalteren.common.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.diskresjonskode.DiskresjonskodeConsumer;
 import no.nav.tps.forvalteren.consumer.ws.tpsws.egenansatt.EgenAnsattConsumer;
@@ -41,6 +41,9 @@ public abstract class AbstractRsProviderIntegrationTest {
     @Autowired
     protected FasitApiConsumer fasitApiConsumer;
 
+    @Autowired
+    protected TpsPropsService tpsProperties;
+
     protected MockMvc mvc;
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();
@@ -60,7 +63,7 @@ public abstract class AbstractRsProviderIntegrationTest {
         doReturn(response).when(diskresjonskodeConsumerMock).getDiskresjonskodeResponse(anyString());
 
         when(egenAnsattConsumerMock.isEgenAnsatt(anyString())).thenReturn(false);
-        when(fasitApiConsumer.getEnvironments(anyString())).thenReturn(new HashSet(Set.of("q1")));
+        when(tpsProperties.getEnvironments()).thenReturn(newHashSet("t1","t2","t3"));
     }
 
     protected static <T> T convertMvcResultToObject(MvcResult mvcResult, Class<T> resultClass) throws IOException {

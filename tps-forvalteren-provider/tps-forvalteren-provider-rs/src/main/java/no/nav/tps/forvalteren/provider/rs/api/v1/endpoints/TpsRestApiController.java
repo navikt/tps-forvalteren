@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Parameter;
-import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.restTPS.RsEndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsResponseToJsonHandler;

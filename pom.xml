@@ -201,11 +201,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tps.forvalteren</groupId>
-                <artifactId>tps-forvalteren-domain-ws</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tps.forvalteren</groupId>
                 <artifactId>tps-forvalteren-provider-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>

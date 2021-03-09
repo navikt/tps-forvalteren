@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;

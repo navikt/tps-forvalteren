@@ -52,7 +52,7 @@ public class EnvironmentControllerTest {
 
     @Before
     public void setUp() {
-        when( getEnvironmentsCommandMock.getEnvironmentsFromFasit("tpsws") ).thenReturn(ENVIRONMENTS_Q);
+        when( getEnvironmentsCommandMock.getEnvironments() ).thenReturn(ENVIRONMENTS_Q);
     }
 
     @Test

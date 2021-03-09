@@ -117,7 +117,7 @@ public class StatusPaaIdenterITpsTest {
     }
     
     private void mockTestedServiceDependencies() {
-        when(getEnvironments.getEnvironmentsFromFasit(any())).thenReturn(ALLE_MILJOER);
+        when(getEnvironments.getEnvironments()).thenReturn(ALLE_MILJOER);
         when(filterEnvironmentsOnDeployedEnvironment.execute(any())).thenReturn(ALLE_MILJOER);
         when(userContextHolder.getUser()).thenReturn(user);
         

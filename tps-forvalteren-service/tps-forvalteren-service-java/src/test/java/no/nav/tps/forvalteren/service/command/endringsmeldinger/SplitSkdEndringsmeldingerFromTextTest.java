@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.SKD_ENDRINGSMELDING_ILLEGAL_LENGTH;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.SKD_ENDRINGSMELDING_ILLEGAL_LENGTH;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.service.command.exceptions.SkdEndringsmeldingIllegalLengthException;
 
 @RunWith(MockitoJUnitRunner.class)

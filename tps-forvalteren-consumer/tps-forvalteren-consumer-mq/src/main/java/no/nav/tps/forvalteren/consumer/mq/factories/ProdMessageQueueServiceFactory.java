@@ -1,20 +1,17 @@
 package no.nav.tps.forvalteren.consumer.mq.factories;
 
-import static no.nav.tps.forvalteren.consumer.mq.config.MessageQueueConsumerConstants.CHANNEL_POSTFIX;
-
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.common.tpsapi.QueueManager;
+import no.nav.tps.forvalteren.common.tpsapi.TpsConstants;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.ConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.consumer.mq.factories.strategies.QueueManagerConnectionFactoryFactoryStrategy;
-import no.nav.tps.forvalteren.domain.ws.fasit.QueueManager;
 
-@Component
+@Service
+@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "tps.forvalteren", name = "production.mode", havingValue = "true")
 public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactory {
 
@@ -28,25 +25,17 @@ public class ProdMessageQueueServiceFactory implements MessageQueueServiceFactor
     private String hostname;
 
     @Value("${mqgateway.port}")
-    private String port;
+    private Integer port;
 
-
-    @Autowired
-    private ConnectionFactoryFactory connectionFactoryFactory;
+    private final ConnectionFactoryFactory connectionFactoryFactory;
 
     @Override
     public MessageQueueConsumer createMessageQueueConsumer(String environment, String requestQueueAlias, boolean isQueueName) throws JMSException {
-        QueueManager queueManager = new QueueManager(queueManagerAlias, hostname, port, (environment).toUpperCase() + CHANNEL_POSTFIX);
+        QueueManager queueManager = new QueueManager(queueManagerAlias, hostname, port, (environment).toUpperCase() + TpsConstants.CHANNEL_POSTFIX);
 
-        ConnectionFactoryFactoryStrategy connectionFactoryFactoryStrategy = new QueueManagerConnectionFactoryFactoryStrategy(queueManager,
-                (environment).toUpperCase() + CHANNEL_POSTFIX);
-
-        ConnectionFactory connectionFactory = connectionFactoryFactory.createConnectionFactory(connectionFactoryFactoryStrategy);
-
-        return new MessageQueueConsumer(
-                tpsRequestQueue,
-                connectionFactory
-        );
+        return MessageQueueConsumer.builder()
+                .requestQueueName(tpsRequestQueue)
+                .connectionFactory(connectionFactoryFactory.createConnectionFactory(queueManager))
+                .build();
     }
-
 }

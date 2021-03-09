@@ -41,7 +41,7 @@ public class TpsPersonService {
 
         Set<String> environments;
         if (miljoer.isEmpty()) {
-            environments = getEnvironments.getEnvironmentsFromFasit("tpsws");
+            environments = getEnvironments.getEnvironments();
         } else {
             environments = new HashSet<>(miljoer);
         }

@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.consumer.rs.kodeverk;
 
 import static java.lang.String.format;
-import static no.nav.tps.forvalteren.common.java.message.MessageConstants.KODEVERK_NOT_FOUND_KEY;
+import static no.nav.tps.forvalteren.common.message.MessageConstants.KODEVERK_NOT_FOUND_KEY;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import java.net.URI;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.rs.kodeverk.Kodeverk;
 
 @Slf4j

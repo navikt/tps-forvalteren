@@ -2,7 +2,7 @@ package no.nav.tps.forvalteren.provider.rs.util;
 
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-import no.nav.tps.forvalteren.common.java.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
 
 public class MapperTestUtils {
 

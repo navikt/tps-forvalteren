@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 
 import io.swagger.v3.oas.annotations.Operation;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;

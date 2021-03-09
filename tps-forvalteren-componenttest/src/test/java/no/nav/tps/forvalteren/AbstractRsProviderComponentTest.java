@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 
-import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.TestdataController;
 
 @RunWith(SpringRunner.class)
@@ -47,9 +45,6 @@ public abstract class AbstractRsProviderComponentTest {
 
     public MockMvc mvc;
 
-    @Autowired
-    private FasitApiConsumer fasitApiConsumer;
-
     protected static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
@@ -62,7 +57,6 @@ public abstract class AbstractRsProviderComponentTest {
         if (context != null) {
             mvc = MockMvcBuilders.webAppContextSetup(context).build();
         }
-        when(fasitApiConsumer.getEnvironments("tpsws")).thenReturn(ENV_SET);
     }
     
     protected String getResourceFileContent(String path) {

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import ma.glasnost.orika.MapperFacade;
-import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingLogg;

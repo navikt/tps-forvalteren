@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.tps.servicerutiner;
 
 import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.common.tpsapi.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.forvalteren.domain.rs.Meldingsformat.AJOURHOLDSMELDING;
-import static no.nav.tps.forvalteren.domain.service.tps.config.TpsConstants.REQUEST_QUEUE_SERVICE_RUTINE_ALIAS;
 import static no.nav.tps.xjc.ctg.domain.s302.SRnavnType.FS_04_HENDELSE_OVERSIKT_O;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import no.nav.tps.forvalteren.common.java.message.MessageProvider;
+import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
 import no.nav.tps.forvalteren.domain.rs.Meldingsformat;

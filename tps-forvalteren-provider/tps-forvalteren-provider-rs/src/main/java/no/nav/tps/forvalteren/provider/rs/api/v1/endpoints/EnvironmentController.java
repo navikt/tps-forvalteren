@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.nav.tps.forvalteren.common.java.logging.LogExceptions;
+import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.service.environment.Environment;
 import no.nav.tps.forvalteren.service.command.FilterEnvironmentsOnDeployedEnvironment;
 import no.nav.tps.forvalteren.service.command.tpsconfig.GetEnvironments;
@@ -56,7 +56,7 @@ public class EnvironmentController {
     @LogExceptions
     @RequestMapping(value = "/environments", method = RequestMethod.GET)
     public Environment getEnvironments() {
-        Set<String> env = getEnvironmentsCommand.getEnvironmentsFromFasit("tpsws");
+        Set<String> env = getEnvironmentsCommand.getEnvironments();
 
         Environment environment = new Environment();
         environment.setEnvironments(filterEnvironmentsOnDeployedEnvironment.execute(env));
