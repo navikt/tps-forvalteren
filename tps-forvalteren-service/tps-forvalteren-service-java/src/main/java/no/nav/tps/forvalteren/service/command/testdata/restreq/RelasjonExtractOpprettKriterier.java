@@ -33,16 +33,17 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
     @Override
     public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req,
             Person hovedPerson,
-            List<Person> partnere, List<Person> barn) {
+            List<Person> partnere, List<Person> barn, List<Person> foreldre) {
 
         List<Adresse> adresser = isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse() ?
-                getAdresser(1 + partnere.size(), req.getAdresseNrInfo()) : new ArrayList<>();
+                getAdresser(1 + partnere.size() + foreldre.size(), req.getAdresseNrInfo()) : new ArrayList<>();
 
         mapPartner(req, hovedPerson, partnere, adresser);
         mapBarn(req, hovedPerson, partnere, barn);
+        mapForeldre(req, hovedPerson, foreldre, adresser.subList((1 + partnere.size()) % adresser.size(), adresser.size()));
         this.midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn);
 
-        return Stream.of(singletonList(hovedPerson), partnere, barn)
+        return Stream.of(singletonList(hovedPerson), partnere, barn, foreldre)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

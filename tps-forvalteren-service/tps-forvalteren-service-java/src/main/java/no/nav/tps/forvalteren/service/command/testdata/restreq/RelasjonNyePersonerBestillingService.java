@@ -53,7 +53,7 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
                 .map(reqPart -> isNotBlank(reqPart.getIdent()) ?
                         personRepository.findByIdent(reqPart.getIdent()) :
                         opprettPersonerOgSjekkMiljoeService
-                                .createNyeIdenter(ExtractOpprettKriterier.extractPartner(singletonList(reqPart),
+                                .createNyeIdenter(OpprettPersonUtil.extractPartner(singletonList(reqPart),
                                         request.getHarMellomnavn(), request.getNavSyntetiskIdent())).get(0))
                 .collect(Collectors.toList());
 
@@ -61,22 +61,29 @@ public class RelasjonNyePersonerBestillingService extends PersonerBestillingServ
                 .map(reqBarn -> isNotBlank(reqBarn.getIdent()) ?
                         personRepository.findByIdent(reqBarn.getIdent()) :
                         opprettPersonerOgSjekkMiljoeService
-                                .createNyeIdenter(ExtractOpprettKriterier.extractBarn(singletonList(reqBarn),
+                                .createNyeIdenter(OpprettPersonUtil.extractBarn(singletonList(reqBarn),
                                         request.getHarMellomnavn(), request.getNavSyntetiskIdent())).get(0))
                 .collect(Collectors.toList());
 
-        setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn);
+        List<Person> foreldre = request.getRelasjoner().getForeldre().stream()
+                .map(reqForeldre -> isNotBlank(reqForeldre.getIdent()) ?
+                        personRepository.findByIdent(reqForeldre.getIdent()) :
+                        opprettPersonerOgSjekkMiljoeService
+                                .createNyeIdenter(OpprettPersonUtil.extractForeldre(singletonList(reqForeldre),
+                                        request.getHarMellomnavn(), request.getNavSyntetiskIdent())).get(0))
+                .collect(Collectors.toList());
+
+        setIdenthistorikkPaaPersoner(request, singletonList(hovedperson), partnere, barn, foreldre);
         setRelasjonerPaaPersoner(singletonList(hovedperson), partnere, barn, request);
         setSivilstandHistorikkPaaPersoner(request, hovedperson, partnere);
+        setForeldreRelasjonerPaaPersoner(singletonList(hovedperson), foreldre, request);
         vergemaalService.opprettVerge(request, List.of(hovedperson));
         fullmaktService.opprettFullmakt(request, List.of(hovedperson));
 
         List<Person> tpsfPersoner = relasjonExtractOpprettKriterier
-                .addExtendedKriterumValuesToPerson(request, hovedperson, partnere, barn);
+                .addExtendedKriterumValuesToPerson(request, hovedperson, partnere, barn, foreldre);
 
-        List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
-
-        return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedperson.getIdent());
+        return savePersonBulk.execute(tpsfPersoner);
     }
 
     private boolean isSivilstandUpdateForrigePartner(Person person, RsSimpleRelasjoner request) {

@@ -26,6 +26,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
+import no.nav.tps.forvalteren.domain.rs.RsForeldreRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSimpleRelasjoner;
@@ -75,9 +76,9 @@ public class ExtractOpprettKriterierTest {
         bestilling.setFoedtFoer(FOEDT_FOER);
         bestilling.setIdenttype(IDENTTYPE);
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(bestilling);
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractMainPerson(bestilling);
 
-        assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(ANTALL)));
+        assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KJOENN)));
         assertThat(target.getPersonKriterierListe().get(0).getIdenttype(), is(equalTo(IDENTTYPE)));
         assertThat(target.getPersonKriterierListe().get(0).getFoedtFoer(), is(equalTo(FOEDT_FOER)));
@@ -87,7 +88,7 @@ public class ExtractOpprettKriterierTest {
     @Test
     public void extractMainPersonNoParamsSet() {
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractMainPerson(new RsPersonBestillingKriteriumRequest());
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractMainPerson(new RsPersonBestillingKriteriumRequest());
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
         assertThat(target.getPersonKriterierListe().get(0).getKjonn(), is(equalTo(KjoennType.U)));
@@ -112,7 +113,7 @@ public class ExtractOpprettKriterierTest {
                 .partnere(singletonList(partnerRequest))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(),
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractPartner(request.getRelasjoner().getPartnere(),
                 false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
@@ -130,7 +131,7 @@ public class ExtractOpprettKriterierTest {
                 .partnere(singletonList(new RsPartnerRequest()))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractPartner(request.getRelasjoner().getPartnere(),
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractPartner(request.getRelasjoner().getPartnere(),
                 false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
@@ -156,7 +157,7 @@ public class ExtractOpprettKriterierTest {
                 .barn(singletonList(barnRequest))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(),
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractBarn(request.getRelasjoner().getBarn(),
                 false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
@@ -174,7 +175,7 @@ public class ExtractOpprettKriterierTest {
                 .barn(singletonList(new RsBarnRequest()))
                 .build());
 
-        RsPersonKriteriumRequest target = extractOpprettKriterier.extractBarn(request.getRelasjoner().getBarn(),
+        RsPersonKriteriumRequest target = OpprettPersonUtil.extractBarn(request.getRelasjoner().getBarn(),
                 false, false);
 
         assertThat(target.getPersonKriterierListe().get(0).getAntall(), is(equalTo(1)));
@@ -193,16 +194,18 @@ public class ExtractOpprettKriterierTest {
         RsBarnRequest barnRequest = new RsBarnRequest();
         barnRequest.setPartnerNr(1);
         kriterier.getRelasjoner().getBarn().add(barnRequest);
+        kriterier.getRelasjoner().getForeldre().add(new RsForeldreRequest());
         kriterier.setAdresseNrInfo(new AdresseNrInfo());
         Person hovedperson = Person.builder()
                 .statsborgerskap(singletonList(Statsborgerskap.builder().statsborgerskap("FRA").build()))
                 .build();
         List<Person> partner = singletonList(Person.builder().build());
         List<Person> barn = singletonList(Person.builder().build());
+        List<Person> foreldre = singletonList(Person.builder().build());
 
         when(randomAdresseService.hentRandomAdresse(anyInt(), any(AdresseNrInfo.class))).thenReturn(singletonList(Gateadresse.builder().build()));
 
-        List<Person> personer = extractOpprettKriterier.addExtendedKriterumValuesToPerson(kriterier, hovedperson, partner, barn);
-        assertThat(personer, hasSize(3));
+        List<Person> personer = extractOpprettKriterier.addExtendedKriterumValuesToPerson(kriterier, hovedperson, partner, barn, foreldre);
+        assertThat(personer, hasSize(4));
     }
 }
