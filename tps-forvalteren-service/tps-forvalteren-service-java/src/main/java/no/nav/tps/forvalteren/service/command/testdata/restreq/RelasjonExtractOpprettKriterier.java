@@ -41,7 +41,7 @@ public class RelasjonExtractOpprettKriterier extends ExtractOpprettKriterier {
         mapPartner(req, hovedPerson, partnere, adresser);
         mapBarn(req, hovedPerson, partnere, barn);
         mapForeldre(req, hovedPerson, foreldre, adresser.subList((1 + partnere.size()) % adresser.size(), adresser.size()));
-        this.midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn);
+        this.midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn, foreldre);
 
         return Stream.of(singletonList(hovedPerson), partnere, barn, foreldre)
                 .flatMap(Collection::stream)
