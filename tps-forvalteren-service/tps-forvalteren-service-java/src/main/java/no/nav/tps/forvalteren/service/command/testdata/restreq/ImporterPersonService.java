@@ -14,6 +14,8 @@ import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPA;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPR;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SKIL;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SKPA;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
 import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getSivilstand;
@@ -68,7 +70,6 @@ public class ImporterPersonService {
     private static final String STATUS = "status";
     private static final String STATUS_OK = "00";
     private static final String STATUS_WARN = "04";
-    private static final String TPSWS = "tpsws";
 
     private final PersonRepository personRepository;
     private final TpsServiceRoutineService tpsServiceRoutineService;
@@ -181,8 +182,7 @@ public class ImporterPersonService {
                                                 tpsFamilie.stream().anyMatch(person1 ->
                                                         relasjon.getFnrRelasjon().equals(person1.getFodselsnummer())))
                                         .map(relasjon -> Relasjon.builder()
-                                                .relasjonTypeNavn(isGift(relasjon.getTypeRelasjon()) ? PARTNER.name() :
-                                                        relasjon.getTypeRelasjon().name())
+                                                .relasjonTypeNavn(mapRelasjonType(relasjon.getTypeRelasjon()))
                                                 .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
                                                 .person(familie.get(person.getFodselsnummer()))
                                                 .build())
@@ -209,6 +209,19 @@ public class ImporterPersonService {
                                                 .findFirst().get().getFnrRelasjon()))
                                         .build()) :
                                 emptyList()));
+    }
+
+    private static boolean isGift(RelasjonType relasjonType) {
+
+        return EKTE == relasjonType ||
+                ENKE == relasjonType ||
+                SKIL == relasjonType ||
+                SEPR == relasjonType ||
+                REPA == relasjonType ||
+                SEPA == relasjonType ||
+                SKPA == relasjonType ||
+                GJPA == relasjonType ||
+                GLAD == relasjonType;
     }
 
     private Person savePerson(Person person) {
@@ -284,7 +297,7 @@ public class ImporterPersonService {
                 .build();
     }
 
-    private Map buildRequest(String ident, String environment) {
+    private static Map buildRequest(String ident, String environment) {
         Map<String, Object> params = new HashMap<>();
         params.put("fnr", ident);
         params.put("aksjonsKode", "D1");
@@ -292,17 +305,26 @@ public class ImporterPersonService {
         return params;
     }
 
-    private static boolean isGift(RelasjonType relasjonType) {
+    private static String mapRelasjonType(RelasjonType relasjonType) {
 
-        return EKTE == relasjonType ||
-                ENKE == relasjonType ||
-                SKIL == relasjonType ||
-                SEPR == relasjonType ||
-                REPA == relasjonType ||
-                SEPA == relasjonType ||
-                SKPA == relasjonType ||
-                GJPA == relasjonType ||
-                GLAD == relasjonType;
+        switch (relasjonType) {
+        case MORA:
+            return MOR.name();
+        case FARA:
+            return FAR.name();
+        case EKTE:
+        case ENKE:
+        case SKIL:
+        case SEPR:
+        case REPA:
+        case SEPA:
+        case SKPA:
+        case GJPA:
+        case GLAD:
+            return PARTNER.name();
+        default:
+            return relasjonType.name();
+        }
     }
 
     private static boolean isStatusOK(ResponseStatus status) {
