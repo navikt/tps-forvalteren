@@ -39,10 +39,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.ctg.s610.domain.RelasjonType;
@@ -331,8 +330,7 @@ public class ImporterPersonService {
         return STATUS_OK.equals(status.getKode()) || STATUS_WARN.equals(status.getKode());
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -342,8 +340,7 @@ public class ImporterPersonService {
         private List<S610PersonType> relasjoner;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -353,8 +350,7 @@ public class ImporterPersonService {
         private PersonRelasjon personRelasjon;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -364,8 +360,7 @@ public class ImporterPersonService {
         private Person person;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -376,8 +371,7 @@ public class ImporterPersonService {
         private String errorMsg;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
