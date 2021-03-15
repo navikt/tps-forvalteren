@@ -7,13 +7,12 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import no.nav.tps.forvalteren.domain.rs.RsForeldreRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,8 +22,7 @@ public class RsPersonBestillingRelasjonRequest {
 
     private RsRelasjoner relasjoner;
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -32,6 +30,7 @@ public class RsPersonBestillingRelasjonRequest {
 
         private List<RsPartnerRelasjonRequest> partnere;
         private List<RsBarnRelasjonRequest> barn;
+        private List<RsForeldreRelasjonRequest> foreldre;
 
         public List<RsPartnerRelasjonRequest> getPartnere() {
             if (isNull(partnere)) {
@@ -46,10 +45,16 @@ public class RsPersonBestillingRelasjonRequest {
             }
             return barn;
         }
+
+        public List<RsForeldreRelasjonRequest> getForeldre() {
+            if (isNull(foreldre)) {
+                foreldre = new ArrayList<>();
+            }
+            return foreldre;
+        }
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -67,8 +72,7 @@ public class RsPersonBestillingRelasjonRequest {
         }
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -77,5 +81,16 @@ public class RsPersonBestillingRelasjonRequest {
         private String ident;
         private String partnerIdent;
         private BorHos borHos;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RsForeldreRelasjonRequest {
+
+        private String ident;
+        private RsForeldreRequest.ForeldreType foreldreType;
+        private Boolean harFellesAdresse;
     }
 }

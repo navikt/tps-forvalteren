@@ -22,6 +22,7 @@ public class RsSimpleRelasjoner {
     private List<RsPartnerRequest> partnere;
 
     private List<RsBarnRequest> barn;
+    private List<RsForeldreRequest> foreldre;
 
     public List<RsPartnerRequest> getPartnere() {
         if (isNull(partnere)) {
@@ -35,5 +36,12 @@ public class RsSimpleRelasjoner {
             barn = new ArrayList();
         }
         return barn;
+    }
+
+    public List<RsForeldreRequest> getForeldre() {
+        if (isNull(foreldre)) {
+            foreldre = new ArrayList<>();
+        }
+        return foreldre;
     }
 }

@@ -11,15 +11,12 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
 import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomEtternavn;
 import static no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService.getRandomFornavn;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtEtter;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.DefaultBestillingDatoer.getProcessedFoedtFoer;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,15 +34,12 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
 import no.nav.tps.forvalteren.domain.rs.RsBarnRequest;
+import no.nav.tps.forvalteren.domain.rs.RsForeldreRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
-import no.nav.tps.forvalteren.domain.rs.RsPersonKriteriumRequest;
 import no.nav.tps.forvalteren.domain.rs.RsPostadresse;
 import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse;
 import no.nav.tps.forvalteren.domain.rs.RsRequestAdresse.TilleggAdressetype;
-import no.nav.tps.forvalteren.domain.rs.RsSimplePersonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
-import no.nav.tps.forvalteren.domain.rs.skd.KjoennType;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.DummyAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
@@ -63,72 +57,10 @@ public class ExtractOpprettKriterier {
     private final DummyAdresseService dummyAdresseService;
     private final MidlertidigAdresseMappingService midlertidigAdresseMappingService;
 
-    public static RsPersonKriteriumRequest extractMainPerson(RsPersonBestillingKriteriumRequest request) {
+    public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, Person hovedPerson,
+            List<Person> partnere, List<Person> barn, List<Person> foreldre) {
 
-        return RsPersonKriteriumRequest.builder()
-                .personKriterierListe(singletonList(RsPersonKriterier.builder()
-                        .antall(nonNull(request.getAntall()) && request.getAntall() > 0 ? request.getAntall() : 1)
-                        .identtype(nullcheckSetDefaultValue(request.getIdenttype(), "FNR"))
-                        .kjonn(nullcheckSetDefaultValue(request.getKjonn(), KjoennType.U))
-                        .foedtEtter(getProcessedFoedtEtter(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
-                        .foedtFoer(getProcessedFoedtFoer(request.getAlder(), request.getFoedtEtter(), request.getFoedtFoer(), false))
-                        .harMellomnavn(request.getHarMellomnavn())
-                        .navSyntetiskIdent(request.getNavSyntetiskIdent())
-                        .build()))
-                .build();
-    }
-
-    public static RsPersonKriteriumRequest extractPartner(List<RsPartnerRequest> partnerRequests,
-            Boolean hovedpersonHarMellomnavn,
-            Boolean navSyntetiskIdent) {
-
-        List<RsPersonKriterier> kriterier = new ArrayList<>(partnerRequests.size());
-        partnerRequests.forEach(partnerReq -> {
-            RsPersonKriterier kriterium = prepareKriterium(partnerReq);
-            kriterium.setFoedtEtter(getProcessedFoedtEtter(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setFoedtFoer(getProcessedFoedtFoer(partnerReq.getAlder(), partnerReq.getFoedtEtter(), partnerReq.getFoedtFoer(), false));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(partnerReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
-            kriterium.setNavSyntetiskIdent(navSyntetiskIdent);
-            kriterier.add(kriterium);
-        });
-
-        return RsPersonKriteriumRequest.builder()
-                .personKriterierListe(kriterier)
-                .build();
-    }
-
-    public static RsPersonKriteriumRequest extractBarn(List<RsBarnRequest> barnRequests,
-            Boolean hovedpersonHarMellomnavn,
-            Boolean navSyntetiskIdent) {
-
-        List<RsPersonKriterier> kriterier = new ArrayList<>(barnRequests.size());
-        barnRequests.forEach(barnReq -> {
-            RsPersonKriterier kriterium = prepareKriterium(barnReq);
-            kriterium.setFoedtEtter(getProcessedFoedtEtter(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
-            kriterium.setFoedtFoer(getProcessedFoedtFoer(barnReq.getAlder(), barnReq.getFoedtEtter(), barnReq.getFoedtFoer(), true));
-            kriterium.setHarMellomnavn(nullcheckSetDefaultValue(barnReq.getHarMellomnavn(), hovedpersonHarMellomnavn));
-            kriterium.setNavSyntetiskIdent(navSyntetiskIdent);
-            kriterier.add(kriterium);
-        });
-
-        return RsPersonKriteriumRequest.builder()
-                .personKriterierListe(kriterier)
-                .build();
-    }
-
-    private static RsPersonKriterier prepareKriterium(RsSimplePersonRequest req) {
-        return RsPersonKriterier.builder()
-                .antall(1)
-                .identtype(nullcheckSetDefaultValue(req.getIdenttype(), "FNR"))
-                .kjonn(nullcheckSetDefaultValue(req.getKjonn(), KjoennType.U))
-                .foedtFoer(req.getFoedtFoer())
-                .foedtEtter(req.getFoedtEtter())
-                .build();
-    }
-
-    public List<Person> addExtendedKriterumValuesToPerson(RsPersonBestillingKriteriumRequest req, Person hovedPerson, List<Person> partnere, List<Person> barn) {
-
-        List<Adresse> adresser = getAdresser(1 + partnere.size(), req.getAdresseNrInfo());
+        List<Adresse> adresser = getAdresser(1 + partnere.size() + foreldre.size(), req.getAdresseNrInfo());
         ammendBolignr(adresser, req);
 
         if (isBlank(req.getInnvandretFraLand())) {
@@ -143,9 +75,10 @@ public class ExtractOpprettKriterier {
 
         mapPartner(req, hovedPerson, partnere, adresser);
         mapBarn(req, hovedPerson, partnere, barn);
-        midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn);
+        mapForeldre(req, hovedPerson, foreldre, adresser.subList((1 + partnere.size()) % adresser.size(), adresser.size()));
+        midlertidigAdresseMappingService.mapAdresse(req, hovedPerson, partnere, barn, foreldre);
 
-        return Stream.of(singletonList(hovedPerson), partnere, barn)
+        return Stream.of(singletonList(hovedPerson), partnere, barn, foreldre)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -168,6 +101,25 @@ public class ExtractOpprettKriterier {
             mapperFacade.map(partnerRequest, partnere.get(i));
             mapPartnerAdresse(hovedPerson, partnere.get(i), getBoadresse(adresser, 1 + i), partnerRequest);
             alignStatsborgerskapAndInnvandretFraLand(partnere.get(i), hovedPerson);
+        }
+    }
+
+    protected void mapForeldre(RsPersonBestillingKriteriumRequest req, Person hovedPerson, List<Person> foreldre, List<Adresse> adresser) {
+
+        for (int i = 0; i < foreldre.size(); i++) {
+            RsForeldreRequest foreldreRequest = req.getRelasjoner().getForeldre().get(i);
+            foreldreRequest.setPostadresse(
+                    mapperFacade.mapAsList(
+                            !foreldreRequest.getPostadresse().isEmpty() ? foreldreRequest.getPostadresse() : req.getPostadresse(),
+                            RsPostadresse.class));
+            mapperFacade.map(foreldreRequest, foreldre.get(i));
+
+            if (foreldre.get(i).isNyPerson() && hasAdresse(foreldre.get(i))) {
+                mapBoadresse(foreldre.get(i), adresser.get(isTrue(foreldreRequest.getHarFellesAdresse()) ? 0 : i % adresser.size()),
+                        extractFlyttedato(foreldreRequest.getBoadresse()),
+                        extractTilleggsadresse(foreldreRequest.getBoadresse()), null);
+            }
+            alignStatsborgerskapAndInnvandretFraLand(foreldre.get(i), hovedPerson);
         }
     }
 

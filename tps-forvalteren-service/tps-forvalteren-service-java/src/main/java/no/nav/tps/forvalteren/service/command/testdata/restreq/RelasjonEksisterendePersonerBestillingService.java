@@ -10,12 +10,13 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.BARN;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ import no.nav.tps.forvalteren.domain.jpa.Postadresse;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest;
+import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsForeldreRelasjonRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingRelasjonRequest.RsPartnerRelasjonRequest;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.command.testdata.opprett.RandomAdresseService;
@@ -52,13 +54,15 @@ public class RelasjonEksisterendePersonerBestillingService {
 
     public List<String> makeRelasjon(String hovedperson, RsPersonBestillingRelasjonRequest request) {
 
-        List<String> idents = new ArrayList<>();
-        Stream.of(newArrayList(hovedperson),
+        List<String> idents = Stream.of(newArrayList(hovedperson),
                 request.getRelasjoner().getPartnere().stream()
                         .map(RsPartnerRelasjonRequest::getIdent).collect(toList()),
                 request.getRelasjoner().getBarn().stream()
-                        .map(RsBarnRelasjonRequest::getIdent).collect(toList())
-        ).forEach(idents::addAll);
+                        .map(RsBarnRelasjonRequest::getIdent).collect(toList()),
+                request.getRelasjoner().getForeldre().stream()
+                        .map(RsForeldreRelasjonRequest::getIdent).collect(toList()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
 
         List<Person> personerliste = personRepository.findByIdentIn(idents);
         Map<String, Person> personer = personerliste.stream().collect(Collectors.toMap(Person::getIdent, person -> person));
@@ -162,6 +166,24 @@ public class RelasjonEksisterendePersonerBestillingService {
         request.getRelasjoner().getBarn().forEach(barnet ->
                 setBarnRelasjon(personer.get(hovedperson), personer.get(barnet.getPartnerIdent()),
                         personer.get(barnet.getIdent())));
+
+        request.getRelasjoner().getForeldre().forEach(foreldre ->
+                setForeldreRelasjon(personer.get(hovedperson), personer.get(foreldre.getIdent()), foreldre));
+    }
+
+    private static void setForeldreRelasjon(Person hovedperson, Person foreldre, RsForeldreRelasjonRequest request) {
+
+        hovedperson.getRelasjoner().add(Relasjon.builder()
+                .person(hovedperson)
+                .personRelasjonMed(foreldre)
+                .relasjonTypeNavn(nullcheckSetDefaultValue(request.getForeldreType(),
+                        foreldre.isKvinne() ? MOR : FAR).name())
+                .build());
+        foreldre.getRelasjoner().add(Relasjon.builder()
+                .person(foreldre)
+                .personRelasjonMed(hovedperson)
+                .relasjonTypeNavn(BARN.getName())
+                .build());
     }
 
     private static void setBarnRelasjon(Person hovedPerson, Person partner, Person barn) {
@@ -174,12 +196,12 @@ public class RelasjonEksisterendePersonerBestillingService {
 
         if (nonNull(forelder)) {
             forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn(BARN.name()).build());
-            barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn((isKvinne(forelder) ? MOR : FAR).name()).build());
+            barn.getRelasjoner().add(Relasjon.builder()
+                    .person(barn)
+                    .personRelasjonMed(forelder)
+                    .relasjonTypeNavn(forelder.isKvinne() ? MOR.name() : FAR.name())
+                    .build());
         }
-    }
-
-    private static boolean isKvinne(Person person) {
-        return "K".equals(person.getKjonn());
     }
 
     private static void setPartnerRelasjon(Person person, Person partner) {
