@@ -122,7 +122,7 @@ public class TestdataBestillingsController {
                 .pageNo(page.getNumber())
                 .antallPages(page.getTotalPages())
                 .pageSize(page.getPageable().getPageSize())
-                .antallIdenter(page.getTotalElements())
+                .antallElementer(page.getTotalElements())
                 .contents(mapperFacade.mapAsList(page.getContent(), RsPerson.class))
                 .build();
     }
