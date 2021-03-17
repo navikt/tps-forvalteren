@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static javax.persistence.CascadeType.ALL;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
@@ -70,7 +69,7 @@ public class Person extends ChangeStamp {
     private String forkortetNavn;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Statsborgerskap> statsborgerskap;
 
     @Column(name = "SPESREG", length = 1)
@@ -86,14 +85,14 @@ public class Person extends ChangeStamp {
     private String sivilstand;
 
     @OrderBy("sivilstandRegdato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Sivilstand> sivilstander;
 
     @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
     @OrderBy("flyttedato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<InnvandretUtvandret> innvandretUtvandret;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
