@@ -19,7 +19,7 @@ public class RsPersonPaginert {
     private Integer antallPages;
     private Integer pageNo;
     private Integer pageSize;
-    private Integer antallElementer;
+    private Long antallElementer;
     private List<RsPerson> contents;
 
     public List<RsPerson> getContents() {

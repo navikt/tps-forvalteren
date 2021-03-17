@@ -2,7 +2,7 @@ name: Deploy dev u2
 
 on:
   push:
-    branches: master
+    branches: hent-personer-paginert
 
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/tps-forvalteren:${{ github.sha }}
