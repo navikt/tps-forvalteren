@@ -1,11 +1,16 @@
 package no.nav.tps.forvalteren.domain.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static javax.persistence.CascadeType.ALL;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,17 +25,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static javax.persistence.CascadeType.ALL;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import no.nav.tps.forvalteren.domain.jpa.embedded.ChangeStamp;
 
 @Entity
 @Data
@@ -70,7 +70,7 @@ public class Person extends ChangeStamp {
     private String forkortetNavn;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
     private List<Statsborgerskap> statsborgerskap;
 
     @Column(name = "SPESREG", length = 1)
@@ -86,14 +86,14 @@ public class Person extends ChangeStamp {
     private String sivilstand;
 
     @OrderBy("sivilstandRegdato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
     private List<Sivilstand> sivilstander;
 
     @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
     @OrderBy("flyttedato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL, orphanRemoval = true)
     private List<InnvandretUtvandret> innvandretUtvandret;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
@@ -115,11 +115,11 @@ public class Person extends ChangeStamp {
     private String beskrSikkerhetTiltak;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Adresse> boadresse;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO")
@@ -130,23 +130,23 @@ public class Person extends ChangeStamp {
     private Gruppe gruppe;
 
     @OrderBy("relasjonTypeNavn desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Relasjon> relasjoner;
 
     @OrderBy("historicIdentOrder desc")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", orphanRemoval = true)
     private List<IdentHistorikk> identHistorikk;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<MidlertidigAdresse> midlertidigAdresse;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Vergemaal> vergemaal;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
     private List<Fullmakt> fullmakt;
 
     @Column(name = "OPPRETTET_DATO")

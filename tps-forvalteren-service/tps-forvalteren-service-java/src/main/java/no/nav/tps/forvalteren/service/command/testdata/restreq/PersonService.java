@@ -1,39 +1,49 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
-import lombok.RequiredArgsConstructor;
-import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Person;
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
-import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
-import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
-import no.nav.tps.forvalteren.repository.jpa.FullmaktRepository;
-import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
-import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
-import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
-import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
-import no.nav.tps.forvalteren.service.IdentpoolService;
-import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
-import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import static com.google.common.collect.Lists.partition;
+import static java.util.stream.Collectors.toSet;
+import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
-import static com.google.common.collect.Lists.partition;
-import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
+import lombok.RequiredArgsConstructor;
+import no.nav.tps.forvalteren.domain.jpa.Adresse;
+import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
+import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
+import no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret;
+import no.nav.tps.forvalteren.domain.jpa.MidlertidigAdresse;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import no.nav.tps.forvalteren.domain.jpa.Postadresse;
+import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
+import no.nav.tps.forvalteren.domain.jpa.Statsborgerskap;
+import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
+import no.nav.tps.forvalteren.repository.jpa.AdresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.DoedsmeldingRepository;
+import no.nav.tps.forvalteren.repository.jpa.FullmaktRepository;
+import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
+import no.nav.tps.forvalteren.repository.jpa.InnvandretUtvandretRepository;
+import no.nav.tps.forvalteren.repository.jpa.MidlertidigAdresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
+import no.nav.tps.forvalteren.repository.jpa.PostadresseRepository;
+import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
+import no.nav.tps.forvalteren.repository.jpa.StatsborgerskapRepository;
+import no.nav.tps.forvalteren.repository.jpa.VergemaalRepository;
+import no.nav.tps.forvalteren.service.IdentpoolService;
+import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +51,8 @@ public class PersonService {
 
     private final PersonRepository personRepository;
     private final AdresseRepository adresseRepository;
+    private final PostadresseRepository postadresseRepository;
+    private final MidlertidigAdresseRepository midlertidigAdresseRepository;
     private final RelasjonRepository relasjonRepository;
     private final DoedsmeldingRepository doedsmeldingRepository;
     private final IdenthistorikkRepository identhistorikkRepository;
@@ -49,6 +61,8 @@ public class PersonService {
     private final TpsPersonService tpsPersonService;
     private final VergemaalRepository vergemaalRepository;
     private final FullmaktRepository fullmaktRepository;
+    private final InnvandretUtvandretRepository innvandretUtvandretRepository;
+    private final StatsborgerskapRepository statsborgerskapRepository;
 
     public List<Person> getPersonerByIdenter(List<String> identer) {
 
@@ -64,55 +78,117 @@ public class PersonService {
     @Transactional
     public void deletePersons(List<String> miljoer, List<String> identer) {
 
-        Set<String> alleIdenter = new HashSet<>(identer);
+        List<Person> persons = personRepository.findByIdentIn(new HashSet<>(identer));
 
-        List<Person> persons = personRepository.findByIdentIn(identer);
-
-        Set<Long> orignalPersonId = persons.stream().map(Person::getId).collect(toSet());
-        Set<Long> personIds = new HashSet(orignalPersonId);
-
-        if (personIds.isEmpty()) {
+        if (persons.isEmpty()) {
             throw new NotFoundException("Ingen personer funnet");
         }
 
-        Optional<List<Relasjon>> relasjoner = relasjonRepository.findByPersonRelasjonMedIdIn(personIds);
-        if (relasjoner.isPresent()) {
-            alleIdenter.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getIdent).collect(toList()));
-            personIds.addAll(relasjoner.get().stream().map(Relasjon::getPerson).map(Person::getId).collect(toList()));
+        Set<Person> allConnectedPeople = Stream.of(
+                persons,
+                persons.stream()
+                        .map(Person::getRelasjoner)
+                        .flatMap(Collection::stream)
+                        .map(Relasjon::getPersonRelasjonMed)
+                        .collect(Collectors.toSet()),
+                persons.stream()
+                        .map(Person::getIdentHistorikk)
+                        .flatMap(Collection::stream)
+                        .map(IdentHistorikk::getAliasPerson)
+                        .collect(Collectors.toSet()),
+                persons.stream()
+                        .map(Person::getFullmakt)
+                        .flatMap(Collection::stream)
+                        .map(Fullmakt::getFullmektig)
+                        .collect(Collectors.toSet()),
+                persons.stream()
+                        .map(Person::getVergemaal)
+                        .flatMap(Collection::stream)
+                        .map(Vergemaal::getVerge)
+                        .collect(Collectors.toSet()))
+                .flatMap(Collection::stream)
+                .collect(toSet());
 
-            Optional<List<Relasjon>> alleRelasjoner = relasjonRepository.findByPersonRelasjonMedIdIn(personIds);
-            if (alleRelasjoner.isPresent()) {
-                relasjonRepository.deleteByIdIn(alleRelasjoner.get().stream().map(Relasjon::getId).collect(toSet()));
-            }
+        statsborgerskapRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getStatsborgerskap)
+                .flatMap(Collection::stream)
+                .map(Statsborgerskap::getId)
+                .collect(Collectors.toSet()));
 
-            Set<Long> sivilstandIds = alleRelasjoner.get().stream().filter(relasjon -> nonNull(relasjon.getPersonRelasjonMed()))
-                    .map(Relasjon::getPersonRelasjonMed)
-                    .flatMap(person -> person.getSivilstander().stream())
-                    .map(Sivilstand::getId)
-                    .collect(toSet());
+        adresseRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getBoadresse)
+                .flatMap(Collection::stream)
+                .map(Adresse::getId)
+                .collect(Collectors.toSet()));
 
-            sivilstandRepository.deleteByIdIn(sivilstandIds);
-        }
+        postadresseRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getPostadresse)
+                .flatMap(Collection::stream)
+                .map(Postadresse::getId)
+                .collect(Collectors.toSet()));
 
-        Optional<List<Adresse>> adresser = adresseRepository.findAdresseByPersonIdIn(personIds);
-        if (adresser.isPresent()) {
-            adresseRepository.deleteByIdIn(adresser.get().stream().map(Adresse::getId).collect(toList()));
-        }
+        midlertidigAdresseRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getMidlertidigAdresse)
+                .flatMap(Collection::stream)
+                .map(MidlertidigAdresse::getId)
+                .collect(Collectors.toSet()));
 
-        deleteIdenthistorikk(persons);
+        innvandretUtvandretRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getInnvandretUtvandret)
+                .flatMap(Collection::stream)
+                .map(InnvandretUtvandret::getId)
+                .collect(Collectors.toSet()));
 
-        vergemaalRepository.deleteByIdIn(personIds.stream().collect(toList()));
+        sivilstandRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getSivilstander)
+                .flatMap(Collection::stream)
+                .map(Sivilstand::getId)
+                .collect(Collectors.toSet()));
 
-        fullmaktRepository.deleteByIdIn(personIds.stream().collect(toList()));
+        relasjonRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getRelasjoner)
+                .flatMap(Collection::stream)
+                .map(Relasjon::getPersonRelasjonMed)
+                .map(Person::getRelasjoner)
+                .flatMap(Collection::stream)
+                .map(Relasjon::getId)
+                .collect(Collectors.toSet()));
 
-        doedsmeldingRepository.deleteByPersonIdIn(personIds);
+        identhistorikkRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getIdentHistorikk)
+                .flatMap(Collection::stream)
+                .map(IdentHistorikk::getAliasPerson)
+                .map(Person::getId)
+                .collect(Collectors.toSet()));
 
-        personRepository.deleteByIdIn(personIds);
+        vergemaalRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getVergemaal)
+                .flatMap(Collection::stream)
+                .map(Vergemaal::getId)
+                .collect(Collectors.toSet()));
+
+        fullmaktRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getFullmakt)
+                .flatMap(Collection::stream)
+                .map(Fullmakt::getId)
+                .collect(Collectors.toSet()));
+
+        doedsmeldingRepository.deleteByPersonIdIn(allConnectedPeople.stream()
+                .map(Person::getId)
+                .collect(Collectors.toSet()));
+
+        personRepository.deleteByIdIn(allConnectedPeople.stream()
+                .map(Person::getId)
+                .collect(Collectors.toSet()));
 
         //Wipe persons in TPS
-        tpsPersonService.sendDeletePersonMeldinger(miljoer, alleIdenter);
+        tpsPersonService.sendDeletePersonMeldinger(miljoer, allConnectedPeople.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toSet()));
 
-        identpoolService.recycleIdents(alleIdenter);
+        identpoolService.recycleIdents(allConnectedPeople.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toSet()));
     }
 
     @Transactional
