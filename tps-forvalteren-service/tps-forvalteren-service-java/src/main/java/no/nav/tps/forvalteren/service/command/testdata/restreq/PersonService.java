@@ -17,6 +17,7 @@ import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,11 @@ public class PersonService {
             resultat.addAll(personRepository.findByIdentIn(subset));
         }
         return resultat;
+    }
+
+    public Page<List<Person>> getPersonerByIdenterPaginert(List<String> identer, Integer pageNo, Integer pageSize) {
+
+        return personRepository.findPersonByIdentInOrderByEndretDato(identer, PageRequest.of(pageNo, pageSize));
     }
 
     @Transactional

@@ -1,14 +1,15 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import java.util.Collection;
-import java.util.List;
+import no.nav.tps.forvalteren.domain.jpa.Person;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import no.nav.tps.forvalteren.domain.jpa.Person;
+import java.util.Collection;
+import java.util.List;
 
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
@@ -18,6 +19,8 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
     int deleteByIdIn(Collection<Long> ids);
 
     List<Person> findByIdentIn(Collection<String> identListe);
+
+    Page<List<Person>> findPersonByIdentInOrderByEndretDato(Collection<String> identer, Pageable pageable);
 
     List<Person> findByIdIn(List<Long> ids);
 

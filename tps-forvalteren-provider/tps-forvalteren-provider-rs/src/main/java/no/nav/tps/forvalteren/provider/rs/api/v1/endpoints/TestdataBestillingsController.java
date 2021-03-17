@@ -1,26 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
-import static com.google.common.collect.Sets.newHashSet;
-import static java.util.stream.Collectors.toList;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -32,6 +11,7 @@ import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsAliasRequest;
 import no.nav.tps.forvalteren.domain.rs.RsAliasResponse;
 import no.nav.tps.forvalteren.domain.rs.RsPerson;
+import no.nav.tps.forvalteren.domain.rs.RsPersonPaginert;
 import no.nav.tps.forvalteren.domain.rs.RsPersonnavn;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonLagreRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.ImporterPersonRequest;
@@ -53,6 +33,29 @@ import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.PersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.restreq.RelasjonEksisterendePersonerBestillingService;
 import no.nav.tps.forvalteren.service.command.testdata.skd.LagreTilTpsService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.Sets.newHashSet;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RestController
@@ -105,6 +108,23 @@ public class TestdataBestillingsController {
     public List<RsPerson> hentPersoner(@RequestBody List<String> identer) {
 
         return mapperFacade.mapAsList(personService.getPersonerByIdenter(identer), RsPerson.class);
+    }
+
+    @LogExceptions
+    @Transactional
+    @RequestMapping(value = "/hentpersoner/page/{pageNo}", method = RequestMethod.POST)
+    public RsPersonPaginert hentPersonerPaginert(@RequestBody List<String> identer,
+                                                 @PathVariable Integer pageNo,
+                                                 @RequestParam Integer pageSize) {
+        Page<List<Person>> page = personService.getPersonerByIdenterPaginert(identer, pageNo, pageSize);
+
+        return RsPersonPaginert.builder()
+                .pageNo(page.getNumber())
+                .antallPages(page.getTotalPages())
+                .pageSize(page.getPageable().getPageSize())
+                .antallIdenter(page.getTotalElements())
+                .contents(mapperFacade.mapAsList(page.getContent(), RsPerson.class))
+                .build();
     }
 
     @LogExceptions
