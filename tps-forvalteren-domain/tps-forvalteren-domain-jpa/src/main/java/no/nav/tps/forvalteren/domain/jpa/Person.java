@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.domain.jpa;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static javax.persistence.CascadeType.ALL;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
 import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
@@ -69,7 +70,7 @@ public class Person extends ChangeStamp {
     private String forkortetNavn;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Statsborgerskap> statsborgerskap;
 
     @Column(name = "SPESREG", length = 1)
@@ -85,14 +86,14 @@ public class Person extends ChangeStamp {
     private String sivilstand;
 
     @OrderBy("sivilstandRegdato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Sivilstand> sivilstander;
 
     @Column(name = "SIVILSTAND_REGDATO")
     private LocalDateTime sivilstandRegdato;
 
     @OrderBy("flyttedato desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<InnvandretUtvandret> innvandretUtvandret;
 
     @Column(name = "EGEN_ANSATT_DATO_FOM")
@@ -114,11 +115,11 @@ public class Person extends ChangeStamp {
     private String beskrSikkerhetTiltak;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Adresse> boadresse;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Postadresse> postadresse;
 
     @Column(name = "REGDATO")
@@ -129,23 +130,23 @@ public class Person extends ChangeStamp {
     private Gruppe gruppe;
 
     @OrderBy("relasjonTypeNavn desc, id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Relasjon> relasjoner;
 
     @OrderBy("historicIdentOrder desc")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = ALL)
     private List<IdentHistorikk> identHistorikk;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<MidlertidigAdresse> midlertidigAdresse;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Vergemaal> vergemaal;
 
     @OrderBy("id desc")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade = ALL)
     private List<Fullmakt> fullmakt;
 
     @Column(name = "OPPRETTET_DATO")
