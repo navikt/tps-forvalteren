@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.OpprettPersonUtil.extractMainPerson;
 
 import java.util.Iterator;
 import java.util.List;

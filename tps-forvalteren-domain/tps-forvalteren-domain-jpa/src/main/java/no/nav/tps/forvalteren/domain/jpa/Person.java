@@ -26,6 +26,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -325,28 +327,39 @@ public class Person extends ChangeStamp {
         return this;
     }
 
+    @JsonIgnore
     public boolean isUtenFastBopel() {
         return isTrue(utenFastBopel) || "UFB".equals(getSpesreg());
     }
 
+    @JsonIgnore
     public boolean isKode6() {
         return "SPSF".equals(getSpesreg());
     }
 
+    @JsonIgnore
     public boolean isForsvunnet() {
         return nonNull(getForsvunnetDato());
     }
 
+    @JsonIgnore
     public boolean isEgenansatt() {
         return nonNull(getEgenAnsattDatoFom()) && isNull(getEgenAnsattDatoTom());
     }
 
+    @JsonIgnore
     public boolean isUtvandret() {
         return !getInnvandretUtvandret().isEmpty() &&
                 UTVANDRET == getInnvandretUtvandret().get(0).getInnutvandret();
     }
 
+    @JsonIgnore
     public boolean isDoedFoedt() {
         return "FDAT".equals(getIdenttype());
+    }
+
+    @JsonIgnore
+    public boolean isKvinne() {
+        return "K".equals(getKjonn());
     }
 }

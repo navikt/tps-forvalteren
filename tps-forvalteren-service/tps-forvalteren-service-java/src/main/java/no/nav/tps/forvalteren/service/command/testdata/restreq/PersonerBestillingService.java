@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static java.lang.Boolean.TRUE;
 import static java.time.LocalDateTime.now;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
@@ -15,9 +16,10 @@ import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.FOEDSEL;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractBarn;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractMainPerson;
-import static no.nav.tps.forvalteren.service.command.testdata.restreq.ExtractOpprettKriterier.extractPartner;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.OpprettPersonUtil.extractBarn;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.OpprettPersonUtil.extractForeldre;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.OpprettPersonUtil.extractMainPerson;
+import static no.nav.tps.forvalteren.service.command.testdata.restreq.OpprettPersonUtil.extractPartner;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -67,53 +69,85 @@ public class PersonerBestillingService {
     private FullmaktService fullmaktService;
 
     public List<Person> createTpsfPersonFromRequest(RsPersonBestillingKriteriumRequest request) {
+
         validateOpprettRequest.validate(request);
-        enforceForeldreKjoennService.setDefaultKjoenn(request);
 
-        List<Person> hovedPersoner;
-        if (request.getOpprettFraIdenter().isEmpty()) {
-            RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
-            hovedPersoner = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier));
+        var tpsfPersoner = new ArrayList<Person>();
+        var hovedPersoner = new ArrayList<Person>();
 
-        } else {
-            hovedPersoner = opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request);
+        for (int i = 0; i < request.getAntall(); i++) {
+
+            enforceForeldreKjoennService.setDefaultKjoenn(request);
+
+            if (request.getOpprettFraIdenter().isEmpty()) {
+                RsPersonKriteriumRequest personKriterier = extractMainPerson(request);
+                hovedPersoner.addAll(savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(personKriterier)));
+
+            } else {
+                hovedPersoner.addAll(opprettPersonerOgSjekkMiljoeService.createEksisterendeIdenter(request));
+            }
+
+            if (nonNull(request.getRelasjoner().getPartner())) {
+                request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
+            }
+            List<Person> partnere = emptyList();
+            if (!request.getRelasjoner().getPartnere().isEmpty()) {
+                RsPersonKriteriumRequest kriteriePartner = extractPartner(request.getRelasjoner().getPartnere(),
+                        request.getHarMellomnavn(), request.getNavSyntetiskIdent());
+                partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
+            }
+
+            List<Person> barn = emptyList();
+            if (!request.getRelasjoner().getBarn().isEmpty()) {
+                RsPersonKriteriumRequest kriterieBarn = extractBarn(request.getRelasjoner().getBarn(),
+                        request.getHarMellomnavn(), request.getNavSyntetiskIdent());
+                barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
+            }
+
+            List<Person> foreldre = emptyList();
+            if (!request.getRelasjoner().getForeldre().isEmpty()) {
+                RsPersonKriteriumRequest kriterieForeldre = extractForeldre(request.getRelasjoner().getForeldre(),
+                        request.getHarMellomnavn(), request.getNavSyntetiskIdent());
+                foreldre = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieForeldre));
+            }
+
+            setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn, foreldre);
+            setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
+            setForeldreRelasjonerPaaPersoner(hovedPersoner, foreldre, request);
+            setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
+            vergemaalService.opprettVerge(request, hovedPersoner);
+            fullmaktService.opprettFullmakt(request, hovedPersoner);
+
+            /**
+             * Add extended criteria etc benyttes kun for Dolly bestillinger som alltid sendes inn en og en.
+             * Forenkler implementasjonen til kun å håndtere en hovedperson.
+             */
+            tpsfPersoner.addAll(extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner.get(i), partnere, barn, foreldre));
         }
-
-        if (nonNull(request.getRelasjoner().getPartner())) {
-            request.getRelasjoner().getPartnere().add(request.getRelasjoner().getPartner());
-        }
-        List<Person> partnere = new ArrayList<>();
-        if (!request.getRelasjoner().getPartnere().isEmpty()) {
-            RsPersonKriteriumRequest kriteriePartner = extractPartner(request.getRelasjoner().getPartnere(),
-                    request.getHarMellomnavn(), request.getNavSyntetiskIdent());
-            partnere = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriteriePartner));
-        }
-
-        List<Person> barn = new ArrayList<>();
-        if (!request.getRelasjoner().getBarn().isEmpty()) {
-            RsPersonKriteriumRequest kriterieBarn = extractBarn(request.getRelasjoner().getBarn(),
-                    request.getHarMellomnavn(), request.getNavSyntetiskIdent());
-            barn = savePersonBulk.execute(opprettPersonerOgSjekkMiljoeService.createNyeIdenter(kriterieBarn));
-        }
-
-        setIdenthistorikkPaaPersoner(request, hovedPersoner, partnere, barn);
-        setRelasjonerPaaPersoner(hovedPersoner, partnere, barn, request);
-        setSivilstandHistorikkPaaPersoner(request, hovedPersoner);
-        vergemaalService.opprettVerge(request, hovedPersoner);
-        fullmaktService.opprettFullmakt(request, hovedPersoner);
-
-        /**
-         * Add extended criteria etc benyttes kun for Dolly bestillinger som alltid sendes inn en og en.
-         * Forenkler implementasjonen til kun å håndtere en hovedperson.
-         */
-        List<Person> tpsfPersoner = extractOpprettKriterier.addExtendedKriterumValuesToPerson(request, hovedPersoner.get(0), partnere, barn);
 
         List<Person> lagredePersoner = savePersonBulk.execute(tpsfPersoner);
 
         if (!hovedPersoner.isEmpty()) {
-            return sortWithBestiltPersonFoerstIListe(lagredePersoner, hovedPersoner.get(0).getIdent());
+            return lagredePersoner;
         } else {
             throw new TpsfFunctionalException("Ingen ledige identer funnet i miljø.");
+        }
+    }
+
+    protected void setForeldreRelasjonerPaaPersoner(List<Person> hovedPerson, List<Person> foreldre, RsPersonBestillingKriteriumRequest request) {
+
+        for (int i = 0; i < request.getRelasjoner().getForeldre().size(); i++) {
+            hovedPerson.stream().findFirst().get().getRelasjoner().add(Relasjon.builder()
+                    .person(hovedPerson.stream().findFirst().get())
+                    .personRelasjonMed(foreldre.get(i))
+                    .relasjonTypeNavn(nullcheckSetDefaultValue(request.getRelasjoner().getForeldre().get(i).getForeldreType(),
+                            foreldre.get(i).isKvinne() ? MOR : FAR).name())
+                    .build());
+            foreldre.get(i).getRelasjoner().add(Relasjon.builder()
+                    .person(foreldre.get(i))
+                    .personRelasjonMed(hovedPerson.stream().findFirst().get())
+                    .relasjonTypeNavn(BARN.getName())
+                    .build());
         }
     }
 
@@ -177,21 +211,6 @@ public class PersonerBestillingService {
                         .build());
     }
 
-    protected static List<Person> sortWithBestiltPersonFoerstIListe(List<Person> personer, String identBestiltPerson) {
-
-        List<Person> sorted = new ArrayList<>();
-        if (!personer.isEmpty()) {
-            for (Person person : personer) {
-                if (person.getIdent().equals(identBestiltPerson)) {
-                    sorted.add(0, person);
-                } else {
-                    sorted.add(person);
-                }
-            }
-        }
-        return sorted;
-    }
-
     protected static void setRelasjonerPaaPersoner(List<Person> personer, List<Person> partnere, List<Person> barn, RsPersonBestillingKriteriumRequest request) {
 
         int antallBarn = barn.isEmpty() ? 0 : barn.size() / personer.size();
@@ -226,7 +245,7 @@ public class PersonerBestillingService {
     }
 
     protected void setIdenthistorikkPaaPersoner(RsPersonBestillingKriteriumRequest request, List<Person> hovedPersoner,
-            List<Person> partnere, List<Person> barna) {
+            List<Person> partnere, List<Person> barna, List<Person> foreldre) {
 
         hovedPersoner.forEach(hovedperson ->
                 personIdenthistorikkService.prepareIdenthistorikk(hovedperson, request.getIdentHistorikk(), request.getNavSyntetiskIdent()));
@@ -237,6 +256,11 @@ public class PersonerBestillingService {
         for (int i = 0; i < barna.size(); i++) {
             personIdenthistorikkService.prepareIdenthistorikk(barna.get(i),
                     request.getRelasjoner().getBarn().get(i).getIdentHistorikk(), request.getNavSyntetiskIdent());
+        }
+
+        for (int i = 0; i < foreldre.size(); i++) {
+            personIdenthistorikkService.prepareIdenthistorikk(foreldre.get(i),
+                    request.getRelasjoner().getForeldre().get(i).getIdentHistorikk(), request.getNavSyntetiskIdent());
         }
     }
 
@@ -267,12 +291,8 @@ public class PersonerBestillingService {
     private static void setRelasjonForBarn(Person forelder, Person barn, boolean isAdopted) {
         if (nonNull(forelder)) {
             forelder.getRelasjoner().add(Relasjon.builder().person(forelder).personRelasjonMed(barn).relasjonTypeNavn((isAdopted ? BARN : FOEDSEL).name()).build());
-            barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn((isKvinne(forelder) ? MOR : FAR).name()).build());
+            barn.getRelasjoner().add(Relasjon.builder().person(barn).personRelasjonMed(forelder).relasjonTypeNavn(forelder.isKvinne() ? MOR.name() : FAR.name()).build());
         }
-    }
-
-    private static boolean isKvinne(Person person) {
-        return "K".equals(person.getKjonn());
     }
 
     private static void lagPartnerRelasjon(Person person, Person partner) {

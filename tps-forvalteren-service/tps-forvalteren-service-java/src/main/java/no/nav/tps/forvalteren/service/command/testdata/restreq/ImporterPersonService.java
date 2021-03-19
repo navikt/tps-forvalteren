@@ -14,6 +14,8 @@ import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPA;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SEPR;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SKIL;
 import static no.nav.tps.ctg.s610.domain.RelasjonType.SKPA;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.FAR;
+import static no.nav.tps.forvalteren.domain.service.RelasjonType.MOR;
 import static no.nav.tps.forvalteren.domain.service.RelasjonType.PARTNER;
 import static no.nav.tps.forvalteren.domain.service.tps.servicerutiner.definition.resolvers.servicerutiner.S610HentGT.PERSON_KERNINFO_SERVICE_ROUTINE;
 import static no.nav.tps.forvalteren.service.command.tps.transformation.response.S610PersonMappingStrategy.getSivilstand;
@@ -37,10 +39,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.ctg.s610.domain.RelasjonType;
@@ -68,7 +69,6 @@ public class ImporterPersonService {
     private static final String STATUS = "status";
     private static final String STATUS_OK = "00";
     private static final String STATUS_WARN = "04";
-    private static final String TPSWS = "tpsws";
 
     private final PersonRepository personRepository;
     private final TpsServiceRoutineService tpsServiceRoutineService;
@@ -181,8 +181,7 @@ public class ImporterPersonService {
                                                 tpsFamilie.stream().anyMatch(person1 ->
                                                         relasjon.getFnrRelasjon().equals(person1.getFodselsnummer())))
                                         .map(relasjon -> Relasjon.builder()
-                                                .relasjonTypeNavn(isGift(relasjon.getTypeRelasjon()) ? PARTNER.name() :
-                                                        relasjon.getTypeRelasjon().name())
+                                                .relasjonTypeNavn(mapRelasjonType(relasjon.getTypeRelasjon()))
                                                 .personRelasjonMed(familie.get(relasjon.getFnrRelasjon()))
                                                 .person(familie.get(person.getFodselsnummer()))
                                                 .build())
@@ -209,6 +208,19 @@ public class ImporterPersonService {
                                                 .findFirst().get().getFnrRelasjon()))
                                         .build()) :
                                 emptyList()));
+    }
+
+    private static boolean isGift(RelasjonType relasjonType) {
+
+        return EKTE == relasjonType ||
+                ENKE == relasjonType ||
+                SKIL == relasjonType ||
+                SEPR == relasjonType ||
+                REPA == relasjonType ||
+                SEPA == relasjonType ||
+                SKPA == relasjonType ||
+                GJPA == relasjonType ||
+                GLAD == relasjonType;
     }
 
     private Person savePerson(Person person) {
@@ -284,33 +296,41 @@ public class ImporterPersonService {
                 .build();
     }
 
-    private Map buildRequest(String ident, String environment) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("fnr", ident);
-        params.put("aksjonsKode", "D1");
-        params.put("environment", environment);
-        return params;
+    private static Map<String, Object> buildRequest(String ident, String environment) {
+
+        return new HashMap<>(Map.of(
+                "fnr", ident,
+                "aksjonsKode", "D1",
+                "environment", environment));
     }
 
-    private static boolean isGift(RelasjonType relasjonType) {
+    private static String mapRelasjonType(RelasjonType relasjonType) {
 
-        return EKTE == relasjonType ||
-                ENKE == relasjonType ||
-                SKIL == relasjonType ||
-                SEPR == relasjonType ||
-                REPA == relasjonType ||
-                SEPA == relasjonType ||
-                SKPA == relasjonType ||
-                GJPA == relasjonType ||
-                GLAD == relasjonType;
+        switch (relasjonType) {
+        case MORA:
+            return MOR.name();
+        case FARA:
+            return FAR.name();
+        case EKTE:
+        case ENKE:
+        case SKIL:
+        case SEPR:
+        case REPA:
+        case SEPA:
+        case SKPA:
+        case GJPA:
+        case GLAD:
+            return PARTNER.name();
+        default:
+            return relasjonType.name();
+        }
     }
 
     private static boolean isStatusOK(ResponseStatus status) {
         return STATUS_OK.equals(status.getKode()) || STATUS_WARN.equals(status.getKode());
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -320,8 +340,7 @@ public class ImporterPersonService {
         private List<S610PersonType> relasjoner;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -331,8 +350,7 @@ public class ImporterPersonService {
         private PersonRelasjon personRelasjon;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -342,8 +360,7 @@ public class ImporterPersonService {
         private Person person;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
@@ -354,8 +371,7 @@ public class ImporterPersonService {
         private String errorMsg;
     }
 
-    @Getter
-    @Setter
+    @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor

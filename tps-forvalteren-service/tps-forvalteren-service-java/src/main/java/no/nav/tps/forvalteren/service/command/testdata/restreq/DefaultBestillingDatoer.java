@@ -6,10 +6,9 @@ import static java.util.Objects.nonNull;
 
 import java.time.LocalDateTime;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public class DefaultBestillingDatoer {
 
     private static final LocalDateTime START_OF_ERA = LocalDateTime.of(1900, 1, 1, 0, 0);
@@ -53,4 +52,37 @@ public class DefaultBestillingDatoer {
             }
         }
     }
+
+    public static LocalDateTime getForeldreProcessedFoedtEtter(Integer alder, LocalDateTime foedtEtter, LocalDateTime foedtFoer) {
+
+        if (nonNull(alder)) {
+            return now().minusYears(alder).minusYears(1);
+        }
+        if (isNull(foedtEtter) && isNull(foedtFoer)) {
+            return now().minusYears(90);
+
+        } else if (isNull(foedtEtter)) {
+            return START_OF_ERA;
+
+        } else {
+            return foedtEtter;
+        }
+    }
+
+    public static LocalDateTime getForeldreProcessedFoedtFoer(Integer alder, LocalDateTime foedtEtter, LocalDateTime foedtFoer) {
+
+        if (nonNull(alder)) {
+            return now().minusYears(alder).minusMonths(3);
+        }
+        if (isNull(foedtEtter) && isNull(foedtFoer)) {
+            return now().minusYears(70);
+
+        } else if (isNull(foedtFoer)) {
+            return now();
+
+        } else {
+            return foedtFoer;
+        }
+    }
 }
+

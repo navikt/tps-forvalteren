@@ -3,6 +3,7 @@ package no.nav.tps.forvalteren.service.command.testdata.skd;
 import static java.util.Arrays.asList;
 import static org.assertj.core.util.Sets.newHashSet;
 import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,6 +46,8 @@ public class SendSkdMeldingTilGitteMiljoerTest {
     @Test
     public void setSendToMultipleEnvironments() {
 
+        when(filterEnvironmentsOnDeployedEnvironment.execute(anySet())).thenReturn(newHashSet(asList(ENV1, ENV2)));
+        when(sendEnSkdMelding.sendSkdMelding(anyString(), eq(skdRequestMeldingDefinition), anyString())).thenReturn("status");
         sendSkdMeldingTilGitteMiljoer.execute(MESSAGE, skdRequestMeldingDefinition, newHashSet(asList(ENV1, ENV2)));
 
         verify(sendEnSkdMelding).sendSkdMelding(eq(MESSAGE), eq(skdRequestMeldingDefinition), eq(ENV1));
