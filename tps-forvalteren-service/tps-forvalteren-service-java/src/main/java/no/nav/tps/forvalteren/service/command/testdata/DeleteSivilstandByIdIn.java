@@ -31,7 +31,7 @@ public class DeleteSivilstandByIdIn {
 
         List<List<Long>> partitionsIds = Lists.partition(personIds, ORACLE_MAX_IN_SET_ELEMENTS);
         for (List<Long> partition : partitionsIds) {
-            sivilstandRepository.deleteByIdIn(new HashSet(partition));
+            sivilstandRepository.deleteByIdIn(new HashSet<>(partition));
         }
     }
 

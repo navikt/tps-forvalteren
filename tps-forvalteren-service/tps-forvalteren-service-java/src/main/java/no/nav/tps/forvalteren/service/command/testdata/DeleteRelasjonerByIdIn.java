@@ -29,7 +29,7 @@ public class DeleteRelasjonerByIdIn {
 
         List<List<Long>> partitionsIds = Lists.partition(personIds, ORACLE_MAX_IN_SET_ELEMENTS);
         for (List<Long> partition : partitionsIds) {
-            relasjonRepository.deleteByPersonRelasjonMedIdIn(new HashSet(partition));
+            relasjonRepository.deleteByPersonRelasjonMedIdIn(new HashSet<>(partition));
         }
     }
 

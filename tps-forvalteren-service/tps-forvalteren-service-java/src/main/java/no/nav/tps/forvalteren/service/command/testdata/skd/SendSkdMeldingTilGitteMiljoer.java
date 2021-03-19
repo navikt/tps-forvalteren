@@ -22,7 +22,7 @@ public class SendSkdMeldingTilGitteMiljoer {
     public Map<String, String> execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
 
         Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-        Map<String, String> responseSkdMeldinger = new HashMap(envToCheck.size());
+        Map<String, String> responseSkdMeldinger = new HashMap<>(envToCheck.size());
 
         for (String env : envToCheck) {
             String responsMelding = sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env);
