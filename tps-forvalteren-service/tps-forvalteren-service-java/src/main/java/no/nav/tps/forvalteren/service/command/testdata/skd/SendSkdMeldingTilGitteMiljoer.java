@@ -1,8 +1,8 @@
 package no.nav.tps.forvalteren.service.command.testdata.skd;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,8 @@ public class SendSkdMeldingTilGitteMiljoer {
     public Map<String, String> execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, Set<String> environments) {
 
         Set<String> envToCheck = filterEnvironmentsOnDeployedEnvironment.execute(environments);
-        Map<String, String> responseSkdMeldinger = new HashMap<>(envToCheck.size());
-
-        for (String env : envToCheck) {
-            String responsMelding = sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env);
-            responseSkdMeldinger.put(env, responsMelding);
-        }
-        return responseSkdMeldinger;
+        return envToCheck.parallelStream()
+                .collect(Collectors.toMap(env -> env, env -> sendEnSkdMelding.sendSkdMelding(skdMelding, skdRequestMeldingDefinition, env)));
     }
 
     public String execute(String skdMelding, TpsSkdRequestMeldingDefinition skdRequestMeldingDefinition, String environment) {

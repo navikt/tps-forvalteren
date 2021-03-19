@@ -41,7 +41,7 @@ public class Postadresse {
     @EqualsAndHashCode.Exclude
     @Getter(AccessLevel.NONE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSON_ID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
     @Column(name = "POST_LINJE_1", length = 30)

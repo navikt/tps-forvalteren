@@ -53,7 +53,7 @@ public class SavePersonListService {
                 person.getSivilstander().forEach(sivilstand -> sivilstand.setPerson(person));
                 utdaterteRelasjonIder = hentUtdaterteRelasjonIder.execute(person, personDb);
                 adresseRepository.deleteAllByPerson(personDb);
-                personDb.getPostadresse().forEach(adresse -> postadresseRepository.deleteById(adresse.getId()));
+                personDb.getPostadresse().forEach(adresse -> postadresseRepository.deletePostadresseById(adresse.getId()));
             }
 
             adresseOgSpesregService.updateAdresseOgSpesregAttributes(person);

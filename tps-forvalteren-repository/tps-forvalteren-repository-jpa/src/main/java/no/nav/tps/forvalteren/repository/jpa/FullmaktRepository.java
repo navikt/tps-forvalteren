@@ -1,9 +1,9 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import java.util.Set;
+import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
 import org.springframework.data.repository.Repository;
 
-import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
+import java.util.List;
 
 public interface FullmaktRepository extends Repository<Fullmakt, Long> {
 
@@ -13,7 +13,7 @@ public interface FullmaktRepository extends Repository<Fullmakt, Long> {
 
     void deleteById(Long id);
 
-    int deleteByIdIn(Set<Long> ids);
+    void deleteByIdIn(List<Long> ids);
 
     void deleteAll();
 }

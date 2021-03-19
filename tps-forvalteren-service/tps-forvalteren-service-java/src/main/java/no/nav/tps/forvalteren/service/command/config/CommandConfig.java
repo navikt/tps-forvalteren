@@ -256,8 +256,8 @@ public class CommandConfig {
         return new VergemaalAarsakskode37();
     }
 
-    @Bean
-    EndreKontaktopplysninger kontaktopplysninger() {
+    @Bean EndreKontaktopplysninger kontaktopplysninger() {
         return new EndreKontaktopplysninger();
     }
+
 }
