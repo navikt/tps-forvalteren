@@ -2,6 +2,8 @@ package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.Collection;
 import java.util.List;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import no.nav.tps.forvalteren.domain.jpa.Person;
 
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
     List<Person> findAllByOrderByIdAsc();
