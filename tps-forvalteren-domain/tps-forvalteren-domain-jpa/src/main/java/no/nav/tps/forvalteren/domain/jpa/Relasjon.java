@@ -42,7 +42,7 @@ public class Relasjon {
     @ManyToOne(fetch = FetchType.EAGER)
     private Person person;
 
-    @JoinColumn(name = "person_relasjon_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "person_relasjon_id", nullable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Person personRelasjonMed;
 

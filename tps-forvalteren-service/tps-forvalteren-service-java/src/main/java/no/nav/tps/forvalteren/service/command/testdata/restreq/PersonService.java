@@ -1,7 +1,6 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.partition;
-import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toSet;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
@@ -13,21 +12,25 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
 import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteRelasjonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteSivilstandByIdIn;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Service
@@ -38,6 +41,9 @@ public class PersonService {
     private final IdenthistorikkRepository identhistorikkRepository;
     private final IdentpoolService identpoolService;
     private final TpsPersonService tpsPersonService;
+    private final DeletePersonerByIdIn deletePersonerByIdIn;
+    private final DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
+    private final DeleteSivilstandByIdIn deleteSivilstandByIdIn;
 
     public List<Person> getPersonerByIdenter(List<String> identer) {
 
@@ -50,7 +56,6 @@ public class PersonService {
         return resultat;
     }
 
-    @Transactional
     public void deletePersons(List<String> miljoer, List<String> identer) {
 
         List<Person> persons = personRepository.findByIdentIn(new HashSet<>(identer));
@@ -64,7 +69,6 @@ public class PersonService {
                 persons.stream()
                         .map(Person::getRelasjoner)
                         .flatMap(Collection::stream)
-                        .filter(relasjon -> nonNull(relasjon.getPersonRelasjonMed()))
                         .map(Relasjon::getPersonRelasjonMed)
                         .collect(Collectors.toSet()),
                 persons.stream()
@@ -85,7 +89,19 @@ public class PersonService {
                 .flatMap(Collection::stream)
                 .collect(toSet());
 
-        personRepository.deleteByIdIn(allConnectedPeople.stream()
+        deleteSivilstandByIdIn.delete(allConnectedPeople.stream()
+                .map(Person::getSivilstander)
+                .flatMap(Collection::stream)
+                .map(Sivilstand::getId)
+                .collect(toSet()));
+
+        deleteRelasjonerByIdIn.delete(allConnectedPeople.stream()
+                .map(Person::getRelasjoner)
+                .flatMap(Collection::stream)
+                .map(Relasjon::getId)
+                .collect(Collectors.toSet()));
+
+        deletePersonerByIdIn.delete(allConnectedPeople.stream()
                 .map(Person::getId)
                 .collect(Collectors.toSet()));
 

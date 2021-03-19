@@ -20,6 +20,9 @@ import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
+import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteRelasjonerByIdIn;
+import no.nav.tps.forvalteren.service.command.testdata.DeleteSivilstandByIdIn;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,6 +39,15 @@ public class PersonServiceTest {
 
     @Mock
     private TpsPersonService tpsPersonService;
+
+    @Mock
+    private DeletePersonerByIdIn deletePersonerByIdIn;
+
+    @Mock
+    private DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
+
+    @Mock
+    private DeleteSivilstandByIdIn deleteSivilstandByIdIn;
 
     @Mock
     private IdenthistorikkRepository identhistorikkRepository;
@@ -56,8 +68,10 @@ public class PersonServiceTest {
 
         personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
 
-        verify(personRepository).deleteByIdIn(anySet());
         verify(tpsPersonService).sendDeletePersonMeldinger(anyList() ,anySet());
+        verify(deletePersonerByIdIn).delete(anySet());
+        verify(deleteSivilstandByIdIn).delete(anySet());
+        verify(deleteRelasjonerByIdIn).delete(anySet());
         verify(identpoolService).recycleIdents(anySet());
     }
 
