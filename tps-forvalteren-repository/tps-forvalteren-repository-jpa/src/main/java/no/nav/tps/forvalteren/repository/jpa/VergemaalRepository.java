@@ -1,6 +1,6 @@
 package no.nav.tps.forvalteren.repository.jpa;
 
-import java.util.List;
+import java.util.Set;
 import org.springframework.data.repository.Repository;
 
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
@@ -13,7 +13,7 @@ public interface VergemaalRepository extends Repository<Vergemaal, Long> {
 
     void deleteById(Long id);
 
-    void deleteByIdIn(List<Long> ids);
+    int deleteByIdIn(Set<Long> ids);
 
     void deleteAll();
 }

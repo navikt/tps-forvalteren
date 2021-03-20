@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.jms.JMSException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +88,6 @@ public class LagreTilTPSCompTest extends AbstractTestdataControllerComponentTest
     }
 
     @Test
-    @Ignore
     @WithUserDetails(TestUserDetails.USERNAME)
     public void shouldSendSuccesfulSkdMessagesToTPS() throws Exception {
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)

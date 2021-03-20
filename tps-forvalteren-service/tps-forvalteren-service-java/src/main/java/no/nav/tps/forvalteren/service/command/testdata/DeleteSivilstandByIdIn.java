@@ -9,39 +9,41 @@ import javax.persistence.EntityManagerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
-import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.repository.jpa.RelasjonRepository;
+import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
+import no.nav.tps.forvalteren.repository.jpa.SivilstandRepository;
 
 @Service
-public class DeleteRelasjonerByIdIn {
+public class DeleteSivilstandByIdIn {
 
-    private RelasjonRepository relasjonRepository;
+    private SivilstandRepository sivilstandRepository;
     private SessionFactory sessionFactory;
 
-    public DeleteRelasjonerByIdIn(EntityManagerFactory factory, RelasjonRepository relasjonRepository) {
+    public DeleteSivilstandByIdIn(EntityManagerFactory factory, SivilstandRepository sivilstandRepository) {
         this.sessionFactory = factory.unwrap(SessionFactory.class);
-        this.relasjonRepository = relasjonRepository;
+        this.sivilstandRepository = sivilstandRepository;
     }
 
+    @Transactional
     public void execute(List<Long> personIds) {
 
         List<List<Long>> partitionsIds = Lists.partition(personIds, ORACLE_MAX_IN_SET_ELEMENTS);
         for (List<Long> partition : partitionsIds) {
-            relasjonRepository.deleteByPersonRelasjonMedIdIn(new HashSet<>(partition));
+            sivilstandRepository.deleteByIdIn(new HashSet<>(partition));
         }
     }
 
     public void delete(Set<Long> relasjonIds) {
-
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         relasjonIds.forEach(id ->
-                session.delete(session.get(Relasjon.class, id)));
+                session.delete(session.get(Sivilstand.class, id)));
 
         session.getTransaction().commit();
         session.close();
+
     }
 }
