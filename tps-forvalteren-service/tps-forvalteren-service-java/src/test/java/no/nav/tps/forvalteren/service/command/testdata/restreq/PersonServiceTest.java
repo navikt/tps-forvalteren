@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.singletonList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.verify;
@@ -20,9 +21,6 @@ import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
-import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.DeleteRelasjonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.DeleteSivilstandByIdIn;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,13 +39,7 @@ public class PersonServiceTest {
     private TpsPersonService tpsPersonService;
 
     @Mock
-    private DeletePersonerByIdIn deletePersonerByIdIn;
-
-    @Mock
-    private DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
-
-    @Mock
-    private DeleteSivilstandByIdIn deleteSivilstandByIdIn;
+    private DeletePersonService deletePersonService;
 
     @Mock
     private IdenthistorikkRepository identhistorikkRepository;
@@ -64,14 +56,12 @@ public class PersonServiceTest {
     @Test
     public void deletePersons_OK() {
 
-        when(personRepository.findByIdentIn(anySet())).thenReturn(singletonList(Person.builder().build()));
+        when(personRepository.findByIdentIn(anySet())).thenReturn(singletonList(Person.builder().id(1L).build()));
 
         personService.deletePersons(new ArrayList<>(), newArrayList(IDENT1));
 
         verify(tpsPersonService).sendDeletePersonMeldinger(anyList() ,anySet());
-        verify(deletePersonerByIdIn).delete(anySet());
-        verify(deleteSivilstandByIdIn).delete(anySet());
-        verify(deleteRelasjonerByIdIn).delete(anySet());
+        verify(deletePersonService).execute(anyLong());
         verify(identpoolService).recycleIdents(anySet());
     }
 

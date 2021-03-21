@@ -20,5 +20,8 @@ public interface RelasjonRepository extends CrudRepository<Relasjon, Long> {
     void deleteByIdIn(Set<Long> ids);
 
     @Modifying
+    void deleteByPersonRelasjonMedId(Long personId);
+
+    @Modifying
     void deleteByPersonRelasjonMedIdIn(Set<Long> personIds);
 }

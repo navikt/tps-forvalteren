@@ -11,6 +11,7 @@ public interface IdenthistorikkRepository extends Repository<IdentHistorikk, Lon
 
     IdentHistorikk findByPersonId(Long id);
 
+    @Modifying
     Iterable<Doedsmelding> save(Iterable<Doedsmelding> doedsmeldinger);
 
     @Modifying
@@ -18,4 +19,7 @@ public interface IdenthistorikkRepository extends Repository<IdentHistorikk, Lon
 
     @Modifying
     void deleteAll();
+
+    @Modifying
+    int deleteByAliasPersonId(Long id);
 }

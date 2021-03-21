@@ -132,9 +132,17 @@ public class TestdataBestillingsController {
     @LogExceptions
     @RequestMapping(value = "/personer", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    @Operation(method = "deletePersons")
+    @Operation(method = "deletePersons", description = "Slett flere personer uten relaterte personer")
     public void slettPersoner(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam List<String> identer) {
         personService.deletePersons(miljoer, identer);
+    }
+
+    @LogExceptions
+    @RequestMapping(value = "/person", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(method = "deletePerson", description = "Slett en person med tilhørende personer i relasjon etc")
+    public void slettPersoner(@RequestParam(required = false, defaultValue = "") List<String> miljoer, @RequestParam String ident) {
+        personService.deletePerson(miljoer, ident);
     }
 
     @LogExceptions

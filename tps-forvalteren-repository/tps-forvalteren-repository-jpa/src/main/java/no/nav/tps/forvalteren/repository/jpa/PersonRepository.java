@@ -2,6 +2,7 @@ package no.nav.tps.forvalteren.repository.jpa;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
     List<Person> findByIdentIn(Collection<String> identListe);
 
-    List<Person> findByIdIn(List<Long> ids);
+    Set<Person> findByIdIn(Set<Long> ids);
 
     Person findByIdent(String ident);
 

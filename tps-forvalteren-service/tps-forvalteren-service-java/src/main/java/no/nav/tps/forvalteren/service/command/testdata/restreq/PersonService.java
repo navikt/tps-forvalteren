@@ -1,7 +1,7 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
 import static com.google.common.collect.Lists.partition;
-import static java.util.stream.Collectors.toSet;
+import static java.util.Collections.singletonList;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.TestdataConstants.ORACLE_MAX_IN_SET_ELEMENTS;
 
 import java.util.ArrayList;
@@ -13,26 +13,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.domain.jpa.Fullmakt;
 import no.nav.tps.forvalteren.domain.jpa.IdentHistorikk;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.jpa.Relasjon;
-import no.nav.tps.forvalteren.domain.jpa.Sivilstand;
 import no.nav.tps.forvalteren.domain.jpa.Vergemaal;
 import no.nav.tps.forvalteren.repository.jpa.IdenthistorikkRepository;
 import no.nav.tps.forvalteren.repository.jpa.PersonRepository;
 import no.nav.tps.forvalteren.service.IdentpoolService;
 import no.nav.tps.forvalteren.service.command.exceptions.NotFoundException;
-import no.nav.tps.forvalteren.service.command.testdata.DeletePersonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.DeleteRelasjonerByIdIn;
-import no.nav.tps.forvalteren.service.command.testdata.DeleteSivilstandByIdIn;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PersonService {
@@ -41,10 +40,9 @@ public class PersonService {
     private final IdenthistorikkRepository identhistorikkRepository;
     private final IdentpoolService identpoolService;
     private final TpsPersonService tpsPersonService;
-    private final DeletePersonerByIdIn deletePersonerByIdIn;
-    private final DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
-    private final DeleteSivilstandByIdIn deleteSivilstandByIdIn;
+    private final DeletePersonService deletePersonService;
 
+    @Transactional
     public List<Person> getPersonerByIdenter(List<String> identer) {
 
         //Begrenser maks antall identer i SQL spørring
@@ -56,7 +54,39 @@ public class PersonService {
         return resultat;
     }
 
+    public void deletePerson(List<String> miljoer, String ident) {
+
+        deletePersonsContent(miljoer, getPersonsFromDb(singletonList(ident), true));
+    }
+
     public void deletePersons(List<String> miljoer, List<String> identer) {
+
+        deletePersonsContent(miljoer, getPersonsFromDb(identer, false));
+    }
+
+    private void deletePersonsContent(List<String> miljoer, Set<Person> persons) {
+
+        log.info("Sletter person(er) med id {}", persons.stream().map(Person::getId)
+                .map(id -> id.toString()).collect(Collectors.joining(", ")));
+        try {
+            persons.forEach(person -> deletePersonService.execute(person.getId()));
+        } catch (DataIntegrityViolationException e) {
+            log.info("Post delvis slettet, forsøker en gang til ...");
+            persons.forEach(person -> deletePersonService.execute(person.getId()));
+        }
+
+        //Wipe persons in TPS
+        tpsPersonService.sendDeletePersonMeldinger(miljoer, persons.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toSet()));
+
+        identpoolService.recycleIdents(persons.stream()
+                .map(Person::getIdent)
+                .collect(Collectors.toSet()));
+    }
+
+    @Transactional
+    public Set<Person> getPersonsFromDb(List<String> identer, boolean includeRelatedPeople) {
 
         List<Person> persons = personRepository.findByIdentIn(new HashSet<>(identer));
 
@@ -64,7 +94,9 @@ public class PersonService {
             throw new NotFoundException("Ingen personer funnet");
         }
 
-        Set<Person> allConnectedPeople = Stream.of(
+        return includeRelatedPeople ?
+
+                Stream.of(
                 persons,
                 persons.stream()
                         .map(Person::getRelasjoner)
@@ -87,34 +119,9 @@ public class PersonService {
                         .map(Vergemaal::getVerge)
                         .collect(Collectors.toSet()))
                 .flatMap(Collection::stream)
-                .collect(toSet());
+                .collect(Collectors.toSet()) :
 
-        deleteSivilstandByIdIn.delete(allConnectedPeople.stream()
-                .map(Person::getSivilstander)
-                .flatMap(Collection::stream)
-                .map(Sivilstand::getId)
-                .collect(toSet()));
-
-        deleteRelasjonerByIdIn.delete(allConnectedPeople.stream()
-                .map(Person::getRelasjoner)
-                .flatMap(Collection::stream)
-                .map(Relasjon::getId)
-                .collect(Collectors.toSet()));
-
-        deletePersonerByIdIn.delete(allConnectedPeople.stream()
-                .map(Person::getId)
-                .collect(Collectors.toSet()));
-
-        //Wipe persons in TPS
-        tpsPersonService.sendDeletePersonMeldinger(miljoer, Stream.of(persons, allConnectedPeople)
-                .flatMap(Collection::stream)
-                .map(Person::getIdent)
-                .collect(Collectors.toSet()));
-
-        identpoolService.recycleIdents(Stream.of(persons, allConnectedPeople)
-                .flatMap(Collection::stream)
-                .map(Person::getIdent)
-                .collect(Collectors.toSet()));
+                new HashSet<>(persons);
     }
 
     @Transactional

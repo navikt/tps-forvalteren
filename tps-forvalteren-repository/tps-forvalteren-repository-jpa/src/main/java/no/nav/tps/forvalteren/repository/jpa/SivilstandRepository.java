@@ -10,4 +10,7 @@ public interface SivilstandRepository extends CrudRepository<Sivilstand, Long> {
 
     @Modifying
     int deleteByIdIn(Set<Long> ids);
+
+    @Modifying
+    int deleteByPersonRelasjonMedId(Long id);
 }

@@ -7,10 +7,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -22,9 +22,7 @@ public class DeleteRelasjonerByIdInTest {
     @Mock
     private RelasjonRepository relasjonRepository;
 
-    @Mock
-    private EntityManagerFactory entityManagerFactory;
-
+    @InjectMocks
     private DeleteRelasjonerByIdIn deleteRelasjonerByIdIn;
     
     @Mock
@@ -32,7 +30,6 @@ public class DeleteRelasjonerByIdInTest {
     
     @Before
     public void setup() {
-        deleteRelasjonerByIdIn = new DeleteRelasjonerByIdIn(entityManagerFactory, relasjonRepository);
         when(personIds.size()).thenReturn(ORACLE_MAX_IN_SET_ELEMENTS);
     }
     
