@@ -51,9 +51,8 @@ public class HentDatoFraIdentService {
     }
 
     private int getDay(String ident) {
-        // Fix D-number
-        return ident.charAt(0) >= '4' ? parseInt(ident.substring(0, 2)) - 40 :
-                parseInt(ident.substring(0, 2));
+
+        return parseInt(ident.substring(0, 2)) % 40;
     }
 
     private int getMonth(String ident) {
