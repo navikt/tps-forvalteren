@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,10 +39,11 @@ public class Postadresse {
     @Column(name = "POSTADRESSE_ID", nullable = false, updatable = false)
     private Long id;
 
-    @EqualsAndHashCode.Exclude
+    @JsonIgnore
     @Getter(AccessLevel.NONE)
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSON_ID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "PERSON_ID", nullable = false)
     private Person person;
 
     @Column(name = "POST_LINJE_1", length = 30)
