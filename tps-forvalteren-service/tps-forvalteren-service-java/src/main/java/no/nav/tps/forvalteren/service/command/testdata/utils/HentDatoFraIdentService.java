@@ -58,28 +58,6 @@ public class HentDatoFraIdentService {
 
     private int getMonth(String ident) {
 
-        char monthId = ident.charAt(2);
-        int month = parseInt(ident.substring(2, 4));
-
-        // Tenor-syntetic FNR/DNR
-        if (month >= '8') {
-            return month - 80;
-
-        // NAV-syntetic BOST
-        } else if (monthId >= '6') {
-            return month - 60;
-
-        // NAV-syntetic FNR/DNR
-        } else if (monthId >= '4') {
-            return month - 40;
-
-        // BOST
-        } else if (monthId >= '2') {
-            return month - 20;
-
-        // FNR/DNR
-        } else {
-            return month;
-        }
+        return parseInt(ident.substring(2, 4)) % 20;
     }
 }
