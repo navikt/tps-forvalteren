@@ -2,7 +2,6 @@ package no.nav.tps.forvalteren.domain.rs.skd;
 
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +17,5 @@ public class RsSkdEndringsmeldingIdListToTps {
     @NotEmpty
     private String environment;
 
-    @NotEmpty
-    @Size(min = 1)
     private List<Long> ids;
-
 }
