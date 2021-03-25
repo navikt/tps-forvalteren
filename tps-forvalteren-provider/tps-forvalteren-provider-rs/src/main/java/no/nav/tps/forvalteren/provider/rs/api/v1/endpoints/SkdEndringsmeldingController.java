@@ -1,12 +1,13 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints;
 
+import static java.util.Objects.nonNull;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
@@ -51,6 +53,7 @@ import no.nav.tps.forvalteren.service.command.tps.skdmelding.TpsPersonService;
 
 @Transactional
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "api/v1/endringsmelding/skd")
 @PreAuthorize("hasRole('ROLE_TPSF_SKDMELDING')")
 public class SkdEndringsmeldingController {
@@ -58,42 +61,19 @@ public class SkdEndringsmeldingController {
     private static final String REST_SERVICE_NAME = "testdata";
     private static final int MAX_ANTALL_MELDINGER_UTEN_PAGINERING = 30000;
 
-    @Autowired
-    private MapperFacade mapper;
-
-    @Autowired
-    private SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
-
-    @Autowired
-    private UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
-
-    @Autowired
-    private CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
-
-    @Autowired
-    private CreateAndSaveSkdEndringsmeldingerFromTextService createAndSaveSkdEndringsmeldingerFromTextService;
-
-    @Autowired
-    private ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
-
-    @Autowired
-    private SendEndringsmeldingToTpsService sendEndringsmeldingToTpsService;
-
-    @Autowired
-    private GetLoggForGruppeService getLoggForGruppeService;
-
-    @Autowired
-    private SkdEndringsmeldingService skdEndringsmeldingService;
-
-    @Autowired
-    private SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
-
-    @Autowired
-    private TpsPersonService tpsPersonService;
-
-    @Autowired
-    private IdentpoolService identpoolService;
-
+    private final MapperFacade mapper;
+    private final SkdEndringsmeldingsgruppeService skdEndringsmeldingsgruppeService;
+    private final UpdateSkdEndringsmeldingService updateSkdEndringsmeldingService;
+    private final CreateSkdEndringsmeldingFromTypeService createSkdEndringsmeldingFromTypeService;
+    private final CreateAndSaveSkdEndringsmeldingerFromTextService createAndSaveSkdEndringsmeldingerFromTextService;
+    private final ConvertMeldingFromJsonToText convertMeldingFromJsonToText;
+    private final SendEndringsmeldingToTpsService sendEndringsmeldingToTpsService;
+    private final GetLoggForGruppeService getLoggForGruppeService;
+    private final SkdEndringsmeldingService skdEndringsmeldingService;
+    private final SaveSkdEndringsmeldingerService saveSkdEndringsmeldingerService;
+    private final TpsPersonService tpsPersonService;
+    private final IdentpoolService identpoolService;
+final
     @LogExceptions
     @RequestMapping(value = "/grupper", method = RequestMethod.GET)
     public List<RsSkdEndringsmeldingGruppe> getGrupper() {
@@ -190,8 +170,12 @@ public class SkdEndringsmeldingController {
 
     @LogExceptions
     @RequestMapping(value = "/send/{skdMeldingGruppeId}", method = RequestMethod.POST)
+    @Operation(description = "Send partiell eller hel gruppe (når ids = null) til TPS")
     public AvspillingResponse sendToTps(@PathVariable Long skdMeldingGruppeId, @RequestBody RsSkdEndringsmeldingIdListToTps skdEndringsmeldingIdListToTps) {
-        return sendEndringsmeldingToTpsService.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
+    
+        return nonNull(skdEndringsmeldingIdListToTps.getIds()) ?
+                sendEndringsmeldingToTpsService.execute(skdMeldingGruppeId, skdEndringsmeldingIdListToTps) :
+                sendEndringsmeldingToTpsService.sendHeleGruppen(skdMeldingGruppeId, skdEndringsmeldingIdListToTps);
     }
 
     @LogExceptions

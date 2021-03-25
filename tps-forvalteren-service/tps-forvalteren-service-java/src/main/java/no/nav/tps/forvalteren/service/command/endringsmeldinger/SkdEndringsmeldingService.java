@@ -8,13 +8,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
+import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmelding;
 import no.nav.tps.forvalteren.domain.jpa.SkdEndringsmeldingGruppe;
 import no.nav.tps.forvalteren.domain.rs.skd.RsMeldingstype;
@@ -22,19 +22,15 @@ import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingGruppeRepository;
 import no.nav.tps.forvalteren.repository.jpa.SkdEndringsmeldingRepository;
 
 @Service
+@RequiredArgsConstructor
 public class SkdEndringsmeldingService {
 
     protected static final int ANTALL_MELDINGER_PER_PAGE = 10;
     private static final int PARTITION_SIZE = 1000;
 
-    @Autowired
-    private SkdEndringsmeldingRepository skdEndringsmeldingRepository;
-
-    @Autowired
-    private SkdEndringsmeldingGruppeRepository gruppeRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final SkdEndringsmeldingRepository skdEndringsmeldingRepository;
+    private final SkdEndringsmeldingGruppeRepository gruppeRepository;
+    private final ObjectMapper objectMapper;
 
     public int countMeldingerInGruppe(Long gruppeId) {
         return skdEndringsmeldingRepository.countMeldingerInGruppe(gruppeId);
@@ -45,7 +41,7 @@ public class SkdEndringsmeldingService {
     }
 
     public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {
-        return skdEndringsmeldingRepository.findAllByGruppeId(gruppeId, PageRequest.of(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
+        return skdEndringsmeldingRepository.findAllByGruppeIdOrderByIdAsc(gruppeId, PageRequest.of(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
     }
 
     public List<RsMeldingstype> convertSkdEndringsmeldingerToRsMeldingstyper(List<SkdEndringsmelding> skdEndringsmeldinger) throws IOException {

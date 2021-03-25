@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.service.command.endringsmeldinger;
 
+import static java.util.Objects.nonNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +42,7 @@ public class SendSkdMeldingerOgLeggTilResponslisteService {
         StatusPaaAvspiltSkdMelding respons = StatusPaaAvspiltSkdMelding.builder()
                 .status(status)
                 .foedselsnummer(foedselsnummer)
-                .sekvensnummer(Long.parseLong(sekvensnummer))
+                .sekvensnummer(nonNull(sekvensnummer) ? Long.parseLong(sekvensnummer) : null)
                 .build();
         avspillingResponse.addStatusFraFeilendeMeldinger(respons);
         avspillingResponse.incrementAntallFeilet();

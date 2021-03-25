@@ -18,7 +18,7 @@ public interface SkdEndringsmeldingRepository extends PagingAndSortingRepository
 
     void deleteByIdIn(List<Long> ids);
 
-    Page<SkdEndringsmelding> findAllByGruppeId(Long gruppeId, Pageable pageable);
+    Page<SkdEndringsmelding> findAllByGruppeIdOrderByIdAsc(Long gruppeId, Pageable pageable);
 
     @Query(value = "SELECT count(*) FROM T_SKD_ENDRINGSMELDING WHERE SKD_ENDRINGSMELDING_GRUPPE_ID=:gruppeId", nativeQuery = true)
     int countMeldingerInGruppe(@Param("gruppeId") Long gruppeId);
