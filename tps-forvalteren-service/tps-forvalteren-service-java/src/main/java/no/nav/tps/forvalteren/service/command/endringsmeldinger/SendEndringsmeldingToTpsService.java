@@ -88,8 +88,8 @@ public class SendEndringsmeldingToTpsService {
 
         int pageNo = 0;
         var pacemaker = new AtomicLong(0);
-        Page<SkdEndringsmelding> meldinger = skdEndringsmeldingRepository.findAllByGruppeId(skdMeldingsGruppeId,
-                PageRequest.of(pageNo, 10));
+        Page<SkdEndringsmelding> meldinger = skdEndringsmeldingRepository.findAllByGruppeIdOrderByIdAsc(skdMeldingsGruppeId,
+                PageRequest.of(pageNo, 1000));
 
         do {
             meldinger.getContent().stream()
@@ -106,8 +106,8 @@ public class SendEndringsmeldingToTpsService {
                         tpsPacemaker.iteration(pacemaker.addAndGet(1));
                     });
 
-            meldinger = skdEndringsmeldingRepository.findAllByGruppeId(skdMeldingsGruppeId,
-                    PageRequest.of(++pageNo, 10));
+            meldinger = skdEndringsmeldingRepository.findAllByGruppeIdOrderByIdAsc(skdMeldingsGruppeId,
+                    PageRequest.of(++pageNo, 1000));
 
         }  while (pageNo < meldinger.getTotalPages());
 
