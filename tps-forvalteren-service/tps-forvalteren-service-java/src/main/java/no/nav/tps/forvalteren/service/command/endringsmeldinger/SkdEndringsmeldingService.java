@@ -41,7 +41,7 @@ public class SkdEndringsmeldingService {
     }
 
     public List<SkdEndringsmelding> findSkdEndringsmeldingerOnPage(Long gruppeId, int pageNumber) {
-        return skdEndringsmeldingRepository.findAllByGruppeIdOrderByIdAsc(gruppeId, PageRequest.of(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
+        return skdEndringsmeldingRepository.findAllByGruppeId(gruppeId, PageRequest.of(pageNumber, ANTALL_MELDINGER_PER_PAGE)).getContent();
     }
 
     public List<RsMeldingstype> convertSkdEndringsmeldingerToRsMeldingstyper(List<SkdEndringsmelding> skdEndringsmeldinger) throws IOException {
