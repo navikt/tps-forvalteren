@@ -76,11 +76,11 @@ public class SkdEndringsmeldingServiceTest {
                 SkdEndringsmelding.builder().id(MELDINGS_ID_2).build());
 
         PageImpl<SkdEndringsmelding> page = new PageImpl<>(skdEndringsmeldinger);
-        when(skdEndringsmeldingRepository.findAllByGruppeIdOrderByIdAsc(eq(gruppeId), any())).thenReturn(page);
+        when(skdEndringsmeldingRepository.findAllByGruppeId(eq(gruppeId), any())).thenReturn(page);
 
         List<SkdEndringsmelding> endringsmeldinger = skdEndringsmeldingService.findSkdEndringsmeldingerOnPage(gruppeId, 0);
 
-        verify(skdEndringsmeldingRepository).findAllByGruppeIdOrderByIdAsc(eq(gruppeId), ArgumentMatchers.any());
+        verify(skdEndringsmeldingRepository).findAllByGruppeId(eq(gruppeId), ArgumentMatchers.any());
         assertThat(endringsmeldinger.size(), is(equalTo(2)));
         assertThat(endringsmeldinger.get(0).getId(), is(equalTo(MELDINGS_ID_1)));
         assertThat(endringsmeldinger.get(1).getId(), is(equalTo(MELDINGS_ID_2)));
