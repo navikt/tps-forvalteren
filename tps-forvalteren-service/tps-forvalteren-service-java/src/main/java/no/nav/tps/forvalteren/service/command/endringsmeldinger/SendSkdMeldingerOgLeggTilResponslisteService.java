@@ -28,7 +28,8 @@ public class SendSkdMeldingerOgLeggTilResponslisteService {
     ) {
         String status = sendEnSkdMelding.sendSkdMelding(skdmelding, skdRequestMeldingDefinition, env);
         avspillingResponse.incrementAntallSendte();
-        if (status == null || status.length() < 2 || !STATUS_OK.equals(status.substring(0, 2))) {
+        if (status == null || status.length() < 2 ||
+                (!STATUS_OK.equals(status.substring(0, 2)) && !status.contains("Person finnes fra før"))) {
             rapporterFeiletMelding(status, avspillingResponse, foedselsnummer, sekvensnummer);
         }
     }
