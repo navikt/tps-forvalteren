@@ -6,6 +6,7 @@ import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GJENLEVENDE_PARTNER;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SAMBOER;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT_PARTNER;
 import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
@@ -102,7 +103,7 @@ public class ValidateSivilstandService {
                 if (isSeparert(sivilstandRequest.getSivilstand()) && isSkilt(currentSivilstand)) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.separert"));
                 }
-                if (sivilstandRequest.getSivilstand().equals(currentSivilstand)) {
+                if (sivilstandRequest.getSivilstand().equals(currentSivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstandRequest.getSivilstand())) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.samme"));
                 }
                 currentSivilstand = sivilstandRequest.getSivilstand();
