@@ -244,11 +244,11 @@ public class ExtractOpprettKriterier {
 
     private void mapBoadresse(Person person, Adresse adresse, LocalDateTime flyttedato, TilleggAdressetype tilleggsadresse, Boolean isDelt) {
 
-        if (!hasAdresse(person)) {
+        if (!hasAdresse(person) || DNR.name().equals(person.getIdenttype()) || person.isUtvandret()) {
             return;
         }
 
-        if (!DNR.name().equals(person.getIdenttype()) && !person.isUtvandret() && nonNull(adresse)) {
+        if (nonNull(adresse)) {
 
             Adresse adresse1 = adresse instanceof Gateadresse ?
                     Gateadresse.builder()
