@@ -75,7 +75,7 @@ public class HentGyldigeAdresserService {
         if (env.toLowerCase().contains("dev-dev")) {
             context.setEnvironment("t0");
         } else {
-            context.setEnvironment("q1");
+            context.setEnvironment("q0");
         }
         return context;
     }
