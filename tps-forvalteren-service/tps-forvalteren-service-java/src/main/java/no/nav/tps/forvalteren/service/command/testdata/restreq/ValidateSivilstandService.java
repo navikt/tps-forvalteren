@@ -1,5 +1,23 @@
 package no.nav.tps.forvalteren.service.command.testdata.restreq;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GJENLEVENDE_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SAMBOER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT_PARTNER;
+import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.domain.jpa.Sivilstatus;
@@ -7,23 +25,6 @@ import no.nav.tps.forvalteren.domain.rs.RsPartnerRequest;
 import no.nav.tps.forvalteren.domain.rs.RsSivilstandRequest;
 import no.nav.tps.forvalteren.domain.rs.dolly.RsPersonBestillingKriteriumRequest;
 import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.ENKE_ELLER_ENKEMANN;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GIFT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.GJENLEVENDE_PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.REGISTRERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SEPARERT_PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.SKILT_PARTNER;
-import static no.nav.tps.forvalteren.domain.jpa.Sivilstatus.UGIFT;
 
 @Service
 @RequiredArgsConstructor
@@ -102,7 +103,7 @@ public class ValidateSivilstandService {
                 if (isSeparert(sivilstandRequest.getSivilstand()) && isSkilt(currentSivilstand)) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.separert"));
                 }
-                if (sivilstandRequest.getSivilstand().equals(currentSivilstand)) {
+                if (sivilstandRequest.getSivilstand().equals(currentSivilstand) && !SAMBOER.getKodeverkskode().equals(sivilstandRequest.getSivilstand())) {
                     throw new TpsfFunctionalException(messageProvider.get("bestilling.input.validation.sivilstand.samme"));
                 }
                 currentSivilstand = sivilstandRequest.getSivilstand();
@@ -120,8 +121,8 @@ public class ValidateSivilstandService {
     }
 
     private void validateUgiftAndSivilstandHistorikk(boolean harVaertGift, RsSivilstandRequest sivilstand, Sivilstatus gift, Sivilstatus partner, String error) {
-        if (!harVaertGift && gift.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
-                partner.getKodeverkskode().equals(sivilstand.getSivilstand())) {
+        if (!harVaertGift && (gift.getKodeverkskode().equals(sivilstand.getSivilstand()) ||
+                partner.getKodeverkskode().equals(sivilstand.getSivilstand()))) {
             throw new TpsfFunctionalException(messageProvider.get(error));
         }
     }
