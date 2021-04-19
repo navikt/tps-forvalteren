@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.tps.forvalteren.common.logging.LogExceptions;
 import no.nav.tps.forvalteren.domain.rs.restTPS.RsEndreRelasjon;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.response.TpsServiceRoutineResponse;
 import no.nav.tps.forvalteren.service.command.tps.servicerutiner.TpsResponseToJsonHandler;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/tps")
 public class TpsRestApiController {
@@ -106,6 +108,7 @@ public class TpsRestApiController {
             @RequestParam(value = "adresseType", defaultValue = "ALLE") String adresseType,
             @RequestParam("environment") String environment
     ) {
+        log.info("Kall til fetchPersonstatusOgAdresseS018 med fnr: {}, aksjonskode: {}, aksjonsdato {}", fnr, aksjonsKode, aksjonsDato);
         Map<String, Object> collectionOfQueryParams = extractParams(fnr, aksjonsKode, aksjonsDato, environment);
         collectionOfQueryParams.put("adresseType", adresseType);
         TpsServiceRoutineResponse res = serviceroutineController.executeServiceRoutine(collectionOfQueryParams, "FS03-FDNUMMER-PADRHIST-O");
