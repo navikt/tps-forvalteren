@@ -137,17 +137,19 @@ public class PersonerBestillingService {
     protected void setForeldreRelasjonerPaaPersoner(List<Person> hovedPerson, List<Person> foreldre, RsPersonBestillingKriteriumRequest request) {
 
         for (int i = 0; i < request.getRelasjoner().getForeldre().size(); i++) {
-            hovedPerson.stream().findFirst().get().getRelasjoner().add(Relasjon.builder()
-                    .person(hovedPerson.stream().findFirst().get())
-                    .personRelasjonMed(foreldre.get(i))
-                    .relasjonTypeNavn(nullcheckSetDefaultValue(request.getRelasjoner().getForeldre().get(i).getForeldreType(),
-                            foreldre.get(i).isKvinne() ? MOR : FAR).name())
-                    .build());
-            foreldre.get(i).getRelasjoner().add(Relasjon.builder()
-                    .person(foreldre.get(i))
-                    .personRelasjonMed(hovedPerson.stream().findFirst().get())
-                    .relasjonTypeNavn(BARN.getName())
-                    .build());
+            if (foreldre.get(i).isNyPerson()) {
+                hovedPerson.stream().findFirst().get().getRelasjoner().add(Relasjon.builder()
+                        .person(hovedPerson.stream().findFirst().get())
+                        .personRelasjonMed(foreldre.get(i))
+                        .relasjonTypeNavn(nullcheckSetDefaultValue(request.getRelasjoner().getForeldre().get(i).getForeldreType(),
+                                foreldre.get(i).isKvinne() ? MOR : FAR).name())
+                        .build());
+                foreldre.get(i).getRelasjoner().add(Relasjon.builder()
+                        .person(foreldre.get(i))
+                        .personRelasjonMed(hovedPerson.stream().findFirst().get())
+                        .relasjonTypeNavn(BARN.getName())
+                        .build());
+            }
         }
     }
 
