@@ -32,8 +32,6 @@ public class RsRequestMatrikkeladresse extends RsRequestAdresse {
     @Size(min = 1, max = 3)
     private String undernr;
 
-    private String matrikkelId;
-
     @Override
     public boolean isValidAdresse() {
         return isNotBlank(getBruksnr());

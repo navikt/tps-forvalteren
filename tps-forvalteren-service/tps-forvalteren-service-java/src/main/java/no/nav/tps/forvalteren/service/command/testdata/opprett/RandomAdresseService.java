@@ -1,49 +1,38 @@
 package no.nav.tps.forvalteren.service.command.testdata.opprett;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.service.command.testdata.utils.TilfeldigTall.tilfeldigTall;
+import static no.nav.tps.forvalteren.domain.rs.AdresseNrInfo.AdresseNr.KOMMUNENR;
+import static no.nav.tps.forvalteren.domain.rs.AdresseNrInfo.AdresseNr.POSTNR;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.glasnost.orika.MapperFacade;
+import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
 import no.nav.tps.forvalteren.domain.jpa.Adresse;
-import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.AdresseNrInfo;
-import no.nav.tps.forvalteren.domain.service.tps.ResponseStatus;
-import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
-import no.nav.tps.forvalteren.service.command.exceptions.TpsfFunctionalException;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
-import no.nav.tps.forvalteren.service.command.tps.servicerutiner.HentGyldigeAdresserService;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RandomAdresseService {
 
-    private HentGyldigeAdresserService hentGyldigeAdresserService;
-
-    @Autowired
-    private HentDatoFraIdentService hentDatoFraIdentService;
-
-    @Autowired
-    private DummyAdresseService dummyAdresseService;
-
-    @Autowired
-    public RandomAdresseService(HentGyldigeAdresserService hentGyldigeAdresserService) {
-        this.hentGyldigeAdresserService = hentGyldigeAdresserService;
-    }
+    private final AdresseServiceConsumer adresseServiceConsumer;
+    private final HentDatoFraIdentService hentDatoFraIdentService;
+    private final DummyAdresseService dummyAdresseService;
+    private final MapperFacade mapperFacade;
 
     public List<Person> execute(List<Person> persons, AdresseNrInfo adresseNrInfo) {
 
-        List<Adresse> adresser = hentRandomAdresse(persons.size(), adresseNrInfo);
+        var adresser = hentRandomAdresse(persons.size(), adresseNrInfo);
 
-        for (int i = 0; i < persons.size(); i++) {
+        for (var i = 0; i < persons.size(); i++) {
             adresser.get(i).setFlyttedato(hentDatoFraIdentService.extract(persons.get(i).getIdent()));
             adresser.get(i).setPerson(persons.get(i));
             adresser.get(i).setFlyttedato(LocalDateTime.now());
@@ -54,34 +43,22 @@ public class RandomAdresseService {
     }
 
     public List<Adresse> hentRandomAdresse(int total, AdresseNrInfo adresseNrInfo) {
-        String kommuneNr = null;
-        String postNr = null;
-
-        if (nonNull(adresseNrInfo)) {
-            switch (adresseNrInfo.getNummertype()) {
-            case POSTNR:
-                postNr = adresseNrInfo.getNummer();
-                break;
-            case KOMMUNENR:
-            default:
-                kommuneNr = adresseNrInfo.getNummer();
-            }
-        }
 
         try {
-            TpsFinnGyldigeAdresserResponse addrResponse = hentGyldigeAdresserService.hentTilfeldigAdresse(total, kommuneNr, postNr);
-            throwExceptionUnlessFlereAdresserFinnes(addrResponse.getResponse().getStatus());
+            var addrResponse = adresseServiceConsumer.getAdresser(
+                    new StringBuilder()
+                    .append("kommunenummer=")
+                    .append(nonNull(adresseNrInfo) && KOMMUNENR.equals(adresseNrInfo.getNummertype()) ?
+                            adresseNrInfo.getNummer() : "")
+                    .append("&postnummer=")
+                    .append(nonNull(adresseNrInfo) && POSTNR.equals(adresseNrInfo.getNummertype()) ?
+                            adresseNrInfo.getNummer() : "")
+                    .toString(), total);
 
-            List<TpsFinnGyldigeAdresserResponse.Adressedata> adresseDataList = addrResponse.getResponse().getData1().getAdrData();
-
-            List<Adresse> adresser = new ArrayList(adresseDataList.size());
-            for (int i = 0; i < total; i++) {
-                adresser.add(createGateAdresse(adresseDataList.get(i % adresseDataList.size())));
-            }
-            return adresser;
+            return mapperFacade.mapAsList(addrResponse, Adresse.class);
 
         } catch (RuntimeException e) {
-            log.error("Adresseoppslag med kommunenr {} alt postnr {} feilet: {}", kommuneNr, postNr, e.getMessage());
+            log.error("Adresseoppslag med feilet med {}", nonNull(adresseNrInfo) ? adresseNrInfo.toString() : null, e.getMessage());
             return singletonList(dummyAdresseService.createDummyBoAdresse(null));
         }
     }
@@ -89,21 +66,5 @@ public class RandomAdresseService {
     public List<Person> execute(List<Person> persons) {
 
         return execute(persons, null);
-    }
-
-    private void throwExceptionUnlessFlereAdresserFinnes(ResponseStatus svarStatus) {
-        if (!"00".equals(svarStatus.getKode()) && !newArrayList("S051002I", "S051003I").contains(svarStatus.getMelding())) {
-            throw new TpsfFunctionalException(svarStatus.getUtfyllendeMelding());
-        }
-    }
-
-    private Gateadresse createGateAdresse(TpsFinnGyldigeAdresserResponse.Adressedata adresseData) {
-        Gateadresse adresse = new Gateadresse();
-        adresse.setHusnummer(tilfeldigTall(adresseData.getHusnrfra(), adresseData.getHusnrtil()));
-        adresse.setGatekode(adresseData.getGkode());
-        adresse.setAdresse(adresseData.getAdrnavn());
-        adresse.setPostnr(adresseData.getPnr());
-        adresse.setKommunenr(adresseData.getKnr());
-        return adresse;
     }
 }

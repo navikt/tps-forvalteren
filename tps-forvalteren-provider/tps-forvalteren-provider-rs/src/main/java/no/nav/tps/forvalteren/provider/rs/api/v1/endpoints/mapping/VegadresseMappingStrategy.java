@@ -6,6 +6,7 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import no.nav.tps.forvalteren.common.mapping.MappingStrategy;
+import no.nav.tps.forvalteren.domain.jpa.Gateadresse;
 import no.nav.tps.forvalteren.domain.rs.VegadresseDTO;
 import no.nav.tps.forvalteren.domain.service.tps.servicerutiner.requests.hent.TpsFinnGyldigeAdresserResponse;
 
@@ -27,6 +28,21 @@ public class VegadresseMappingStrategy implements MappingStrategy {
                         tilAdresse.setPsted(fraAdresse.getPoststed());
                         tilAdresse.setKnr(fraAdresse.getKommunenummer());
                         tilAdresse.setKnavn(fraAdresse.getKommunenavn());
+                    }
+                })
+                .byDefault()
+                .register();
+
+        factory.classMap(VegadresseDTO.class, Gateadresse.class)
+                .customize(new CustomMapper<>() {
+                    @Override public void mapAtoB(VegadresseDTO fraAdresse,
+                            Gateadresse tilAdresse, MappingContext context) {
+
+                        tilAdresse.setAdresse(fraAdresse.getAdressenavn());
+                        tilAdresse.setGatekode(fraAdresse.getAdressekode());
+                        tilAdresse.setHusnummer(fraAdresse.getHusnummer().toString());
+                        tilAdresse.setPostnr(fraAdresse.getPostnummer());
+                        tilAdresse.setKommunenr(fraAdresse.getKommunenummer());
                     }
                 })
                 .byDefault()

@@ -39,6 +39,8 @@ public abstract class RsRequestAdresse {
 
     private String bolignr;
 
+    private String matrikkelId;
+
     public abstract boolean isValidAdresse();
 
     @Getter
