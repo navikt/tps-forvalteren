@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.consumer.rs.token;
 
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
+
 import java.net.URI;
 import java.time.Duration;
 import java.util.Map;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -59,7 +62,7 @@ public class AccessTokenService {
     }
 
     /**
-     * @deprecated metode
+     * @deprecated since
      * @param clientId
      * @return
      */
@@ -91,7 +94,7 @@ public class AccessTokenService {
         tokenResolver.verifyAuthentication();
 
         if (accessScopes.getScopes().isEmpty()) {
-            throw new RuntimeException("Kan ikke opprette accessToken uten scopes (clienter).");
+            throw new HttpClientErrorException(SERVICE_UNAVAILABLE, "Kan ikke opprette accessToken uten scopes (clienter).");
         }
 
         if (tokenResolver.isClientCredentials()) {
@@ -101,9 +104,8 @@ public class AccessTokenService {
         return generateOnBehalfOfAccessToken(accessScopes);
     }
 
-
     /**
-     * @deprecated
+     * @deprecated since
      * Skal kun brukes av operasjoner startet av batcher/kafka.
      *
      * @param clientId appen som skal kontaktes
