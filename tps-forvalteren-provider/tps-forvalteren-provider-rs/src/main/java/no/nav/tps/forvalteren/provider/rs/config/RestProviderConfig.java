@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
+import no.nav.tps.forvalteren.consumer.rs.config.credentials.AdresseServiceProperties;
 import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.OpenApiConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
@@ -19,7 +20,8 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         ServiceConfig.class,
         OpenApiConfig.class,
         WebSecurityConfig.class,
-        RestSecurityConfig.class
+        RestSecurityConfig.class,
+        AdresseServiceProperties.class
 })
 @ComponentScan(basePackageClasses = {
         UserController.class,

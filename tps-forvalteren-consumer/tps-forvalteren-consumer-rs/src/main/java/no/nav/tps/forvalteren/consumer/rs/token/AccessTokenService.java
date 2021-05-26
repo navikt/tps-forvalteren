@@ -62,11 +62,11 @@ public class AccessTokenService {
     }
 
     /**
-     * @deprecated since
+     * @deprecated
      * @param clientId
      * @return
      */
-    @Deprecated
+    @Deprecated(since = "2021-05-01")
     public AccessToken generateToken(String clientId) {
         return generateToken(new AccessScopes("api://" + clientId + "/.default"));
     }
@@ -105,13 +105,13 @@ public class AccessTokenService {
     }
 
     /**
-     * @deprecated since
+     * @deprecated
      * Skal kun brukes av operasjoner startet av batcher/kafka.
      *
      * @param clientId appen som skal kontaktes
      * @return access token som tilsvarer appen som skal kontaktes.
      */
-    @Deprecated
+    @Deprecated(since = "2021-05-01")
     public AccessToken generateClientCredentialAccessToken(String clientId) {
         return generateClientCredentialAccessToken(new AccessScopes("api://" + clientId + "/.default")).block();
     }
