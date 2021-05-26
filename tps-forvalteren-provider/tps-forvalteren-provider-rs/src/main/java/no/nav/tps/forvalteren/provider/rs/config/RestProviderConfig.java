@@ -4,6 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
 import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.OpenApiConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
@@ -24,7 +25,8 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         UserController.class,
         NaisEndpointController.class,
         HttpExceptionAdvice.class,
-        KodeverkConsumer.class
+        KodeverkConsumer.class,
+        AdresseServiceConsumer.class
 })
 public class RestProviderConfig {
 
