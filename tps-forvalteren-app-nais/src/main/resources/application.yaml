@@ -20,3 +20,10 @@ srvtps:
   forvalteren:
     username: ${TPSF_CREDENTIAL_USERNAME}
     password: ${TPSF_CREDENTIAL_PASSWORD}
+
+consumers:
+  testnav-adresse-service:
+    url: https://testnav-adresse-service.dev.intern.nav.no
+    name: testnav-adresse-service
+    cluster: dev-gcp
+    namespace: dolly

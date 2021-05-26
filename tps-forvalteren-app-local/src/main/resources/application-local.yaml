@@ -9,3 +9,10 @@ tps:
   forvalteren:
     production:
       mode: false
+
+consumers:
+  testnav-adresse-service:
+    url: https://testnav-adresse-service.dev.intern.nav.no
+    name: testnav-adresse-service
+    cluster: dev-gcp
+    namespace: dolly

@@ -70,5 +70,6 @@ public class TpsFinnGyldigeAdresserResponse {
          private String bydel;
          private String knr;
          private String husnrfra;
+         private String matrikkelId;
     }
 }
