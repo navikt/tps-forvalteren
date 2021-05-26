@@ -82,7 +82,6 @@ public class AccessTokenService {
         }
     }
 
-
     public Mono<AccessToken> generateNonBlockedToken(Scopeable scopeable) {
         return generateNonBlockedToken(new AccessScopes(scopeable));
     }

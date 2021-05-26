@@ -272,6 +272,7 @@ public class ExtractOpprettKriterier {
 
             adresse1.setTilleggsadresse(getTilleggAdresse(adresse.getTilleggsadresse(), tilleggsadresse));
             adresse1.setDeltAdresse(isDelt);
+            adresse1.setMatrikkelId(adresse.getMatrikkelId());
             adresse1.setPerson(person);
 
             person.getBoadresse().add(adresse1);

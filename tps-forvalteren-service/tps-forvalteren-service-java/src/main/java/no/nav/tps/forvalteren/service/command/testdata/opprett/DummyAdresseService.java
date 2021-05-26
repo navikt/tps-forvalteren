@@ -30,6 +30,7 @@ public class DummyAdresseService {
     private static final String POSTNR = "0557";
     private static final String GATEKODE = "16188";
     private static final String KOMMUNENR = "0301";
+    private static final String MATRIKKEL_ID = "285852527";
 
     private static final String ADRESSE_1 = SPSF_ADR;
     private static final String ADRESSE_2 = "POSTBOKS 2094 VIKA";
@@ -53,6 +54,7 @@ public class DummyAdresseService {
                         .build();
         gateadresse.setPostnr(POSTNR);
         gateadresse.setKommunenr(KOMMUNENR);
+        gateadresse.setMatrikkelId(MATRIKKEL_ID);
         gateadresse.setPerson(person);
         gateadresse.setFlyttedato(nonNull(person) && isNotBlank(person.getIdent()) ?
                 hentDatoFraIdentService.extract(person.getIdent()) : LocalDateTime.now());

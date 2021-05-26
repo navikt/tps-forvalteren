@@ -57,7 +57,7 @@ public class AdresseServiceConsumer {
 
         } catch (RuntimeException e) {
 
-            log.error("Henting av adresse feilet", e);
+            log.error("Henting av adresse feilet etter {} ms", currentTimeMillis() - startTime, e);
             return List.of(getDefaultAdresse());
         }
     }

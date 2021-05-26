@@ -39,5 +39,7 @@ public abstract class RsAdresse {
 
     private Boolean deltAdresse;
 
+    private String matrikkelId;
+
     public abstract boolean isValidAdresse();
 }
