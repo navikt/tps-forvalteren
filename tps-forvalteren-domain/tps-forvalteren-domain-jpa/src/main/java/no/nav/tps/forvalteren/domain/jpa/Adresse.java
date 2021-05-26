@@ -55,6 +55,9 @@ public abstract class Adresse {
     @Column(name = "DELT_ADRESSE")
     private Boolean deltAdresse;
 
+    @Column(name = "MATRIKKEL_ID")
+    private String matrikkelId;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

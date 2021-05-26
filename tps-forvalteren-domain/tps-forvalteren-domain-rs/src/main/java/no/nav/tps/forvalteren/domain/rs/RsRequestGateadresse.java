@@ -26,6 +26,8 @@ public class RsRequestGateadresse extends RsRequestAdresse {
     @Size(min = 1, max = 4)
     private String gatekode;
 
+    private String matrikkelId;
+
     @Override
     public boolean isValidAdresse() {
         return isNotBlank(getGatekode());
