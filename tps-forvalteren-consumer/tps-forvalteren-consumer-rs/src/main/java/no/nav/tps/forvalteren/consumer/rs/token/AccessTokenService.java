@@ -34,7 +34,7 @@ public class AccessTokenService {
             AuthenticationTokenResolver tokenResolver,
             AzureClientCredentials clientCredentials
     ) {
-        WebClient.Builder builder = WebClient
+        var builder = WebClient
                 .builder()
                 .baseUrl(issuerUrl + "/oauth2/v2.0/token")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
@@ -43,7 +43,7 @@ public class AccessTokenService {
             log.info("Setter opp proxy host {} for Client Credentials", proxyHost);
             var uri = URI.create(proxyHost);
 
-            HttpClient httpClient = HttpClient
+            var httpClient = HttpClient
                     .create()
                     .tcpConfiguration(tcpClient -> tcpClient.proxy(proxy -> proxy
                             .type(ProxyProvider.Proxy.HTTP)
@@ -58,6 +58,11 @@ public class AccessTokenService {
         this.clientCredentials = clientCredentials;
     }
 
+    /**
+     * @deprecated metode
+     * @param clientId
+     * @return
+     */
     @Deprecated
     public AccessToken generateToken(String clientId) {
         return generateToken(new AccessScopes("api://" + clientId + "/.default"));
@@ -82,10 +87,6 @@ public class AccessTokenService {
         }
     }
 
-    public Mono<AccessToken> generateNonBlockedToken(Scopeable scopeable) {
-        return generateNonBlockedToken(new AccessScopes(scopeable));
-    }
-
     public Mono<AccessToken> generateNonBlockedToken(AccessScopes accessScopes) {
         tokenResolver.verifyAuthentication();
 
@@ -102,6 +103,7 @@ public class AccessTokenService {
 
 
     /**
+     * @deprecated
      * Skal kun brukes av operasjoner startet av batcher/kafka.
      *
      * @param clientId appen som skal kontaktes
@@ -111,12 +113,6 @@ public class AccessTokenService {
     public AccessToken generateClientCredentialAccessToken(String clientId) {
         return generateClientCredentialAccessToken(new AccessScopes("api://" + clientId + "/.default")).block();
     }
-
-
-    public AccessToken generateClientCredentialAccessToken(Scopeable serverProperties) {
-        return generateClientCredentialAccessToken(new AccessScopes(serverProperties.toScope())).block();
-    }
-
 
     private Mono<AccessToken> generateClientCredentialAccessToken(AccessScopes accessScopes) {
         log.trace("Henter OAuth2 access token fra client credential...");

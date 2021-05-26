@@ -106,9 +106,6 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
     private void mockTps() throws JMSException {
         when(messageQueueConsumer.sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml"))), anyLong()))
                 .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_response.xml"));
-        when(messageQueueConsumer
-                .sendMessage(eq(removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong()))
-                .thenReturn(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_response.xml"));
     }
 
     private void assertCreatedTestdataInDatabase() {
