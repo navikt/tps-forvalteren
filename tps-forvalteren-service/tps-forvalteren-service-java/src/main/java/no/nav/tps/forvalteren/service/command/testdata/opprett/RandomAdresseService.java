@@ -58,7 +58,7 @@ public class RandomAdresseService {
             return mapperFacade.mapAsList(addrResponse, Adresse.class);
 
         } catch (RuntimeException e) {
-            log.error("Adresseoppslag med feilet med {}", nonNull(adresseNrInfo) ? adresseNrInfo.toString() : null, e.getMessage());
+            log.error("Adresseoppslag feilet for søk med {}", nonNull(adresseNrInfo) ? adresseNrInfo.toString() : null, e.getMessage());
             return singletonList(dummyAdresseService.createDummyBoAdresse(null));
         }
     }
