@@ -21,6 +21,7 @@ import no.nav.tps.forvalteren.config.TestLandkodeEncoder;
 import no.nav.tps.forvalteren.config.TestUserDetails;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.consumer.ws.sts.TpsfStsClient;
@@ -110,5 +111,10 @@ public class ComptestConfig {
     @Bean
     public FasitApiConsumer fasitApiConsumer() {
         return mock(FasitApiConsumer.class);
+    }
+
+    @Bean
+    public AdresseServiceConsumer adresseServiceConsumer() {
+        return mock(AdresseServiceConsumer.class);
     }
 }

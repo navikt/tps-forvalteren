@@ -1,5 +1,7 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
+import static java.util.Objects.nonNull;
+
 import org.springframework.stereotype.Component;
 
 import ma.glasnost.orika.CustomMapper;
@@ -22,8 +24,8 @@ public class VegadresseMappingStrategy implements MappingStrategy {
 
                         tilAdresse.setAdrnavn(fraAdresse.getAdressenavn());
                         tilAdresse.setGkode(fraAdresse.getAdressekode());
-                        tilAdresse.setHusnrfra(fraAdresse.getHusnummer().toString());
-                        tilAdresse.setHusnrtil(fraAdresse.getHusnummer().toString());
+                        tilAdresse.setHusnrfra(nonNull(fraAdresse.getHusnummer()) ? fraAdresse.getHusnummer().toString() : null);
+                        tilAdresse.setHusnrtil(nonNull(fraAdresse.getHusnummer()) ? fraAdresse.getHusnummer().toString() : null);
                         tilAdresse.setPnr(fraAdresse.getPostnummer());
                         tilAdresse.setPsted(fraAdresse.getPoststed());
                         tilAdresse.setKnr(fraAdresse.getKommunenummer());
@@ -40,7 +42,7 @@ public class VegadresseMappingStrategy implements MappingStrategy {
 
                         tilAdresse.setAdresse(fraAdresse.getAdressenavn());
                         tilAdresse.setGatekode(fraAdresse.getAdressekode());
-                        tilAdresse.setHusnummer(fraAdresse.getHusnummer().toString());
+                        tilAdresse.setHusnummer(nonNull(fraAdresse.getHusnummer()) ? fraAdresse.getHusnummer().toString() : null);
                         tilAdresse.setPostnr(fraAdresse.getPostnummer());
                         tilAdresse.setKommunenr(fraAdresse.getKommunenummer());
                     }

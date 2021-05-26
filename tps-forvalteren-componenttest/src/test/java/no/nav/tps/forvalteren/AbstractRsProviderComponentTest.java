@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Resources;
 
+import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.TestdataController;
 
 @RunWith(SpringRunner.class)
@@ -42,6 +43,9 @@ public abstract class AbstractRsProviderComponentTest {
 
     @Autowired
     protected TestdataController testdataController;
+
+    @Autowired
+    protected AdresseServiceConsumer adresseServiceConsumer;
 
     public MockMvc mvc;
 
