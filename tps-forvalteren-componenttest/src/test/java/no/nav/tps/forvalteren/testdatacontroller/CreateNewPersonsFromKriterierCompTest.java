@@ -11,6 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.jms.JMSException;
@@ -37,6 +39,7 @@ import no.nav.tps.forvalteren.consumer.rs.environments.FetchEnvironmentsManager;
 import no.nav.tps.forvalteren.domain.jpa.Gruppe;
 import no.nav.tps.forvalteren.domain.jpa.Person;
 import no.nav.tps.forvalteren.domain.rs.RsPersonKriterier;
+import no.nav.tps.forvalteren.domain.rs.VegadresseDTO;
 import no.nav.tps.forvalteren.service.command.testdata.FiktiveIdenterGenerator;
 
 public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataControllerComponentTest {
@@ -78,6 +81,10 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
         endTransactionIfActive();
         setupTestdataInTpsfDatabase();
 
+        when(adresseServiceConsumer.getAdresser(anyString(), eq(2)))
+                .thenReturn(Arrays.asList(VegadresseDTO.builder().kommunenummer("0901").build(),
+                        VegadresseDTO.builder().kommunenummer("0901").build()));
+
         mvc.perform(post(getUrl()).contentType(MediaType.APPLICATION_JSON)
                 .content(
                         "{\"personKriterierListe\":[{\"identtype\":\"FNR\",\"kjonn\":\"K\",\"foedtEtter\":\"2016-02-16T00:00:00.000Z\",\"foedtFoer\":\"2018-04-20T00:00:00.000Z\",\"antall\":\"2\"}],\"withAdresse\":true}"))
@@ -85,8 +92,6 @@ public class CreateNewPersonsFromKriterierCompTest extends AbstractTestdataContr
 
         verify(messageQueueConsumer, times(14)).sendMessage(
                 removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/finn_identer_i_TPS_request.xml")), DEFAULT_LES_TIMEOUT);
-        verify(messageQueueConsumer).sendMessage(eq(
-                removeWhitespaceBetweenTags(getResourceFileContent("testdatacontroller/createNewPersonsFromKriterier/hentGyldigeAdresser_servicerutinen_S051_request.xml"))), anyLong());
 
         TestTransaction.start(); //Start transaksjon pga. lazy fetch i kall fra databasen
         assertCreatedTestdataInDatabase();

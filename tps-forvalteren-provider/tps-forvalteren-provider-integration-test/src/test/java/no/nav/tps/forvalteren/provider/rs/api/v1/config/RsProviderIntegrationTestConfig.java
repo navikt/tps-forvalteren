@@ -22,6 +22,7 @@ import no.nav.tps.forvalteren.common.message.MessageProvider;
 import no.nav.tps.forvalteren.common.tpsapi.TpsPropsService;
 import no.nav.tps.forvalteren.consumer.mq.consumers.MessageQueueConsumer;
 import no.nav.tps.forvalteren.consumer.mq.factories.MessageQueueServiceFactory;
+import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
 import no.nav.tps.forvalteren.consumer.rs.environments.FasitApiConsumer;
 import no.nav.tps.forvalteren.consumer.rs.identpool.IdentpoolConsumer;
 import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
@@ -148,5 +149,10 @@ public class RsProviderIntegrationTestConfig {
     @Bean
     public TpsPropsService tpsProperties() {
         return mock(TpsPropsService.class);
+    }
+
+    @Bean
+    public AdresseServiceConsumer adresseServiceConsumer() {
+        return mock(AdresseServiceConsumer.class);
     }
 }
