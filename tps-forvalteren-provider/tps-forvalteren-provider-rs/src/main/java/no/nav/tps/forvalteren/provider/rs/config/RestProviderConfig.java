@@ -30,8 +30,8 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         NaisEndpointController.class,
         HttpExceptionAdvice.class,
         KodeverkConsumer.class,
-        AdresseServiceConsumer.class,
         AccessTokenService.class,
+        AdresseServiceConsumer.class,
         InsecureAuthenticationTokenResolver.class
 })
 public class RestProviderConfig {
