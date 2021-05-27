@@ -56,3 +56,5 @@ securitytokenservice.url: nada
 identpool.host.url: nada
 
 provider.kodeverk.url: nada
+
+AAD_ISSUER_URI: nada
