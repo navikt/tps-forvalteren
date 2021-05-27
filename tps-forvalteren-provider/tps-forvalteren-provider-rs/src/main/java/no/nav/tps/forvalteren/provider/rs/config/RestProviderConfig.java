@@ -4,11 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import no.nav.tps.forvalteren.consumer.rs.adresser.AdresseServiceConsumer;
-import no.nav.tps.forvalteren.consumer.rs.config.credentials.AdresseServiceProperties;
 import no.nav.tps.forvalteren.consumer.rs.kodeverk.KodeverkConsumer;
-import no.nav.tps.forvalteren.consumer.rs.token.AccessTokenService;
-import no.nav.tps.forvalteren.consumer.rs.token.InsecureAuthenticationTokenResolver;
 import no.nav.tps.forvalteren.provider.rs.api.v1.documentation.OpenApiConfig;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.UserController;
 import no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.advices.HttpExceptionAdvice;
@@ -22,17 +18,13 @@ import no.nav.tps.forvalteren.service.config.ServiceConfig;
         ServiceConfig.class,
         OpenApiConfig.class,
         WebSecurityConfig.class,
-        RestSecurityConfig.class,
-        AdresseServiceProperties.class
+        RestSecurityConfig.class
 })
 @ComponentScan(basePackageClasses = {
         UserController.class,
         NaisEndpointController.class,
         HttpExceptionAdvice.class,
-        KodeverkConsumer.class,
-        AccessTokenService.class,
-        AdresseServiceConsumer.class,
-        InsecureAuthenticationTokenResolver.class
+        KodeverkConsumer.class
 })
 public class RestProviderConfig {
 

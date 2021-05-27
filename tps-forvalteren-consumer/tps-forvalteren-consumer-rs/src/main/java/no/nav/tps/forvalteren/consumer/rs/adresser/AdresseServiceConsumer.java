@@ -4,7 +4,6 @@ import static java.lang.System.currentTimeMillis;
 
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import no.nav.tps.forvalteren.consumer.rs.token.AccessTokenService;
 import no.nav.tps.forvalteren.domain.rs.VegadresseDTO;
 
 @Slf4j
-@Service
 public class AdresseServiceConsumer {
 
     private final WebClient webClient;

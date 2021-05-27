@@ -12,13 +12,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import no.nav.tps.forvalteren.consumer.rs.adresser.config.AdresseConfig;
 import no.nav.tps.forvalteren.consumer.rs.environments.config.FetchEnvironmentsConsumerConfig;
 import no.nav.tps.forvalteren.consumer.rs.identpool.config.IdentpoolConfig;
 
 @Configuration
 @Import({
         FetchEnvironmentsConsumerConfig.class,
-        IdentpoolConfig.class
+        IdentpoolConfig.class,
+        AdresseConfig.class
 })
 public class RestConsumerConfig {
 
