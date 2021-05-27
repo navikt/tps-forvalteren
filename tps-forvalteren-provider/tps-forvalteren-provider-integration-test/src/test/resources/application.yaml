@@ -58,3 +58,10 @@ identpool.host.url: nada
 provider.kodeverk.url: nada
 
 AAD_ISSUER_URI: nada
+
+consumers:
+  testnav-adresse-service:
+    url: nada
+    name: nada
+    cluster: nada
+    namespace: nada

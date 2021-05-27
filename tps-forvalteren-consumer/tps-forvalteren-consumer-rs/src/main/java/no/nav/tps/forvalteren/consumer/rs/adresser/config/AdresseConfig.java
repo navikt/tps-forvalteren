@@ -25,6 +25,18 @@ public class AdresseConfig {
     @Value("${azure.app.client.secret:#{null}}")
     private String clientSecret;
 
+    @Value("${consumers.testnav-adresse-service.url}")
+    private String url;
+
+    @Value("${consumers.testnav-adresse-service.name}")
+    private String name;
+
+    @Value("${consumers.testnav-adresse-service.cluster}")
+    private String cluster;
+
+    @Value("${consumers.testnav-adresse-service.namespace}")
+    private String namespace;
+
     @Bean
     public AzureClientCredentials clientCredentials(){
         return new AzureClientCredentials(clientId, clientSecret);
@@ -38,7 +50,12 @@ public class AdresseConfig {
     }
 
     @Bean AdresseServiceConsumer adresseServiceConsumer() {
-        return new AdresseServiceConsumer(new AdresseServiceProperties(),
+        return new AdresseServiceConsumer(AdresseServiceProperties.builder()
+                .name(name)
+                .cluster(cluster)
+                .namespace(namespace)
+                .url(url)
+                .build(),
                 accessTokenService());
     }
 }

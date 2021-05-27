@@ -59,3 +59,10 @@ provider.kodeverk.url: nada
 
 client_id: nada
 client_secret: nada
+
+consumers:
+  testnav-adresse-service:
+    url: nada
+    name: nada
+    cluster: nada
+    namespace: nada
