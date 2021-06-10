@@ -145,7 +145,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 
-        if (FNR.name().equals(person.getIdenttype()) && isNoneBlank(person.getSpesreg())) {
+        if (FNR.name().equals(person.getIdenttype()) && isNoneBlank(kriteriumRequest.getSpesreg())) {
             person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
             person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
         }
