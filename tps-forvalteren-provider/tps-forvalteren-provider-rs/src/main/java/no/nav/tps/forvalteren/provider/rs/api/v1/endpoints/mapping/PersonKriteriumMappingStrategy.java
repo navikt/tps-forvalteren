@@ -41,7 +41,6 @@ import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
 import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
@@ -145,7 +144,7 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 
-        if (FNR.name().equals(person.getIdenttype()) && isNoneBlank(kriteriumRequest.getSpesreg())) {
+        if (FNR.name().equals(person.getIdenttype()) && isNotBlank(kriteriumRequest.getSpesreg())) {
             person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
             person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
         }
