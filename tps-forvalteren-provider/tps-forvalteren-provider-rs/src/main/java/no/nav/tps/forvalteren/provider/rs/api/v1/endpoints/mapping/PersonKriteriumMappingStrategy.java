@@ -1,25 +1,5 @@
 package no.nav.tps.forvalteren.provider.rs.api.v1.endpoints.mapping;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
-import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
-import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
-import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
-import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
-import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import org.springframework.stereotype.Component;
-
 import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
@@ -43,6 +23,25 @@ import no.nav.tps.forvalteren.service.command.testdata.opprett.KontonrGeneratorS
 import no.nav.tps.forvalteren.service.command.testdata.opprett.PersonNameService;
 import no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService;
 import no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.LandkodeEncoder;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.time.LocalDateTime.now;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.KVINNE;
+import static no.nav.tps.forvalteren.consumer.rs.identpool.dao.IdentpoolKjoenn.MANN;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.INNVANDRET;
+import static no.nav.tps.forvalteren.domain.jpa.InnvandretUtvandret.InnUtvandret.UTVANDRET;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.DNR;
+import static no.nav.tps.forvalteren.domain.rs.skd.IdentType.FNR;
+import static no.nav.tps.forvalteren.domain.service.DiskresjonskoderType.UFB;
+import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @RequiredArgsConstructor
@@ -145,10 +144,16 @@ public class PersonKriteriumMappingStrategy implements MappingStrategy {
         person.setDatoSprak(nullcheckSetDefaultValue(kriteriumRequest.getDatoSprak(),
                 hentDatoFraIdentService.extract(person.getIdent())));
 
-        if (FNR.name().equals(person.getIdenttype()) && isBlank(person.getSpesreg())) {
-            person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
-            person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
+        if (FNR.name().equals(person.getIdenttype()) && isNotBlank(kriteriumRequest.getSpesreg())) {
+            if ("UGRADERT".equals(kriteriumRequest.getSpesreg())) {
+                person.setSpesreg(null);
+                person.setUtenFastBopel(null);
+            } else {
+                person.setSpesreg(nullcheckSetDefaultValue(kriteriumRequest.getSpesreg(), kriteriumRequest.isUtenFastBopel() ? UFB.name() : null));
+                person.setUtenFastBopel(kriteriumRequest.isUtenFastBopel());
+            }
         }
+
         person.setEgenAnsattDatoFom(kriteriumRequest.getEgenAnsattDatoFom());
 
         if (isNotBlank(person.getSpesreg())) {
