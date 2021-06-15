@@ -76,6 +76,9 @@ public class MidlertidigAdresse {
 
         @Column(name = "HUSNR", length = 30)
         private String husnr;
+
+        @Column(name = "MATRIKKEL_ID", length = 15)
+        private String matrikkelId;
     }
 
     @Getter

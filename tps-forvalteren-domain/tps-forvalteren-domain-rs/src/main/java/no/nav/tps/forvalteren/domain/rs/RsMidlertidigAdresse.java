@@ -40,6 +40,7 @@ public abstract class RsMidlertidigAdresse {
         private String gatenavn;
         private String gatekode;
         private String husnr;
+        private String matrikkelId;
     }
 
     @Getter

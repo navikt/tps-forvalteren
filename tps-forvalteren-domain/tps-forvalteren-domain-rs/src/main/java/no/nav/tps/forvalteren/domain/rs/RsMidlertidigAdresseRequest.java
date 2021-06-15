@@ -39,6 +39,8 @@ public class RsMidlertidigAdresseRequest {
 
         private String husnr;
 
+        private String matrikkelId;
+
         private String eiendomsnavn;
 
         private String postboksnr;
