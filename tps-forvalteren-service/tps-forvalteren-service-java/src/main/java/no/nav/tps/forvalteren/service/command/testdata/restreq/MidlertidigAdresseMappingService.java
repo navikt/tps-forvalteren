@@ -118,6 +118,7 @@ public class MidlertidigAdresseMappingService {
                     .gatenavn(midlertidigAdresse.getNorskAdresse().getGatenavn())
                     .gatekode(midlertidigAdresse.getNorskAdresse().getGatekode())
                     .husnr(midlertidigAdresse.getNorskAdresse().getHusnr())
+                    .matrikkelId((midlertidigAdresse.getNorskAdresse().getMatrikkelId()))
                     .build();
 
             adresse.setPostnr(midlertidigAdresse.getNorskAdresse().getPostnr());
@@ -128,6 +129,7 @@ public class MidlertidigAdresseMappingService {
                     .gatenavn(((Gateadresse) adresser.get(0)).getAdresse())
                     .gatekode(((Gateadresse) adresser.get(0)).getGatekode())
                     .husnr(((Gateadresse) adresser.get(0)).getHusnummer())
+                    .matrikkelId(adresser.get(0).getMatrikkelId())
                     .build();
             adresse.setPostnr(adresser.get(0).getPostnr());
         }
