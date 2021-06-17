@@ -35,6 +35,8 @@ public abstract class RsRequestAdresse {
 
     private LocalDateTime flyttedato;
 
+    private LocalDateTime gyldigTilDato;
+
     private TilleggAdressetype tilleggsadresse;
 
     private String bolignr;

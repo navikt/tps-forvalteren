@@ -33,6 +33,8 @@ public abstract class RsAdresse {
 
     private LocalDateTime flyttedato;
 
+    private LocalDateTime gyldigTilDato;
+
     private String tilleggsadresse;
 
     private String bolignr;
