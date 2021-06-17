@@ -22,8 +22,7 @@ public class UtvandringOgInnvandring {
 
         personerSomAlleredeEksistererITps.forEach(person -> {
             if (person.getInnvandretUtvandret().stream()
-                    .filter(innvandretUtvandret -> UTVANDRET == innvandretUtvandret.getInnutvandret())
-                    .findFirst().isPresent()) {
+                    .anyMatch(innvandretUtvandret -> UTVANDRET == innvandretUtvandret.getInnutvandret())) {
                 List<SkdMeldingTrans1> skdMeldingTrans1List = utvandringOgInnvandringSkdParameterStrategy.execute(person);
                 skdMeldingTrans1List.forEach(melding -> {
                     if (addHeader) {
