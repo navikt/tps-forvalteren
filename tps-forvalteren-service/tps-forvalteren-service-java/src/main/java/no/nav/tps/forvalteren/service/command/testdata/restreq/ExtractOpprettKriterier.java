@@ -69,7 +69,8 @@ public class ExtractOpprettKriterier {
         mapperFacade.map(req, hovedPerson);
 
         if (isNull(req.getBoadresse()) || !req.getBoadresse().isValidAdresse()) {
-            mapBoadresse(hovedPerson, getBoadresse(adresser, 0), extractFlyttedato(req.getBoadresse()), req.getBoadresse().getGyldigTilDato(),
+            mapBoadresse(hovedPerson, getBoadresse(adresser, 0), extractFlyttedato(req.getBoadresse()),
+                    nonNull(req.getBoadresse()) ? req.getBoadresse().getGyldigTilDato() : null,
                     extractTilleggsadresse(req.getBoadresse()), null);
         }
 
