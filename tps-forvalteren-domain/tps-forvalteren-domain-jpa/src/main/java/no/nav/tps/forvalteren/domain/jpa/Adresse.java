@@ -43,6 +43,9 @@ public abstract class Adresse {
     @Column(name = "FLYTTE_DATO")
     private LocalDateTime flyttedato;
 
+    @Column(name = "GYLDIG_TIL_DATO")
+    private LocalDateTime gyldigTilDato;
+
     @Column(name = "POSTNR", length = 4)
     private String postnr;
 
