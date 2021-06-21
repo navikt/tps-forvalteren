@@ -150,7 +150,10 @@ public class EndrePersonBestillingService {
             if (nonNull(adresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
 
                 adresse.setFlyttedato(now().minusYears(1));
-                adresse.setGyldigTilDato(request.getBoadresse().getGyldigTilDato());
+                if (nonNull(request.getUtvandretTilLandFlyttedato()))
+                    adresse.setGyldigTilDato(request.getUtvandretTilLandFlyttedato().minusDays(1));
+                else
+                    adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
             }
         }
 
