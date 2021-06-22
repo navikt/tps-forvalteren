@@ -34,6 +34,7 @@ public class AdresseServiceConsumer {
 
         return VegadresseDTO.builder()
                 .matrikkelId("285693617")
+                .adressekode("12133")
                 .adressenavn("FYRSTIKKALLÉEN")
                 .postnummer("0661")
                 .husnummer(2)

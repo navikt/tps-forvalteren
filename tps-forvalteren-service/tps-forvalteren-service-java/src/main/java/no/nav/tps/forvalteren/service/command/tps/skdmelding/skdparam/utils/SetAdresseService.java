@@ -47,7 +47,7 @@ public class SetAdresseService {
                 skdMeldingTrans1.setAdressenavn(((Matrikkeladresse) boadresse).getMellomnavn());
             } else {
                 skdMeldingTrans1.setAdressetype("O");
-                skdMeldingTrans1.setGateGaard(((Gateadresse) boadresse).getGatekode());
+                skdMeldingTrans1.setGateGaard(fixGatekode(((Gateadresse) boadresse).getGatekode()));
                 addHusBrukAndBokstavFestenr(skdMeldingTrans1, (Gateadresse) boadresse);
                 String adresse = ((Gateadresse) boadresse).getAdresse();
                 if (nonNull(adresse)) {
@@ -74,6 +74,11 @@ public class SetAdresseService {
             skdMeldingTrans1.setPostadresse3(postadresse.getPostLinje3());
             skdMeldingTrans1.setPostadresseLand(landkodeEncoder.encode(postadresse.getPostLand()));
         }
+    }
+
+    private static String fixGatekode(String gatekode) {
+
+        return format("%05d", Integer.parseInt(gatekode));
     }
 
     private static String prepad(String value, int length) {
