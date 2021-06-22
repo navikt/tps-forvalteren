@@ -137,35 +137,37 @@ public class EndrePersonBestillingService {
 
     private void updateAdresse(RsPersonBestillingKriteriumRequest request, Person person) {
 
+        if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
+
+            if (nonNull(request.getAdresseNrInfo())) {
+                Adresse randomAdresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
+                randomAdresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
+                setAdressePaaPerson(person, randomAdresse);
+            }
+
+            Adresse boAdresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
+
+            if (nonNull(boAdresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
+
+                boAdresse.setFlyttedato(now().minusYears(1));
+                setAdresseGyldigTilDato(request, boAdresse);
+            }
+        }
+
         person.setGtVerdi(null); // Triggers reload of TKNR
 
-        if (isNull(request.getAdresseNrInfo()) && isNull(request.getBoadresse())) {
+        if (person.isForsvunnet()) {
             return;
         }
-        if (nonNull(request.getAdresseNrInfo())) {
-            Adresse randomAdresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
-            randomAdresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
-            setAdressePaaPerson(person, randomAdresse);
-        }
 
-        Adresse boAdresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
+        Adresse adresse = person.getBoadresse().isEmpty()
+                ? randomAdresseService.hentRandomAdresse(1, null).get(0)
+                : person.getBoadresse().get(0);
+        adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
+        setAdresseGyldigTilDato(request, adresse);
 
-        if (nonNull(boAdresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
-
-            boAdresse.setFlyttedato(now().minusYears(1));
-            setAdresseGyldigTilDato(request, boAdresse);
-        }
-
-        if (!person.isForsvunnet()) {
-
-            Adresse adresse = person.getBoadresse().isEmpty()
-                    ? randomAdresseService.hentRandomAdresse(1, null).get(0)
-                    : person.getBoadresse().get(0);
-            adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
-            setAdresseGyldigTilDato(request, adresse);
-            if (person.getBoadresse().isEmpty()) {
-                setAdressePaaPerson(person, adresse);
-            }
+        if (person.getBoadresse().isEmpty()) {
+            setAdressePaaPerson(person, adresse);
         }
     }
 
