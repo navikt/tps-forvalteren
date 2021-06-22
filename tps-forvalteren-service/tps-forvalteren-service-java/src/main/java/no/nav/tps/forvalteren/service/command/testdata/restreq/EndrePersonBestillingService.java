@@ -137,21 +137,23 @@ public class EndrePersonBestillingService {
 
     private void updateAdresse(RsPersonBestillingKriteriumRequest request, Person person) {
 
-        if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
+        person.setGtVerdi(null); // Triggers reload of TKNR
 
-            if (nonNull(request.getAdresseNrInfo())) {
-                Adresse adresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
-                adresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
-                setAdressePaaPerson(person, adresse);
-            }
+        if (isNull(request.getAdresseNrInfo()) && isNull(request.getBoadresse())) {
+            return;
+        }
+        if (nonNull(request.getAdresseNrInfo())) {
+            Adresse randomAdresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
+            randomAdresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
+            setAdressePaaPerson(person, randomAdresse);
+        }
 
-            Adresse adresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
+        Adresse boAdresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
 
-            if (nonNull(adresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
+        if (nonNull(boAdresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
 
-                adresse.setFlyttedato(now().minusYears(1));
-                setAdresseGyldigTilDato(request, adresse);
-            }
+            boAdresse.setFlyttedato(now().minusYears(1));
+            setAdresseGyldigTilDato(request, boAdresse);
         }
 
         if (!person.isForsvunnet()) {
@@ -165,7 +167,6 @@ public class EndrePersonBestillingService {
                 setAdressePaaPerson(person, adresse);
             }
         }
-        person.setGtVerdi(null); // Triggers reload of TKNR
     }
 
     private void setAdresseGyldigTilDato(RsPersonBestillingKriteriumRequest request, Adresse adresse) {
