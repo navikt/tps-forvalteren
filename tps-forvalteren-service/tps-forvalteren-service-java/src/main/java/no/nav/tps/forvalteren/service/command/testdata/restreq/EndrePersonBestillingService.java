@@ -150,21 +150,30 @@ public class EndrePersonBestillingService {
             if (nonNull(adresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
 
                 adresse.setFlyttedato(now().minusYears(1));
-                if (nonNull(request.getUtvandretTilLandFlyttedato()))
-                    adresse.setGyldigTilDato(request.getUtvandretTilLandFlyttedato().minusDays(1));
-                else
-                    adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
+                setAdresseGyldigTilDato(request, adresse);
             }
         }
 
-        if (person.getBoadresse().isEmpty() && !person.isForsvunnet()) {
-            Adresse adresse = randomAdresseService.hentRandomAdresse(1, null).get(0);
-            adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
-            adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
-            setAdressePaaPerson(person, adresse);
-        }
+        if (!person.isForsvunnet()) {
 
+            Adresse adresse = person.getBoadresse().isEmpty()
+                    ? randomAdresseService.hentRandomAdresse(1, null).get(0)
+                    : person.getBoadresse().get(0);
+            adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
+            setAdresseGyldigTilDato(request, adresse);
+            if (person.getBoadresse().isEmpty()) {
+                setAdressePaaPerson(person, adresse);
+            }
+        }
         person.setGtVerdi(null); // Triggers reload of TKNR
+    }
+
+    private void setAdresseGyldigTilDato(RsPersonBestillingKriteriumRequest request, Adresse adresse) {
+        if (nonNull(request.getUtvandretTilLandFlyttedato())) {
+            adresse.setGyldigTilDato(request.getUtvandretTilLandFlyttedato().minusDays(1));
+        } else {
+            adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
+        }
     }
 
     private void setAdressePaaPerson(Person person, Adresse adresse) {
