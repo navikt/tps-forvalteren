@@ -140,31 +140,43 @@ public class EndrePersonBestillingService {
         if (nonNull(request.getAdresseNrInfo()) || nonNull(request.getBoadresse())) {
 
             if (nonNull(request.getAdresseNrInfo())) {
-                Adresse adresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
-                adresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
-                setAdressePaaPerson(person, adresse);
+                Adresse randomAdresse = randomAdresseService.hentRandomAdresse(1, request.getAdresseNrInfo()).get(0);
+                randomAdresse.setFlyttedato(nonNull(request.getBoadresse()) ? request.getBoadresse().getFlyttedato() : null);
+                setAdressePaaPerson(person, randomAdresse);
             }
 
-            Adresse adresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
+            Adresse boAdresse = person.getBoadresse().stream().reduce((adresse1, adresse2) -> adresse2).orElse(null);
 
-            if (nonNull(adresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
+            if (nonNull(boAdresse) && (isNull(request.getBoadresse()) || isNull(request.getBoadresse().getFlyttedato()))) {
 
-                adresse.setFlyttedato(now().minusYears(1));
-                if (nonNull(request.getUtvandretTilLandFlyttedato()))
-                    adresse.setGyldigTilDato(request.getUtvandretTilLandFlyttedato().minusDays(1));
-                else
-                    adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
+                boAdresse.setFlyttedato(now().minusYears(1));
+                setAdresseGyldigTilDato(request, boAdresse);
             }
-        }
-
-        if (person.getBoadresse().isEmpty() && !person.isForsvunnet()) {
-            Adresse adresse = randomAdresseService.hentRandomAdresse(1, null).get(0);
-            adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
-            adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
-            setAdressePaaPerson(person, adresse);
         }
 
         person.setGtVerdi(null); // Triggers reload of TKNR
+
+        if (person.isForsvunnet()) {
+            return;
+        }
+
+        Adresse adresse = person.getBoadresse().isEmpty()
+                ? randomAdresseService.hentRandomAdresse(1, null).get(0)
+                : person.getBoadresse().get(0);
+        adresse.setFlyttedato(hentDatoFraIdentService.extract(person.getIdent()));
+        setAdresseGyldigTilDato(request, adresse);
+
+        if (person.getBoadresse().isEmpty()) {
+            setAdressePaaPerson(person, adresse);
+        }
+    }
+
+    private void setAdresseGyldigTilDato(RsPersonBestillingKriteriumRequest request, Adresse adresse) {
+        if (nonNull(request.getUtvandretTilLandFlyttedato())) {
+            adresse.setGyldigTilDato(request.getUtvandretTilLandFlyttedato().minusDays(1));
+        } else {
+            adresse.setGyldigTilDato(nonNull(request.getBoadresse()) ? request.getBoadresse().getGyldigTilDato() : null);
+        }
     }
 
     private void setAdressePaaPerson(Person person, Adresse adresse) {
