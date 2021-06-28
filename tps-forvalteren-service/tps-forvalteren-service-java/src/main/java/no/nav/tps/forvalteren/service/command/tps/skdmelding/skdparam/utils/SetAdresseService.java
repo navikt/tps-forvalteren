@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static java.util.Objects.nonNull;
 import static no.nav.tps.forvalteren.service.command.testdata.utils.HentDatoFraIdentService.enforceValidTpsDate;
 import static no.nav.tps.forvalteren.service.command.tps.skdmelding.skdparam.utils.NullcheckUtil.nullcheckSetDefaultValue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +79,7 @@ public class SetAdresseService {
 
     private static String fixGatekode(String gatekode) {
 
-        return format("%05d", Integer.parseInt(gatekode));
+        return format("%05d", isNotBlank(gatekode) ? Integer.parseInt(gatekode) : 0);
     }
 
     private static String prepad(String value, int length) {
