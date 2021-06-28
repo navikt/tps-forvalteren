@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.google.common.collect.Sets;
 
@@ -106,14 +105,11 @@ public class LagreTilTpsService {
         if (environments.contains("q4")) { // Status på miljoer som ikke skal sendes til TPS
             var synthMiljoer = Map.of("q4", "OK");
 
-            skdMldResponse.addAll(personerIGruppen.stream()
-                    .map(Person::getIdent)
-                    .map(ident -> SendSkdMeldingTilTpsResponse.builder()
-                            .personId(ident)
+            skdMldResponse.add(SendSkdMeldingTilTpsResponse.builder()
+                            .personId(personerIGruppen.get(0).getIdent())
                             .skdmeldingstype("TPS i dette miljø blir nå oppdatert via PDL")
                             .status(synthMiljoer)
-                            .build())
-                    .collect(Collectors.toList()));
+                            .build());
         }
 
         skdMldResponse.addAll(envNotFound.values());
