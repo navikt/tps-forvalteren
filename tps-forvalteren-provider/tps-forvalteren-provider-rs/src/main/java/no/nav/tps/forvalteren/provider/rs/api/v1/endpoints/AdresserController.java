@@ -50,9 +50,9 @@ public class AdresserController {
 
         var adresser = adresseServiceConsumer.getAdresser(
                 new StringBuilder()
-                        .append("postnummer=")
+                        .append(isNotBlank(postNr) ? "postnummer=" : "")
                         .append(isNotBlank(postNr) ? postNr : "")
-                        .append("&kommunenummer=")
+                        .append(isNotBlank(kommuneNr) ? "kommunenummer=" : "")
                         .append(isNotBlank(kommuneNr) ? kommuneNr : "")
                         .toString(),
                 nonNull(maxAntall) ? maxAntall : 1);

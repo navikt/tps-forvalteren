@@ -46,12 +46,13 @@ public class RandomAdresseService {
 
         try {
             var addrResponse = adresseServiceConsumer.getAdresser(
+
                     new StringBuilder()
-                    .append("kommunenummer=")
-                    .append(nonNull(adresseNrInfo) && KOMMUNENR.equals(adresseNrInfo.getNummertype()) ?
+                    .append(KOMMUNENR.equals(adresseNrInfo.getNummertype()) ?  "kommunenummer=" : "")
+                    .append(KOMMUNENR.equals(adresseNrInfo.getNummertype()) ?
                             adresseNrInfo.getNummer() : "")
-                    .append("&postnummer=")
-                    .append(nonNull(adresseNrInfo) && POSTNR.equals(adresseNrInfo.getNummertype()) ?
+                    .append(POSTNR.equals(adresseNrInfo.getNummertype()) ? "postnummer=" : "")
+                    .append(POSTNR.equals(adresseNrInfo.getNummertype()) ?
                             adresseNrInfo.getNummer() : "")
                     .toString(), total);
 
