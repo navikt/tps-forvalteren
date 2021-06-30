@@ -10,7 +10,7 @@ import no.nav.tps.forvalteren.domain.rs.VegadresseDTO;
 @RequiredArgsConstructor
 public class AdresseServiceCommand implements Callable<VegadresseDTO[]> {
 
-    private static final String VEGADRESSE_URL = "/api/v1/adresser/veg?";
+    private static final String VEGADRESSE_URL = "/api/v1/adresser/veg";
 
     private final WebClient webClient;
     private final String query;
